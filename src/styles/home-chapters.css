@@ -700,22 +700,22 @@
   }
 }
 @media (min-width: 641px) and (max-width: 1199px) {
-  .home-story .hero-copy {
+  .home-story:not(:has(.hero-dark)) .hero-copy {
     width: 70%;
   }
-  .home-story .hero-whale {
+  .home-story:not(:has(.hero-dark)) .hero-whale {
     width: 24%;
     opacity: 0.5;
     right: 0;
     top: 30%;
   }
-  .home-story .hero-route-list {
+  .home-story:not(:has(.hero-dark)) .hero-route-list {
     gap: 20px;
   }
-  .home-story .hero-route-list a {
+  .home-story:not(:has(.hero-dark)) .hero-route-list a {
     grid-template-columns: 1fr 16px;
   }
-  .home-story .hero-route-number {
+  .home-story:not(:has(.hero-dark)) .hero-route-number {
     display: none;
   }
   .process-timeline {
@@ -737,42 +737,42 @@
   .home-story .home-chapter {
     padding-block: 40px;
   }
-  .home-story .hero-band {
+  .home-story:not(:has(.hero-dark)) .hero-band {
     padding-block: 22px 52px;
   }
-  .home-story .hero-inner {
+  .home-story:not(:has(.hero-dark)) .hero-inner {
     min-height: 0;
   }
-  .home-story .hero-brand {
+  .home-story:not(:has(.hero-dark)) .hero-brand {
     font-size: 52px;
     flex-wrap: wrap;
     gap: 8px 16px;
   }
-  .home-story .hero-promise {
+  .home-story:not(:has(.hero-dark)) .hero-promise {
     font-size: 29px;
   }
-  .home-story .hero-intro {
+  .home-story:not(:has(.hero-dark)) .hero-intro {
     max-width: 100%;
   }
-  .home-story .hero-side-panel {
+  .home-story:not(:has(.hero-dark)) .hero-side-panel {
     margin-top: 18px;
     padding-top: 8px;
   }
-  .home-story .hero-route-list {
+  .home-story:not(:has(.hero-dark)) .hero-route-list {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  .home-story .hero-route-list a {
+  .home-story:not(:has(.hero-dark)) .hero-route-list a {
     padding-block: 10px;
     min-height: 64px;
   }
-  .home-story .hero-route-list li + li {
+  .home-story:not(:has(.hero-dark)) .hero-route-list li + li {
     border-top: 1px solid #d5dff0;
   }
-  .home-story .hero-route-copy strong {
+  .home-story:not(:has(.hero-dark)) .hero-route-copy strong {
     font-size: 16px;
   }
-  .hero-audiences {
+  .home-story:not(:has(.hero-dark)) .hero-audiences {
     font-size: 13px;
     margin-top: 18px;
     gap: 8px 16px;
