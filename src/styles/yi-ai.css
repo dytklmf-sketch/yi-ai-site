@@ -142,6 +142,54 @@ main:focus {
   background: rgba(255, 255, 255, 0.94);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
+  transition: background var(--dur-mid), border-color var(--dur-mid);
+}
+
+/* On home story pages: header starts transparent over dark hero,
+   becomes opaque white once user scrolls past the hero chapter */
+.home-story .site-header {
+  background: oklch(13% 0.030 260 / 0.88);
+  border-bottom-color: oklch(28% 0.032 260 / 0.6);
+  color: var(--dark-body);
+}
+.home-story .site-header .desktop-nav a {
+  color: var(--dark-muted);
+}
+.home-story .site-header .desktop-nav a:hover,
+.home-story .site-header .desktop-nav a[aria-current='page'] {
+  color: var(--n-0);
+}
+.home-story .site-header .desktop-nav a[aria-current='page']::after {
+  background: var(--dark-accent);
+}
+.home-story .site-header .language-link {
+  color: var(--dark-muted);
+}
+.home-story .site-header .language-link:hover {
+  background: oklch(22% 0.040 260);
+  color: var(--n-0);
+}
+.home-story .site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: var(--line);
+  color: var(--ink);
+}
+.home-story .site-header.is-scrolled .desktop-nav a {
+  color: var(--muted);
+}
+.home-story .site-header.is-scrolled .desktop-nav a:hover,
+.home-story .site-header.is-scrolled .desktop-nav a[aria-current='page'] {
+  color: var(--ink);
+}
+.home-story .site-header.is-scrolled .desktop-nav a[aria-current='page']::after {
+  background: var(--accent);
+}
+.home-story .site-header.is-scrolled .language-link {
+  color: var(--muted);
+}
+.home-story .site-header.is-scrolled .language-link:hover {
+  background: var(--surface-blue);
+  color: var(--accent);
 }
 .site-header .site-container,
 .site-footer .site-container,
