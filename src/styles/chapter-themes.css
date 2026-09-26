@@ -230,3 +230,60 @@
 .cta-intro > p {
   color: var(--dark-muted);
 }
+
+/* ─── Mobile menu — dark on home story ─────────────────────────────────────── */
+.home-story .site-header:not(.is-scrolled) .mobile-menu nav {
+  background: var(--n-8);
+  border-bottom-color: var(--dark-border);
+}
+.home-story .site-header:not(.is-scrolled) .mobile-menu nav a {
+  color: var(--dark-body);
+  border-bottom-color: var(--dark-border);
+}
+.home-story .site-header:not(.is-scrolled) .mobile-menu nav a:hover {
+  color: var(--n-0);
+}
+.home-story .site-header:not(.is-scrolled) .mobile-menu nav a[aria-current='page'] {
+  color: var(--dark-accent);
+}
+.home-story .site-header:not(.is-scrolled) .mobile-menu summary {
+  color: var(--dark-body);
+}
+.home-story .site-header:not(.is-scrolled) .mobile-menu summary:hover {
+  background: oklch(22% 0.040 260);
+}
+.home-story .site-header:not(.is-scrolled) .header-cta {
+  background: var(--dark-accent);
+  color: var(--n-0);
+}
+.home-story .site-header:not(.is-scrolled) .header-cta:hover {
+  background: var(--a-2);
+}
+
+/* ─── Footer — dark tone on home story ─────────────────────────────────────── */
+.home-story .site-footer {
+  background: var(--n-9);
+  color: var(--dark-body);
+}
+.home-story .site-footer .footer-label {
+  color: var(--dark-muted);
+}
+.home-story .site-footer .footer-links a {
+  color: var(--dark-body);
+}
+.home-story .site-footer .footer-links a:hover {
+  color: var(--n-0);
+}
+.home-story .site-footer .footer-brand p {
+  color: var(--dark-muted);
+}
+.home-story .footer-bottom {
+  border-top-color: var(--dark-border);
+  color: var(--dark-muted);
+}
+.home-story .footer-bottom a {
+  color: var(--dark-muted);
+}
+.home-story .footer-bottom a:hover {
+  color: var(--n-0);
+}
