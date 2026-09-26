@@ -2,7 +2,7 @@
   --chapter-bottom-inset: 0px;
   scroll-padding-top: calc(var(--header-height) + 1px);
   scroll-padding-bottom: var(--chapter-bottom-inset);
-  scroll-snap-type: y proximity;
+  /* scroll-snap removed — JS handles alignment after scroll stops */
 }
 .home-story[data-chapter-scrolling],
 .home-story[data-chapter-paging] {
@@ -12,7 +12,7 @@
 .home-story .home-chapter {
   position: relative;
   padding-block: 56px;
-  scroll-snap-align: start;
+  /* scroll-snap-align removed — JS handles alignment */
   /* Contain layout/paint to improve scroll perf — each chapter is isolated */
   contain: layout style paint;
 }
@@ -390,8 +390,7 @@
   .home-story {
     --chapter-padding: 48px;
     --chapter-content: calc(100svh - var(--header-height) - 1px - var(--chapter-padding) * 2);
-    /* Use proximity instead of mandatory for smoother wheel scrolling */
-    scroll-snap-type: y proximity;
+    /* scroll-snap removed — JS handles alignment */
   }
   .chapter-nav {
     display: block;
