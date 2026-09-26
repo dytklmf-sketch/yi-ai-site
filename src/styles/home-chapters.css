@@ -403,7 +403,8 @@
     flex-direction: column;
     justify-content: center;
   }
-  .home-story .home-chapter > .site-container {
+  /* Chapter containers: column layout for non-dark chapters */
+  .home-story .home-chapter:not(.hero-dark) > .site-container {
     min-height: 0;
     display: flex;
     flex-direction: column;
