@@ -1,0 +1,10 @@
+{
+  "jobId": "pj_yoin1fPMYQw5cF2lQlE1mHQz",
+  "model": "gpt-image-2",
+  "quality": "medium",
+  "size": "1024x1024",
+  "count": 1,
+  "prompt": "assets/logo/art-mark-prompt.txt",
+  "status": "succeeded",
+  "output": "easyai-art-original.png"
+}

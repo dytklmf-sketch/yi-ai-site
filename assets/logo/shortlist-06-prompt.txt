@@ -1,0 +1,5 @@
+Refine this selected Easy AI logo direction while preserving its single-stroke, human, calligraphic character.
+
+Keep the core idea of one flowing form that subtly connects 易 and AI, but remove the feeling of handwritten text. Reduce visual noise, simplify the upper horizontal strokes, improve the balance between the left loop and the A/I structure, and make every curve intentional. The silhouette should feel like an original international brand mark rather than three letters written together. Maintain an open center and clear recognition at 24px.
+
+Use one flat cobalt blue #245BDB on pure white. No words outside the symbol, gradient, shadows, 3D, mockup, enclosing badge, generic spark, or extra decoration. One centered symbol with crisp vector-like edges and generous margin.

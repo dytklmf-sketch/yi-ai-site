@@ -1,0 +1,11 @@
+{
+  "jobId": "pj_Rjgf6mNXcZAcUfHPnCwwilK",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1024x1024",
+  "count": 1,
+  "prompt": "assets/logo/shortlist-10-prompt.txt",
+  "sourceImage": "assets/logo/generated/directions/10-open-seal.jpg",
+  "status": "succeeded",
+  "outputs": ["easyai-shortlist-10-refined.jpg"]
+}

@@ -1,0 +1,11 @@
+{
+  "jobId": "pj_Z3LoPgVOxHR9oOw8ttU48Co",
+  "model": "gpt-image-2",
+  "quality": "medium",
+  "size": "1024x1024",
+  "count": 1,
+  "prompt": "assets/logo/art-mark-refine-prompt.txt",
+  "sourceImage": "assets/logo/generated/easyai-art-original.png",
+  "status": "succeeded",
+  "output": "easyai-art-refined.png"
+}

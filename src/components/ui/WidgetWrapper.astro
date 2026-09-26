@@ -1,0 +1,17 @@
+---
+// Adapted from AstroWind WidgetWrapper, MIT Copyright (c) 2023 onWidget.
+import { twMerge } from 'tailwind-merge';
+interface Props {
+  id?: string;
+  class?: string;
+  containerClass?: string;
+  chapter?: boolean;
+}
+const { id, class: className, containerClass = '', chapter = false } = Astro.props;
+---
+
+<section id={id} class:list={['section', className, { 'home-chapter': chapter }]}>
+  <div class={twMerge('site-container relative mx-auto', containerClass)} data-reveal>
+    <slot />
+  </div>
+</section>

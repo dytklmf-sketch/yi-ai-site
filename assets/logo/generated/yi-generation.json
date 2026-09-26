@@ -1,0 +1,10 @@
+{
+  "jobId": "pj_sdvHHg0ddJX73hqiJdY3CC3Y",
+  "model": "gpt-image-2",
+  "quality": "low",
+  "size": "1024x1024",
+  "count": 1,
+  "prompt": "assets/logo/yi-mark-prompt.txt",
+  "status": "succeeded",
+  "output": "easyai-yi-original.png"
+}

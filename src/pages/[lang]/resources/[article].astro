@@ -1,0 +1,130 @@
+---
+import { render } from 'astro:content';
+import { ArrowUpRight, ChevronDown } from '@lucide/astro';
+import YiAiLayout from '../../../layouts/YiAiLayout.astro';
+import WidgetWrapper from '../../../components/ui/WidgetWrapper.astro';
+import GuideCards from '../../../components/yi-ai/GuideCards.astro';
+import { getGuides } from '../../../data/routes';
+import { editorial } from '../../../data/editorial';
+import { brandName, inquiryPath, pathFor } from '../../../data/yi-ai';
+import { zh } from '../../../data/zh';
+import { en } from '../../../data/en';
+export async function getStaticPaths() {
+  return (await getGuides()).map((guide) => ({
+    params: { lang: guide.data.lang, article: guide.data.pairKey },
+    props: { guide },
+  }));
+}
+const { guide } = Astro.props;
+const { data } = guide;
+const lang = data.lang;
+const e = editorial[lang];
+const t = lang === 'zh' ? zh : en;
+const { Content, headings } = await render(guide);
+const toc = headings.filter((heading) => heading.depth === 2);
+const counterpart = (await getGuides(lang === 'zh' ? 'en' : 'zh')).find((item) => item.data.pairKey === data.pairKey)!;
+const counterpartTOC = (await render(counterpart)).headings.filter((heading) => heading.depth === 2);
+if (toc.length !== counterpartTOC.length) throw new Error(`Unpaired article sections: ${data.pairKey}`);
+const fragmentPairs = Object.fromEntries(toc.map((heading, i) => [heading.slug, counterpartTOC[i].slug]));
+const otherGuides = (await getGuides(lang)).filter((item) => item.data.pairKey !== data.pairKey);
+const related = [
+  ...otherGuides.filter((item) => item.data.service === data.service),
+  ...otherGuides.filter((item) => item.data.service !== data.service && item.data.order % 2 === 1),
+].slice(0, 3);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.description,
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  dateModified: data.updatedAt,
+  author: { '@type': 'Organization', name: brandName(lang) },
+  citation: data.sources.map((source) => source.url),
+};
+---
+
+<YiAiLayout
+  lang={lang}
+  slug="resources"
+  article={data.pairKey}
+  service={data.service}
+  title={data.title}
+  description={data.description}
+  structuredData={schema}
+>
+  <section class="page-hero article-hero">
+    <div class="site-container">
+      <nav class="breadcrumb" aria-label={lang === 'zh' ? '面包屑导航' : 'Breadcrumb'}>
+        <a href={pathFor(lang)}>{brandName(lang)}</a><span>/</span><a href={pathFor(lang, 'resources')}>{e.resources}</a
+        >
+      </nav>
+      <p class="eyebrow">{t.services[data.service].label}</p><h1>{data.title}</h1><p class="article-description">
+        {data.description}
+      </p>
+      <p class="article-meta">
+        {brandName(lang)}<span aria-hidden="true">·</span>{e.updated}
+        <time datetime={data.updatedAt}>{data.updatedAt}</time>
+      </p>
+    </div>
+  </section>
+  <div class="site-container article-layout" data-language-fragments={JSON.stringify(fragmentPairs)}>
+    <aside class="article-sidebar">
+      <nav class="desktop-toc" data-section-nav aria-label={e.contents}>
+        <p>{e.contents}</p><ol>
+          {
+            toc.map((item) => (
+              <li>
+                <a href={`#${item.slug}`}>{item.text}</a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+      <details class="mobile-toc">
+        <summary>{e.contents}<ChevronDown size={18} /></summary><nav data-section-nav aria-label={e.contents}>
+          <ol>
+            {
+              toc.map((item) => (
+                <li>
+                  <a href={`#${item.slug}`}>{item.text}</a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </details>
+    </aside>
+    <article class="article-body">
+      <Content />
+      <section class="article-sources" aria-labelledby="sources">
+        <h2 id="sources">{e.sources}</h2><ol>
+          {
+            data.sources.map((source) => (
+              <li>
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  {source.label}
+                  <ArrowUpRight size={14} />
+                  <span class="sr-only">{lang === 'zh' ? '（新窗口）' : '(new window)'}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol><p>{e.sourceNote}</p>
+      </section>
+      <div class="article-inquiry">
+        <p>{e.relatedService}</p><h2>{t.services[data.service].label}</h2><div>
+          <a class="button button-primary" href={inquiryPath(lang, data.service)}
+            >{t.primary}<ArrowUpRight size={18} /></a
+          ><a class="text-link" href={pathFor(lang, data.service)}>{t.explore}<ArrowUpRight size={18} /></a>
+        </div>
+      </div>
+    </article>
+  </div>
+  <WidgetWrapper class="guides-band"
+    ><div class="section-head">
+      <h2>{e.related}</h2><a class="text-link" href={pathFor(lang, 'resources')}
+        >{e.allGuides}<ArrowUpRight size={18} /></a
+      >
+    </div><GuideCards lang={lang} guides={related} /></WidgetWrapper
+  >
+</YiAiLayout>

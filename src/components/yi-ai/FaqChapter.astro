@@ -1,0 +1,60 @@
+---
+import { ArrowUpRight, ArrowRight, Plus } from '@lucide/astro';
+import WidgetWrapper from '../ui/WidgetWrapper.astro';
+import { services, inquiryPath, type Lang, type SiteCopy } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+  t: SiteCopy;
+  serviceLabels: Record<string, string>;
+}
+const { lang, t, serviceLabels } = Astro.props;
+---
+
+<WidgetWrapper id="faq" class="faq-band" chapter>
+  <div class="faq-grid">
+    <div>
+      <p class="eyebrow">FAQ</p>
+      <h2>{t.faqTitle}</h2>
+      <p class="section-intro">
+        {lang === 'zh' ? '还有其他问题？我们愿意听听。' : "Have another question? We'd like to hear it."}
+      </p>
+      <a class="text-link" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={17} /></a>
+      <nav class="faq-route-list" aria-label={lang === 'zh' ? '按业务咨询' : 'Inquire by service'}>
+        {
+          services.map((slug, i) => (
+            <a href={inquiryPath(lang, slug)}>
+              <span class="faq-route-number">0{i + 1}</span>
+              <span class="faq-route-copy">
+                <strong>{t.services[slug].label}</strong>
+                <small>{t.services[slug].short}</small>
+              </span>
+              <ArrowRight size={16} />
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+    <div class="faq-list">
+      {
+        t.faq.map((item, i) => (
+          <details>
+            <>
+              <summary>
+                <span class="faq-number">{String(i + 1).padStart(2, '0')}</span>
+                <span class="faq-question">
+                  <small>{serviceLabels[item.service]}</small>
+                  {item.question}
+                </span>
+                <Plus size={18} aria-hidden="true" />
+              </summary>
+              <div class="disclosure-content">
+                <p>{item.answer}</p>
+              </div>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</WidgetWrapper>

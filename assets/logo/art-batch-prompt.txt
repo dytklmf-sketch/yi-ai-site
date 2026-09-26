@@ -1,0 +1,9 @@
+Design one artistic brand symbol candidate for 易AI / Easy AI, a practical AI services company whose promise is making AI easier to understand, use, and put into practice.
+
+Create a single original symbol that fuses the visual spirit of the Chinese character 易 with AI into one coherent mark. Do not simply typeset 易, A, or I, and do not place separate characters side by side. Use elegant negative space, unexpected but disciplined geometry, and a small number of confident shapes. The connection may be subtle: a sun / horizon cue from 易, an ascending A structure, or a precise vertical I can share strokes and spaces. The result must feel designed as one symbol from the beginning.
+
+Art direction: contemporary international technology brand, refined and memorable, calm confidence, intelligent simplicity, slightly human warmth. Compact square silhouette, strong optical balance, open internal space, distinctive at 24px. Explore an artistic solution rather than a standard font glyph. Prefer 3 to 6 broad shapes, controlled curves, and selective softened corners.
+
+Use one flat cobalt blue #245BDB on pure white. No words outside the symbol. No gradient, shadows, 3D, cyan, glow, mockup, border badge, enclosing circle, generic spark, brain, robot, chat bubble, infinity loop, circuit pattern, lightning bolt, gateway, folded ribbon, or app-icon container. Do not create a collage, logo sheet, or multiple options in one image.
+
+Output exactly one large centered isolated mark occupying about 68 percent of a 1024px square, with crisp vector-like edges and generous white margin. Prioritize visual elegance first, then subtle 易 + AI recognition on closer inspection.

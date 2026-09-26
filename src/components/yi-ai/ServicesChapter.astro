@@ -1,0 +1,67 @@
+---
+import { ArrowUpRight, ArrowRight, Blocks, Network, Server } from '@lucide/astro';
+import WidgetWrapper from '../ui/WidgetWrapper.astro';
+import { services, pathFor, inquiryPath, type Lang, type SiteCopy } from '../../data/yi-ai';
+import { refinement } from '../../data/refinement';
+
+interface Props {
+  lang: Lang;
+  t: SiteCopy;
+}
+const { lang, t } = Astro.props;
+const icons = [Blocks, Network, Server];
+const r = refinement[lang];
+---
+
+<WidgetWrapper id="services" chapter>
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">01 / {lang === 'zh' ? '我们的服务' : 'OUR SERVICES'}</p>
+      <h2>{t.servicesTitle}</h2>
+    </div>
+    <p class="section-intro">{t.servicesIntro}</p>
+  </div>
+  <div class="service-grid">
+    {
+      services.map((slug, i) => {
+        const Icon = icons[i];
+        return (
+          <article class:list={['service-card', `service-${i}`]} data-reveal data-delay={i}>
+            <div class="card-top">
+              <>
+                <span class="card-number">0{i + 1}</span>
+                <Icon size={28} stroke-width={1.5} aria-hidden="true" />
+              </>
+            </div>
+            <div>
+              <>
+                <h3>{t.services[slug].label}</h3>
+                <p class="service-audience">{r.audiences[slug]}</p>
+                <p class="service-question">{r.serviceQuestion[slug]}</p>
+                <ul class="service-highlights">
+                  {t.services[slug].points.map((point) => (
+                    <li>{point.title}</li>
+                  ))}
+                </ul>
+              </>
+            </div>
+            <div class="service-preparation">
+              <strong>{t.contact.prepare}</strong>
+              <p>{t.services[slug].preparation.join(lang === 'zh' ? ' · ' : ' / ')}</p>
+            </div>
+            <div class="service-actions">
+              <a class="card-link" href={pathFor(lang, slug)}>
+                {t.explore}
+                <ArrowUpRight size={18} />
+              </a>
+              <a class="text-link" href={inquiryPath(lang, slug)}>
+                {t.primary}
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</WidgetWrapper>

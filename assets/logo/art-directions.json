@@ -1,0 +1,52 @@
+[
+  {
+    "id": "01-sun-horizon",
+    "title": "日光地平线",
+    "prompt": "Create a compact symbol built from a rising sun, one calm horizon stroke, and hidden A and I negative space underneath. It should evoke the upper 日 of 易 without drawing the full Chinese character. Use broad sculptural shapes and asymmetric optical balance."
+  },
+  {
+    "id": "02-three-steps",
+    "title": "三步落地",
+    "prompt": "Create a symbol from exactly three progressive steps representing 易懂、易用、易落地. Make the steps rise into an abstract A while a single grounded vertical creates I. The silhouette should communicate movement from understanding to practical implementation, with no arrow icon."
+  },
+  {
+    "id": "03-changing-lines",
+    "title": "变爻",
+    "prompt": "Create a contemporary symbol inspired by I Ching changing lines: a small set of solid and broken horizontal bars transform through negative space into an A and I monogram. Keep it culturally subtle, geometric, premium, and unmistakably modern rather than a literal hexagram."
+  },
+  {
+    "id": "04-modular-yi",
+    "title": "模块易字",
+    "prompt": "Create a modular symbol using four or five rounded rectangular blocks. From a distance it is a balanced abstract technology mark; on closer inspection the blocks hint at 易 and AI through shared geometry. Use a strict grid with one unexpected open corner."
+  },
+  {
+    "id": "05-focus-aperture",
+    "title": "聚焦理解",
+    "prompt": "Create an abstract aperture or focus symbol that opens into clear A and I negative space. It represents making complex AI understandable. Avoid a camera icon, eye icon, circle badge, or generic sparkle. Use three bold curved planes with a calm open center."
+  },
+  {
+    "id": "06-single-stroke",
+    "title": "一笔连结",
+    "prompt": "Create an elegant single-stroke-inspired mark where one continuous ribbonless line suggests 易, then resolves into A and I. It should feel calligraphic but engineered, with expressive terminals and a compact square silhouette. Do not use an infinity loop."
+  },
+  {
+    "id": "07-bridge-ground",
+    "title": "桥与落点",
+    "prompt": "Create a symbol of a bridge moving from an elevated idea to a stable landing point. Hide A in the bridge supports and I in the destination pillar. The mark should express practical AI implementation without using an arrow, road illustration, or architectural logo cliché."
+  },
+  {
+    "id": "08-eai-ligature",
+    "title": "EAI 字母结",
+    "prompt": "Create a highly original EAI ligature for Easy AI. Merge E, A, and I into one compact symbol with shared strokes and negative space. It should look international and editorial, not like three typed letters, and remain recognizable as a unique monogram at 24px."
+  },
+  {
+    "id": "09-signal-to-form",
+    "title": "信号成形",
+    "prompt": "Create a symbol where three soft signal waves progressively become one precise grounded geometric form. The transformation represents AI moving from possibility to usable outcome. Integrate a subtle A and I into the final stable form; avoid Wi-Fi and broadcast icons."
+  },
+  {
+    "id": "10-open-seal",
+    "title": "开放印记",
+    "prompt": "Create a modern open-seal symbol inspired by Chinese square seals, but with one side deliberately open. Inside, use highly reduced geometry to imply 易 and AI as one mark. It should feel authoritative yet accessible, not traditional calligraphy and not an app-icon border."
+  }
+]

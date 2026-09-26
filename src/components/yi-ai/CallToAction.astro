@@ -1,0 +1,49 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { inquiryPath, type Lang, type Service } from '../../data/yi-ai';
+import ContactPanel from './ContactPanel.astro';
+import { zh } from '../../data/zh';
+import { en } from '../../data/en';
+interface Props {
+  lang: Lang;
+  service?: Service;
+  chapter?: boolean;
+}
+const { lang, service, chapter = false } = Astro.props;
+const t = lang === 'zh' ? zh : en;
+---
+
+<section id={chapter ? 'inquiry' : undefined} class:list={['cta-band', { 'home-chapter': chapter }]}>
+  <div class="site-container cta-grid" data-reveal={chapter || undefined}>
+    {
+      chapter ? (
+        <>
+          <div class="cta-intro">
+            <div>
+              <>
+                <p class="eyebrow light">{lang === 'zh' ? '06 / 联系合作' : '06 / LET’S TALK'}</p>
+                <h2>{t.ctaTitle}</h2>
+              </>
+            </div>
+            <p>{t.ctaBody}</p>
+          </div>
+          <ContactPanel lang={lang} compact />
+        </>
+      ) : (
+        <>
+          <div>
+            <p class="eyebrow light">LET’S MAKE IT HAPPEN</p>
+            <h2>{t.ctaTitle}</h2>
+          </div>
+          <div class="cta-right">
+            <p>{t.ctaBody}</p>
+            <a class="button button-light" href={inquiryPath(lang, service)}>
+              {t.primary}
+              <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </>
+      )
+    }
+  </div>
+</section>

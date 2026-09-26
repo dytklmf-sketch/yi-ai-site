@@ -1,0 +1,7 @@
+Refine this existing Easy AI brand symbol. Preserve the elegant lower interwoven A and I construction, its proportions, flowing terminals, central negative space, and overall compact silhouette.
+
+Change only the detached upper U-shaped arc. Replace it with a refined abstract sun / 日 cue: a horizontally proportioned open form with one deliberate inner horizontal negative-space line. It should subtly recall the upper 日 of the Chinese character 易 without becoming a literal font glyph. Bring it slightly closer to the lower mark so the complete symbol feels unified, balanced, and intentional.
+
+Keep the mark artistic and sophisticated. The upper and lower components must share the same visual language and stroke character. Maintain generous open space and excellent recognition at 24px.
+
+Use one flat cobalt blue #245BDB on a pure white background. Remove all gradients and shading. No extra letters, words, badge, circle, mockup, shadow, glow, 3D, robot, brain, spark, or decoration. Keep one large centered symbol with crisp vector-like edges.

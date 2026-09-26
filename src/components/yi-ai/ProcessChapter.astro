@@ -1,0 +1,58 @@
+---
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+import WidgetWrapper from '../ui/WidgetWrapper.astro';
+import { services, pathFor, inquiryPath, type Lang, type SiteCopy } from '../../data/yi-ai';
+import { refinement } from '../../data/refinement';
+
+interface Props {
+  lang: Lang;
+  t: SiteCopy;
+}
+const { lang, t } = Astro.props;
+const r = refinement[lang];
+---
+
+<WidgetWrapper id="process" chapter>
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">03 / {lang === 'zh' ? '如何开始' : 'WORKING TOGETHER'}</p>
+      <h2>{t.processTitle}</h2>
+    </div>
+    <a class="text-link" href={inquiryPath(lang)}>{t.primary}<ArrowRight size={18} /></a>
+  </div>
+  <div class="steps process-timeline">
+    {
+      t.steps.map((step, i) => (
+        <article data-reveal data-delay={Math.min(i, 2)}>
+          <>
+            <span class="step-number">0{i + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+            <div class="step-prompts">
+              <strong>{r.promptsLabel}</strong>
+              <ul>
+                {r.processPrompts[i].map((question) => (
+                  <li>{question}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        </article>
+      ))
+    }
+  </div>
+  <div class="process-rail">
+    <p class="eyebrow">{t.contact.prepare}</p>
+    <div class="process-rail-links">
+      {
+        services.map((slug, i) => (
+          <a href={pathFor(lang, slug)}>
+            <span class="process-rail-number">0{i + 1}</span>
+            <span>{t.services[slug].preparation[0]}</span>
+            <ArrowUpRight size={16} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</WidgetWrapper>

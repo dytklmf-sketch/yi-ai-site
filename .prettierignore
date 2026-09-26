@@ -1,0 +1,8 @@
+dist
+node_modules
+.github
+.changeset
+.astro
+test-results
+pnpm-lock.yaml
+public/fonts/*-OFL.txt

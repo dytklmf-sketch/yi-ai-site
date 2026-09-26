@@ -1,0 +1,11 @@
+{
+  "jobId": "pj_77hGhsUI8L5uv3ZLhkfmUxxB",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1024x1024",
+  "count": 1,
+  "prompt": "assets/logo/shortlist-06-prompt.txt",
+  "sourceImage": "assets/logo/generated/directions/06-single-stroke.jpg",
+  "status": "succeeded",
+  "outputs": ["easyai-shortlist-06-refined.jpg"]
+}

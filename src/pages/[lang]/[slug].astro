@@ -1,0 +1,253 @@
+---
+import { ArrowUpRight, ArrowRight, Check, Blocks, Network, Server } from '@lucide/astro';
+import YiAiLayout from '../../layouts/YiAiLayout.astro';
+import CallToAction from '../../components/yi-ai/CallToAction.astro';
+import ContactPanel from '../../components/yi-ai/ContactPanel.astro';
+import WidgetWrapper from '../../components/ui/WidgetWrapper.astro';
+import GuideCards from '../../components/yi-ai/GuideCards.astro';
+import { getGuides } from '../../data/routes';
+import { editorial } from '../../data/editorial';
+import { serviceDetails } from '../../data/service-details';
+import { refinement } from '../../data/refinement';
+import {
+  brandName,
+  pageSlugs,
+  services,
+  inquiryPath,
+  pathFor,
+  modelProduct,
+  type Lang,
+  type PageSlug,
+} from '../../data/yi-ai';
+import { zh } from '../../data/zh';
+import { en } from '../../data/en';
+export function getStaticPaths() {
+  return ['zh', 'en'].flatMap((lang) => pageSlugs.map((slug) => ({ params: { lang, slug } })));
+}
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug as PageSlug;
+const t = lang === 'zh' ? zh : en;
+const isContact = slug === 'contact';
+const page = !isContact ? t.services[slug] : null;
+const title = page?.title || t.contact.title;
+const intro = page?.intro || t.contact.intro;
+const service = slug === 'contact' ? undefined : slug;
+const icons = { workbuddy: Blocks, 'model-services': Network, infrastructure: Server };
+const Icon = service ? icons[service] : Blocks;
+const detail = service ? serviceDetails[lang][service] : null;
+const e = editorial[lang];
+const r = refinement[lang];
+const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
+---
+
+<YiAiLayout lang={lang} slug={slug} service={service} title={page?.seoTitle || t.contact.seoTitle} description={intro}>
+  <section class:list={['page-hero', { 'contact-hero': isContact }]}>
+    <div class="site-container">
+      <nav class="breadcrumb" aria-label={lang === 'zh' ? '面包屑导航' : 'Breadcrumb'}>
+        <a href={pathFor(lang)}>{brandName(lang)}</a><span aria-hidden="true">/</span><span
+          >{page?.label || t.nav.contact}</span
+        >
+      </nav>
+      <div class="page-hero-grid">
+        <div><p class="eyebrow">{isContact ? 'LET’S TALK' : page?.short}</p><h1>{title}</h1></div>
+        <div class="page-hero-copy">
+          <p>{intro}</p>{
+            service && (
+              <a class="button button-primary" href={inquiryPath(lang, service)}>
+                {t.primary}
+                <ArrowUpRight size={18} />
+              </a>
+            )
+          }
+        </div>
+      </div>
+      {
+        page && (
+          <div class="audience-strip">
+            <>
+              <Icon size={17} stroke-width={1.6} />
+              <span>{page.audience}</span>
+            </>
+          </div>
+        )
+      }
+    </div>
+  </section>
+  {
+    page && service ? (
+      <>
+        <nav
+          class="site-container service-contents"
+          data-section-nav
+          aria-label={lang === 'zh' ? '本页目录' : 'On this page'}
+        >
+          {Object.entries(r.serviceContents).map(([id, label]) => (
+            <a href={`#${id}`}>{label}</a>
+          ))}
+        </nav>
+        <WidgetWrapper id="overview" class="service-detail">
+          <div class="detail-grid">
+            <div class="detail-intro">
+              <>
+                <p class="eyebrow">{lang === 'zh' ? '从实际需求出发' : 'START WITH THE NEED'}</p>
+                <h2>{page.audienceTitle}</h2>
+                <p>{page.lead}</p>
+              </>
+            </div>
+            <div class="detail-list">
+              {page.points.map((point, i) => (
+                <article>
+                  <span class="detail-number">0{i + 1}</span>
+                  <div>
+                    <h3>{point.title}</h3>
+                    <p>{point.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </WidgetWrapper>
+        {detail && (
+          <>
+            <WidgetWrapper id="process" class="process-band">
+              <div class="section-head">
+                <h2>{e.process}</h2>
+              </div>
+              <div class="steps">
+                {detail.steps.map((step, i) => (
+                  <article data-reveal data-delay={i}>
+                    <span class="step-number">0{i + 1}</span>
+                    <h3>{step.title}</h3>
+                    <p>{step.text}</p>
+                  </article>
+                ))}
+              </div>
+            </WidgetWrapper>
+            <WidgetWrapper id="pricing">
+              <div class="detail-grid">
+                <div class="detail-intro">
+                  <p class="eyebrow">{e.pricing}</p>
+                  <h2>
+                    {lang === 'zh'
+                      ? '先把条件对齐，\n再讨论具体方案。'
+                      : 'Align the conditions.\nThen discuss the proposal.'}
+                  </h2>
+                  <p>{e.pricingNote}</p>
+                </div>
+                <ul class="check-list">
+                  {detail.pricing.map((item) => (
+                    <li>
+                      <Check size={18} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </WidgetWrapper>
+          </>
+        )}
+        {service === 'model-services' && (
+          <WidgetWrapper class="product-band">
+            <div class="product-heading">
+              <div>
+                <p class="eyebrow">{lang === 'zh' ? '模型服务产品入口' : 'MODEL SERVICE PRODUCT'}</p>
+                <h2>CCG</h2>
+                <p>
+                  {lang === 'zh'
+                    ? '查看现有模型、价格与接入入口。'
+                    : 'Explore available models, prices and access options.'}
+                </p>
+              </div>
+              <a class="text-link" href={modelProduct.url} target="_blank" rel="noopener noreferrer">
+                {lang === 'zh' ? '打开模型广场' : 'Open the model catalog'}
+                <ArrowUpRight size={18} />
+                <span class="sr-only">{lang === 'zh' ? '（新窗口）' : '(new window)'}</span>
+              </a>
+            </div>
+          </WidgetWrapper>
+        )}
+        <WidgetWrapper id="preparation" class="preparation-band">
+          <div class="preparation-grid">
+            <div>
+              <>
+                <p class="eyebrow">{lang === 'zh' ? '为沟通做一点准备' : 'BEFORE WE TALK'}</p>
+                <h2>{t.contact.prepare}</h2>
+              </>
+            </div>
+            <ul>
+              {page.preparation.map((item) => (
+                <li>
+                  <Check size={18} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p class="boundary">{page.boundary}</p>
+        </WidgetWrapper>
+        {detail && (
+          <WidgetWrapper id="scope">
+            <div class="section-head">
+              <h2>{e.scope}</h2>
+            </div>
+            <div class="scope-grid">
+              <div>
+                <h3>{e.included}</h3>
+                <ul>
+                  {detail.discuss.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3>{e.excluded}</h3>
+                <ul>
+                  {detail.confirm.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </WidgetWrapper>
+        )}
+        <WidgetWrapper id="guides" class="guides-band">
+          <div class="section-head">
+            <>
+              <h2>{e.related}</h2>
+              <a class="text-link" href={pathFor(lang, 'resources')}>
+                {e.allGuides}
+                <ArrowRight size={18} />
+              </a>
+            </>
+          </div>
+          <GuideCards lang={lang} guides={guides} />
+          <nav class="other-services" aria-label={lang === 'zh' ? '其他业务' : 'Other services'}>
+            <p>{lang === 'zh' ? '还有其他需求？' : 'Exploring another need?'}</p>
+            {services
+              .filter((item) => item !== service)
+              .map((item) => (
+                <a class="text-link" href={pathFor(lang, item)}>
+                  {t.services[item].label}
+                  <ArrowRight size={16} />
+                </a>
+              ))}
+          </nav>
+        </WidgetWrapper>
+        <CallToAction lang={lang} service={service} />
+      </>
+    ) : (
+      <WidgetWrapper class="contact-section">
+        <ContactPanel lang={lang} />
+        <nav class="other-services" aria-label={lang === 'zh' ? '继续了解业务' : 'Explore our services'}>
+          <p>{e.related}</p>
+          {services.map((serviceSlug) => (
+            <a class="text-link" href={pathFor(lang, serviceSlug)}>
+              {t.services[serviceSlug].label}
+              <ArrowRight size={17} />
+            </a>
+          ))}
+        </nav>
+      </WidgetWrapper>
+    )
+  }
+</YiAiLayout>

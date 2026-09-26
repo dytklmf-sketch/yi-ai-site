@@ -1,0 +1,57 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import WidgetWrapper from '../ui/WidgetWrapper.astro';
+import { services, pathFor, type Lang, type SiteCopy } from '../../data/yi-ai';
+import { refinement } from '../../data/refinement';
+
+interface Props {
+  lang: Lang;
+  t: SiteCopy;
+}
+const { lang, t } = Astro.props;
+const r = refinement[lang];
+---
+
+<WidgetWrapper id="capabilities" class="manifest-band" chapter>
+  <div class="manifest-grid">
+    <div>
+      <p class="eyebrow">02 / {lang === 'zh' ? '能力与边界' : 'CAPABILITIES & SCOPE'}</p>
+      <h2>{t.manifestTitle}</h2>
+      <p class="manifest-body">{t.manifestBody}</p>
+      <a class="text-link" href={`${pathFor(lang, 'about')}#relationship`}>
+        {r.relationship}<ArrowUpRight size={18} />
+      </a>
+      <div class="capability-note">
+        <span class="eyebrow">{lang === 'zh' ? '合作原则' : 'OUR APPROACH'}</span>
+        <p>
+          {
+            lang === 'zh'
+              ? '需求可以一起梳理，\n范围需要分别确认。'
+              : 'Discuss needs together.\nConfirm each scope separately.'
+          }
+        </p>
+      </div>
+    </div>
+    <div class="principles">
+      {
+        t.principles.map((principle, i) => (
+          <div class="principle">
+            <>
+              <span>0{i + 1}</span>
+              <div>
+                <>
+                  <h3>{principle.title}</h3>
+                  <p>{principle.text}</p>
+                  <p class="scope-note">
+                    <strong>{r.confirm}</strong>
+                    {r.boundaries[services[i]]}
+                  </p>
+                </>
+              </div>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</WidgetWrapper>
