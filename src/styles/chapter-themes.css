@@ -1,0 +1,232 @@
+/* ─── Chapter alternating dark/light backgrounds ──────────────────────────
+   Odd chapters (capabilities, faq) get chapter-dark treatment.
+   Even chapters (services, process, guides) stay on light surface.
+   The inquiry/CTA chapter keeps its own .cta-band deep blue.
+─────────────────────────────────────────────────────────────────────────── */
+
+/* Services chapter — light with grid-line texture */
+#services {
+  background: var(--color-bg);
+  position: relative;
+}
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--n-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--n-2) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+#services > .site-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Service card — border-trace hover effect */
+.service-card {
+  position: relative;
+  transition: transform var(--dur-mid) var(--ease-out),
+    box-shadow var(--dur-mid) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover {
+    transform: translate(-4px, -6px);
+    box-shadow: 0 12px 40px oklch(0% 0 0 / 0.08);
+  }
+
+  /* Border trace — conic-gradient rotating bright line */
+  .service-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--r-sm) + 1px);
+    background: conic-gradient(
+      from var(--angle, 0turn),
+      transparent 0%,
+      var(--color-accent) 8%,
+      transparent 16%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-mid) var(--ease-out);
+    z-index: -1;
+  }
+  .service-card:hover::after {
+    opacity: 1;
+    animation: card-border-trace 1.6s linear infinite;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0turn;
+}
+
+@keyframes card-border-trace {
+  to { --angle: 1turn; }
+}
+
+/* Capabilities chapter — dark */
+#capabilities {
+  background: var(--dark-bg);
+  color: var(--dark-body);
+}
+#capabilities .eyebrow {
+  color: var(--dark-accent);
+}
+#capabilities h2 {
+  color: var(--n-0);
+}
+#capabilities .manifest-body {
+  color: var(--dark-muted);
+}
+#capabilities .text-link {
+  color: var(--dark-body);
+}
+#capabilities .text-link:hover {
+  color: var(--n-0);
+}
+#capabilities .capability-note {
+  border-color: var(--dark-accent);
+}
+#capabilities .capability-note > p {
+  color: var(--n-0);
+}
+#capabilities .principle {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+#capabilities .principle > span {
+  background: var(--color-tint, oklch(22% 0.040 260));
+  border-color: var(--dark-accent);
+  color: var(--dark-accent);
+}
+#capabilities .principle h3 {
+  color: var(--n-0);
+}
+#capabilities .principle p {
+  color: var(--dark-muted);
+}
+#capabilities .scope-note {
+  border-color: var(--dark-border);
+}
+#capabilities .scope-note strong {
+  color: var(--dark-body);
+}
+
+/* Process chapter — light with slight blue tint */
+#process {
+  background: var(--n-1);
+}
+.process-timeline article {
+  border-color: var(--n-3);
+}
+
+/* Guides chapter */
+#guides {
+  background: var(--color-bg);
+}
+
+/* FAQ chapter — dark */
+#faq {
+  background: var(--dark-bg);
+  color: var(--dark-body);
+}
+#faq .eyebrow {
+  color: var(--dark-accent);
+}
+#faq h2 {
+  color: var(--n-0);
+}
+#faq .section-intro {
+  color: var(--dark-muted);
+}
+#faq .text-link {
+  color: var(--dark-body);
+}
+#faq .text-link:hover {
+  color: var(--n-0);
+}
+#faq .faq-route-list {
+  border-color: var(--dark-border);
+}
+#faq .faq-route-list a {
+  border-color: var(--dark-border);
+  color: var(--dark-body);
+}
+#faq .faq-route-list a:hover {
+  color: var(--n-0);
+}
+#faq .faq-route-number {
+  color: var(--dark-accent);
+}
+#faq .faq-route-copy small {
+  color: var(--dark-muted);
+}
+#faq .faq-list details {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+#faq .faq-list summary {
+  color: var(--n-0);
+}
+#faq .faq-list details p {
+  color: var(--dark-muted);
+}
+
+/* ─── Diagonal entry animation (replaces fade-up on service cards) ───────── */
+@keyframes slide-in-diagonal {
+  from {
+    opacity: 0;
+    transform: translate(-10px, 14px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+/* Applied via JS in interactions.ts — data-reveal-diagonal */
+[data-reveal-diagonal] {
+  animation: slide-in-diagonal 480ms var(--ease-out) both;
+}
+
+/* ─── Process timeline connector lines (animated via CSS on enter) ─────── */
+.process-timeline article {
+  overflow: visible;
+}
+@media (min-width: 1200px) {
+  .process-timeline {
+    position: relative;
+  }
+  /* Horizontal connector line that grows from left on scroll entry */
+  .process-timeline::before {
+    content: '';
+    position: absolute;
+    top: 22px; /* aligns with step-number circle center */
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--a-3), var(--a-1) 60%, transparent);
+    transition: width 900ms var(--ease-out);
+  }
+  .process-timeline.is-visible::before {
+    width: 100%;
+  }
+}
+
+/* ─── CTA / inquiry chapter — deep navy overrides ─────────────────────────── */
+.home-story .cta-band {
+  background: var(--n-9);
+}
+.home-story .cta-band h2 {
+  color: var(--n-0);
+}
+.cta-intro > p {
+  color: var(--dark-muted);
+}

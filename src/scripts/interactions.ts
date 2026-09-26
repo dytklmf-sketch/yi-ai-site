@@ -216,10 +216,21 @@ if (!reduced.matches && 'IntersectionObserver' in window && typeof Element.proto
         const delay = home ? 0 : Math.min(2, Math.max(0, Number(content.dataset.delay) || 0)) * 60;
         // Start home groups while still offscreen; never hide text already visible after a fast scroll.
         const alreadyVisible = home && content.getBoundingClientRect().top < window.innerHeight;
+
+        // Service cards on home use diagonal entry; everything else uses fade-up
+        const isServiceCard = content.closest?.('.service-card') !== null ||
+          (target as HTMLElement).classList?.contains('service-card');
+
+        const fromTransform = alreadyVisible
+          ? 'none'
+          : isServiceCard
+            ? 'translate(-10px, 14px)'
+            : 'translateY(8px)';
+
         play(
           content,
           [
-            { opacity: alreadyVisible ? 1 : 0, transform: alreadyVisible ? 'none' : 'translateY(8px)' },
+            { opacity: alreadyVisible ? 1 : 0, transform: fromTransform },
             { opacity: 1, transform: 'none' },
           ],
           {
@@ -243,4 +254,19 @@ if (!reduced.matches && 'IntersectionObserver' in window && typeof Element.proto
       observer.disconnect();
     }
   });
+}
+
+// Process timeline connector line — add .is-visible when the section enters viewport
+const processTimeline = document.querySelector<HTMLElement>('.process-timeline');
+if (processTimeline) {
+  const lineObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        processTimeline.classList.add('is-visible');
+        lineObserver.disconnect();
+      }
+    },
+    { threshold: 0.2 }
+  );
+  lineObserver.observe(processTimeline);
 }
