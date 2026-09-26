@@ -13,6 +13,8 @@
   position: relative;
   padding-block: 56px;
   scroll-snap-align: start;
+  /* Contain layout/paint to improve scroll perf — each chapter is isolated */
+  contain: layout style paint;
 }
 .home-story .hero-band {
   border-radius: 0;
@@ -388,7 +390,8 @@
   .home-story {
     --chapter-padding: 48px;
     --chapter-content: calc(100svh - var(--header-height) - 1px - var(--chapter-padding) * 2);
-    scroll-snap-type: y mandatory;
+    /* Use proximity instead of mandatory for smoother wheel scrolling */
+    scroll-snap-type: y proximity;
   }
   .chapter-nav {
     display: block;
