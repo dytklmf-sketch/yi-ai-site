@@ -409,7 +409,8 @@
     flex-direction: column;
     justify-content: center;
   }
-  .home-story .hero-inner {
+  /* Hero-inner: dark hero needs row layout, non-dark gets space-between only */
+  .home-story:not(:has(.hero-dark)) .hero-inner {
     justify-content: space-between;
   }
   /* hero-copy: dark hero controls its own width via hero-dark.css */
