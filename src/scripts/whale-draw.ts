@@ -1,3 +1,5 @@
+export {};
+
 /**
  * whale-draw.ts — animates the whale mark SVG paths with stroke-dashoffset
  * on first page load only. Respects prefers-reduced-motion.

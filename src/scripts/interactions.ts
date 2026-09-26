@@ -1,3 +1,5 @@
+export {};
+
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
 const header = document.querySelector<HTMLElement>('.site-header');
