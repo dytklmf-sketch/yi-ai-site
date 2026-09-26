@@ -9,7 +9,17 @@ const play = (element: Element, frames: Keyframe[], options: KeyframeAnimationOp
   return animation;
 };
 
-const headerState = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+const headerState = () => {
+  const heroChapter = document.getElementById('intro');
+  if (heroChapter) {
+    // On home story pages, stay in dark mode until the hero chapter scrolls out
+    const heroBottom = heroChapter.getBoundingClientRect().bottom;
+    const pastHero = heroBottom <= (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80);
+    header?.classList.toggle('is-scrolled', pastHero);
+  } else {
+    header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  }
+};
 headerState();
 window.addEventListener('scroll', headerState, { passive: true });
 

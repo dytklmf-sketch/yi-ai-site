@@ -5,6 +5,7 @@ interface Props {
   compact?: boolean;
 }
 const { lang, compact = false } = Astro.props;
+const w = lang === 'zh' ? 220.47 : 302.59;
 ---
 
 <a
@@ -12,5 +13,33 @@ const { lang, compact = false } = Astro.props;
   href={pathFor(lang)}
   aria-label={lang === 'zh' ? '易AI 首页' : `${brandName(lang)} home`}
 >
-  <img src={`/brand/logo-${lang}.svg`} alt={brandName(lang)} width={lang === 'zh' ? 220.47 : 302.59} height="72" />
+  <!-- Default logo (light header) -->
+  <img
+    class="logo-default"
+    src={`/brand/logo-${lang}.svg`}
+    alt={brandName(lang)}
+    width={w}
+    height="72"
+  />
+  <!-- Inverse logo (dark header) — hidden until .home-story dark mode -->
+  <img
+    class="logo-inverse"
+    src={`/brand/logo-${lang}-inverse.svg`}
+    alt=""
+    aria-hidden="true"
+    width={w}
+    height="72"
+  />
 </a>
+
+<style>
+  .logo-inverse { display: none; }
+
+  /* Dark header context: show inverse, hide default */
+  :global(.home-story) .brand-mark .logo-default { display: none; }
+  :global(.home-story) .brand-mark .logo-inverse { display: block; }
+
+  /* When scrolled back to light header: restore default */
+  :global(.home-story .site-header.is-scrolled) .brand-mark .logo-default { display: block; }
+  :global(.home-story .site-header.is-scrolled) .brand-mark .logo-inverse { display: none; }
+</style>
