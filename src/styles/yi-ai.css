@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './design-tokens.css';
 
 @font-face {
   font-family: 'Manrope';
@@ -20,18 +21,19 @@
   font-weight: 400;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
-  color: #20242c;
-  background: #fff;
-  --ink: #20242c;
-  --muted: #4f5765;
-  --line: #e0e4eb;
-  --accent: #245bdb;
-  --highlight: #e6efff;
-  --paper: #fff;
-  --surface: #f6f8fc;
-  --surface-blue: #edf3ff;
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  /* Legacy aliases — kept so existing selectors don't break during migration */
+  --ink: var(--n-8);
+  --muted: var(--n-5);
+  --line: var(--n-3);
+  --accent: var(--a-3);
+  --highlight: var(--a-0);
+  --paper: var(--n-0);
+  --surface: var(--n-1);
+  --surface-blue: var(--a-0);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
   --header-height: 80px;
 }
 * {

@@ -1,0 +1,84 @@
+/* ─── Design tokens for 易AI / Easy AI ─────────────────────────────────────
+   OKLCH values give perceptually even lightness across hues.
+   All components reference these tokens — never reach for hex literals.
+─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Neutral ramp — 10 steps, cool undertone */
+  --n-0:  oklch(99% 0.004 250);   /* near-white paper      #F7FAFF */
+  --n-1:  oklch(96% 0.007 250);   /* surface               #EEF2FA */
+  --n-2:  oklch(91% 0.012 250);   /* raised surface        #DDE4F0 */
+  --n-3:  oklch(84% 0.016 250);   /* border / divider      #C4CFE4 */
+  --n-4:  oklch(72% 0.018 250);   /* disabled              #9AAABF */
+  --n-5:  oklch(56% 0.020 250);   /* muted text            #6A7A93 */
+  --n-6:  oklch(44% 0.022 250);   /* secondary text        #4F5E76 */
+  --n-7:  oklch(32% 0.025 250);   /* body text             #344057 */
+  --n-8:  oklch(20% 0.028 255);   /* dark surface          #1A2538 */
+  --n-9:  oklch(13% 0.030 260);   /* deep navy / hero bg   #0D1A2E */
+
+  /* Accent — cobalt blue ramp */
+  --a-0:  oklch(97% 0.025 260);   /* accent tint           #EDF3FF */
+  --a-1:  oklch(90% 0.050 260);   /* accent highlight      #CCDAFF */
+  --a-2:  oklch(70% 0.180 260);   /* accent mid            #3D6FF0 */
+  --a-3:  oklch(60% 0.195 260);   /* accent base           #2D5FDB */
+  --a-4:  oklch(50% 0.185 260);   /* accent pressed        #1E4DBB */
+  --a-5:  oklch(38% 0.160 260);   /* accent dark (hero)    #1035A0 */
+
+  /* Semantic roles — light mode */
+  --color-bg:        var(--n-0);
+  --color-surface:   var(--n-1);
+  --color-raised:    var(--n-2);  /* cards on surfaces */
+  --color-border:    var(--n-3);
+  --color-muted:     var(--n-5);  /* ≥4.8:1 on --n-0 */
+  --color-body:      var(--n-7);
+  --color-ink:       var(--n-8);
+  --color-accent:    var(--a-3);
+  --color-accent-hi: var(--a-2);
+  --color-tint:      var(--a-0);
+
+  /* Dark chapter overrides — applied to .chapter-dark */
+  --dark-bg:         var(--n-9);
+  --dark-surface:    var(--n-8);
+  --dark-border:     oklch(28% 0.032 260);  /* subtle on dark  #253347 */
+  --dark-muted:      oklch(65% 0.025 250);  /* ≥4.5:1 on n-9   #8A9AB5 */
+  --dark-body:       oklch(84% 0.016 250);  /* body on dark    #C4CFE4 */
+  --dark-accent:     var(--a-2);            /* brighter in dark */
+  --dark-accent-hi:  var(--a-1);
+
+  /* Spacing rhythm — 4px base */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+
+  /* Radii — two values */
+  --r-sm:  8px;
+  --r-md:  14px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-mid:  200ms;
+  --dur-slow: 380ms;
+}
+
+/* Dark chapter context — overrides semantic tokens locally */
+.chapter-dark {
+  --color-bg:        var(--dark-bg);
+  --color-surface:   var(--dark-surface);
+  --color-raised:    oklch(17% 0.028 255);
+  --color-border:    var(--dark-border);
+  --color-muted:     var(--dark-muted);
+  --color-body:      var(--dark-body);
+  --color-ink:       var(--n-0);
+  --color-accent:    var(--dark-accent);
+  --color-accent-hi: var(--dark-accent-hi);
+  --color-tint:      oklch(22% 0.040 260);
+  color: var(--dark-body);
+  background: var(--dark-bg);
+}
