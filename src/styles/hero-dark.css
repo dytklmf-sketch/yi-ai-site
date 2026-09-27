@@ -11,23 +11,23 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: clamp(32px, 4vw, 48px);
+  gap: clamp(32px, 4vw, 56px);
   padding-block: var(--sp-8) var(--sp-9);
   min-height: calc(100svh - var(--header-height) - 1px);
 }
 
-/* Whale SVG draw target — top right */
+/* Whale SVG draw target — far right */
 .hero-dark .hero-whale-svg {
   position: relative;
   right: auto;
   top: auto;
   translate: none;
   flex: 0 0 auto;
-  order: 2;
-  width: clamp(280px, 36%, 440px);
+  order: 3;
+  width: clamp(240px, 32%, 400px);
   height: auto;
   opacity: 0;
   pointer-events: none;
@@ -80,10 +80,10 @@
 .hero-dark .hero-copy {
   position: relative;
   z-index: 1;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   order: 1;
-  max-width: 580px;
-  min-width: 400px;
+  max-width: 520px;
+  min-width: 360px;
 }
 
 .hero-dark .eyebrow {
@@ -148,16 +148,18 @@
   background: var(--dark-accent);
 }
 
-/* Route panel on dark hero — bottom right, below whale */
+/* Route panel on dark hero — middle column between text and whale */
 .hero-dark .hero-side-panel {
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
-  order: 3;
-  width: clamp(280px, 36%, 440px);
-  padding-top: var(--sp-5);
-  border-top: 1px solid var(--dark-border);
-  margin-left: auto;  /* Align to the right column */
+  order: 2;
+  width: clamp(260px, 28%, 340px);
+  padding-top: 0;
+  border-top: none;
+  border-left: 1px solid var(--dark-border);
+  padding-left: var(--sp-5);
+  margin-left: 0;
 }
 
 .hero-dark .hero-side-panel .eyebrow {
