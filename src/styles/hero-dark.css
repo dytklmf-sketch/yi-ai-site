@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: clamp(32px, 4vw, 56px);
   padding-block: var(--sp-8) var(--sp-9);
@@ -83,6 +83,7 @@
   z-index: 1;
   flex: 1 1 auto;
   order: 1;
+  align-self: flex-start;
   max-width: 680px;
   min-width: 400px;
 }
@@ -155,6 +156,7 @@
   z-index: 1;
   flex: 1 1 100%;
   order: 3;
+  align-self: flex-start;
   max-width: 680px;
   margin-top: var(--sp-7);
   padding-top: var(--sp-6);
@@ -227,34 +229,62 @@
   color: var(--n-0);
 }
 
-/* ─── Mobile hero-dark ────────────────────────────────────────────────────── */
-@media (max-width: 640px) {
+/* ─── Responsive hero-dark ────────────────────────────────────────────────────── */
+
+/* Mobile: stack vertically */
+@media (max-width: 768px) {
   .hero-dark .hero-inner {
     flex-direction: column;
     align-items: flex-start;
     padding-block: var(--sp-7) var(--sp-7);
     min-height: 0;
-    gap: var(--sp-5);
+    gap: var(--sp-6);
+  }
+  .hero-dark .hero-copy {
+    max-width: 100%;
+    min-width: 0;
+  }
+  .hero-dark .hero-whale-svg {
+    order: 1;
+    width: min(100%, 380px);
+    margin: 0 auto var(--sp-5);
   }
   .hero-dark .hero-side-panel {
+    order: 2;
     width: 100%;
-    border-left: none;
-    border-top: 1px solid var(--dark-border);
-    padding-left: 0;
+    max-width: 100%;
+    margin-top: var(--sp-5);
     padding-top: var(--sp-5);
-  }
-  .hero-whale-svg {
-    display: none;
   }
 }
 
-@media (min-width: 641px) and (max-width: 1199px) {
+/* Tablet: smaller horizontal layout or stack if too narrow */
+@media (min-width: 769px) and (max-width: 1199px) {
   .hero-dark .hero-inner {
-    align-items: flex-start;
+    gap: var(--sp-5);
+  }
+  .hero-dark .hero-copy {
+    max-width: 480px;
+    min-width: 320px;
+  }
+  .hero-dark .hero-whale-svg {
+    width: clamp(280px, 38%, 420px);
+  }
+  .hero-dark .hero-side-panel {
+    max-width: 520px;
+    margin-top: var(--sp-5);
+  }
+}
+
+/* Small laptop: medium layout */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .hero-dark .hero-inner {
     gap: var(--sp-6);
   }
-  .hero-whale-svg {
-    opacity: 0;
-    width: 28%;
+  .hero-dark .hero-copy {
+    max-width: 560px;
+  }
+  .hero-dark .hero-whale-svg {
+    width: clamp(340px, 42%, 480px);
   }
 }
