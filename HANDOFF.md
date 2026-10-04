@@ -763,3 +763,79 @@ curl -I http://127.0.0.1:4322/zh/
 - 证书上的授权期被有意遮蔽，**2026-12-31 到期后必须撤下或更新**，否则页面会挂一张表面无期限、实际已失效的证书。
 - 页面未标注运营主体，访客看到的被授权方名称与站名「易AI」之间没有说明。
 - 证书正文明文禁止影印复制与涂改，上站形式由站长决定并承担相应解释权风险。
+
+## 第二十六轮（2026-10-05）：WorkBuddy 页面 UI 改造（色彩 / 标识 / 关系）
+
+### 站长决策（四项确认）
+
+站长看过 `WORKBUDDY_UI_PLAN.md` 后回复四个问题：
+
+1. 绿色怎么统一 → **保留站内现有 `rgb(18 163 135)`**，不对齐官方 `#0EC8A9/#01C886`
+2. 底板形态 → **绿色渐变底板**
+3. 关系条措辞 → **官方正式表述**
+4. 子导航是否允许变 4 项 → **允许**
+
+### 实施前纠正的一处自己的判断
+
+计划里我写「首页三张服务卡的 WorkBuddy 用了钴蓝底板，是唯一底色不是自己业务色的」。
+实测推翻：`.service-tile:has(.service-mark)` 会被清空背景，商标自带底色，**首页那三张卡本来就是对的**。
+真正用钴蓝的是「画图标」的小底板——指南卡标签、关于页、页脚业务链接。A1 因此改为**只影响这些位置**。
+
+### 实际改动
+
+**A 组 · 色彩**
+
+- `site.css`：新增 `.service-tile[data-service='workbuddy']`（`#0b7a66 → #2fbf9b`，glow `rgb(18 163 135 / 42%)`），
+  与 model-services / infrastructure 的覆盖并列，让画图标的小底板与商标同色系。
+- `site.css`：首页堆叠图「应用层」强调块改业务绿（`.stack-dark/.stack-light .slab[data-layer='workbuddy'] .art-accent`）。
+  三层现在分别是绿（应用）、钴蓝（模型）、钢蓝（算力）。
+
+**B 组 · Hero 识别**
+
+- `PageHero.astro`：新增可选 `mark` 与 `service` 属性；`mark` 在 eyebrow 位置渲染 20px 圆角标，
+  同时隐藏 eyebrow 前的短横线（避免两个小竖元素并排）。
+  **只传给 WorkBuddy 页**，其他页面完全不受影响。
+- `ServiceSample.astro`：示例窗标题栏由纯文字改为「标 + 名称」，与授权书上的品牌出现方式一致。
+- `site.css`：`.page-hero[data-service='workbuddy'] .page-hero-bg::after` 加一层极淡绿径向渐变
+  （9% 不透明度），品牌蓝仍是主色。
+
+**C 组 · 关系表达**
+
+- `[slug].astro`：把原证书卡升级为「资质 + 关系」双栏 `.credential-block`：
+  左为证书缩略图（点击新窗打开原图），右为「合作资质」标签 + 品牌组合
+  `易AI × WorkBuddy` + 官方表述 + 一句关系说明 + 查看证书链接。
+- 措辞采用证书正文原话：中文「腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴」，
+  英文「Tencent Cloud WorkBuddy / CodeBuddy authorized partner」。
+- 与计划的偏离：计划把 C1 放 `#fit`、C2 放 `#process`，实测 `#fit` 英文 1440 下仅剩 104px，
+  放不下证书行（需约 145px），故**合并为一个块放进 `#process`**。`#fit` 未动。
+
+### 过程中修正的三个自己的错误
+
+1. **英文页品牌名写死成中文**。lockup 里我写了 `brandName('zh')`，英文页显示成「易AI × WorkBuddy」。
+   改为 `brandName(lang)`。这是我自己引入的 bug，靠截图发现。
+2. **320px 横向溢出**。`.credential-head` 里标签与组合挤在一行，`span.mono` 的「WorkBuddy」右边界到 341px，
+   超出 320px 视口 21px，`test-browser.mjs:101` 的溢出断言失败。给该行加 `flex-wrap: wrap` 后
+   320/360/390 三个宽度 `scrollWidth === innerWidth`。
+3. **权限编辑脚本锚点失配**。`pnpm format` 重排过缩进，我的替换锚点对不上，脚本在第一个断言即中止（未半途写入）。
+
+### 一次疑似抖动
+
+增强流程先报 `Revealed content never hides again 4 !== 0`。我用完全相同的条件
+（视频录制 context、1440×960、`domcontentloaded`、640px 步长滚动）本地复现两次，均为 0；
+去掉我全部改动后重跑也通过。判断为视频编码占住主线程导致的时序抖动，**非本轮改动引起**，重跑即通过。
+
+### 验证
+
+- `pnpm check` 0 error / 0 warning；`pnpm build` 28 页；`pnpm test` PASS。
+- `pnpm test:browser` PASS：208 项响应式、52 次 axe、35 条内链，Chromium + WebKit 增强流程通过。
+- 一屏一章实测（`min-height` 归零后测自然高度）：`#process` 改为
+  zh 1440 +69 / en 1440 +48 / en 1280×720 +37，全部转正（改造前 en 1440 为 −5）。
+- 渲染实测：`.credential-lockup` 与 `.eyebrow-mark` 只在 WorkBuddy 页出现；模型服务页无该块；
+  三层石板 accent 分别为绿 / 蓝 / 钢蓝。
+- 部署 `yi-ai-site-20261004164648`。
+
+### 状态
+
+- [x] A、B、C 三组实施、验证、部署完成。
+- [ ] D 组（术语说明、版本对照表、产品介绍）等站长提供 Credits 定义、价格口径与官方措辞。
+- [ ] 子导航虽已获准扩到 4 项，但本轮未新增章节，仍为 3 项；`test-enhancements.mjs:83` 的断言未改动。

@@ -1,5 +1,5 @@
 ---
-import { brandName, pathFor, type Lang } from '../../data/yi-ai';
+import { brandName, pathFor, withBase, type Lang } from '../../data/yi-ai';
 
 interface Props {
   lang: Lang;
@@ -7,15 +7,22 @@ interface Props {
   /** Optional middle breadcrumb level. */
   parent?: { href: string; text: string };
   eyebrow?: string;
+  /** Product mark shown beside the eyebrow, for pages that lead with a specific product. */
+  mark?: string;
+  /** Scopes page-level decoration to one business, e.g. the hero wash. */
+  service?: string;
   title: string;
   intro?: string;
   compact?: boolean;
 }
-const { lang, crumb, parent, eyebrow, title, intro, compact = false } = Astro.props;
+const { lang, crumb, parent, eyebrow, mark, service, title, intro, compact = false } = Astro.props;
 const hasVisual = Astro.slots.has('visual');
 ---
 
-<section class:list={['page-hero', { 'page-hero-compact': compact, 'page-hero-with-visual': hasVisual }]}>
+<section
+  class:list={['page-hero', { 'page-hero-compact': compact, 'page-hero-with-visual': hasVisual }]}
+  data-service={service}
+>
   <div class="page-hero-bg" aria-hidden="true"></div>
   <div class="container page-hero-layout">
     <div class="page-hero-copy">
@@ -34,7 +41,8 @@ const hasVisual = Astro.slots.has('visual');
       </nav>
       {
         eyebrow && (
-          <p class="eyebrow" data-enter>
+          <p class:list={['eyebrow', { 'eyebrow-with-mark': Boolean(mark) }]} data-enter>
+            {mark && <img class="eyebrow-mark" src={withBase(mark)} alt="" width="20" height="20" />}
             {eyebrow}
           </p>
         )
