@@ -4357,6 +4357,24 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 }
 
+/* The hero goes single-column at 1080px, so the labelled wide stack has to give way at the same point: it is drawn
+   to sit to the right of the copy with its labels beyond the plates, and centred on its own it reads off-balance
+   with the labels crowding the plates. The narrow stack is symmetric, and the caption carries the layer names. */
+@media (max-width: 1080px) {
+  .stack.stack-wide {
+    display: none;
+  }
+  .stack.stack-narrow {
+    display: block;
+    /* The narrow viewBox is 420x570, so left to fill .hero-visual's width it renders ~706px tall in this band and
+       the hero runs past one screen. Cap the height; the width follows the aspect ratio. */
+    width: auto;
+    max-width: 100%;
+    max-height: min(46vh, 22rem);
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 767px) {
   .why-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -4432,12 +4450,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
   .hero-visual figcaption {
     display: none;
-  }
-  .stack.stack-wide {
-    display: none;
-  }
-  .stack.stack-narrow {
-    display: block;
   }
   .hero-actions .btn {
     flex: 1 1 auto;
