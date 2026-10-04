@@ -2371,6 +2371,48 @@ main:focus {
   color: var(--muted);
   font-size: 0.9688rem;
 }
+/* WorkBuddy certificate: a scan, so it is shown small and opened at full size rather than cropped. */
+.credential-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  /* Sized to what #process has left on one screen, not to taste: the chapter is capped at 100vh like the rest of the
+     site, and this strip is the last thing in it. The vertical spacing follows the viewport height so short laptops
+     keep the same slack as tall ones. */
+  margin-top: clamp(0.75rem, 2vh, 1.5rem);
+  padding: clamp(0.625rem, 1.6vh, 1rem) 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--paper);
+}
+.credential-thumb {
+  flex: none;
+  display: block;
+  max-width: 10rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.625rem;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 0.375rem 1rem -0.5rem rgb(16 24 40 / 18%);
+}
+.credential-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.credential-card figcaption {
+  min-width: 0;
+}
+.credential-title {
+  margin-top: 0.5rem;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.credential-card .text-link {
+  margin-top: 0.75rem;
+}
+
 /* Quote inputs: the one dark card on the page, so the next action stands out. */
 .brief-card {
   display: flex;
@@ -4475,6 +4517,13 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
     flex-direction: column;
     align-items: stretch;
     padding: 1.5rem;
+  }
+  .credential-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .credential-thumb {
+    max-width: 100%;
   }
   .scope-confirm {
     border-top: 1px solid var(--line);

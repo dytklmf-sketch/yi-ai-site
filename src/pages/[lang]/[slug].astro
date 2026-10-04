@@ -13,7 +13,16 @@ import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
 import { home } from '../../data/home';
-import { pageSlugs, services, inquiryPath, pathFor, modelProduct, type Lang, type PageSlug } from '../../data/yi-ai';
+import {
+  pageSlugs,
+  services,
+  inquiryPath,
+  pathFor,
+  modelProduct,
+  withBase,
+  type Lang,
+  type PageSlug,
+} from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 export function getStaticPaths() {
@@ -194,6 +203,47 @@ const zhUI = lang === 'zh';
                   <ArrowRight size={17} />
                 </a>
               </div>
+
+              {service === 'workbuddy' && (
+                <figure class="credential-card" data-reveal>
+                  <a
+                    class="credential-thumb"
+                    href={withBase('/credentials/tencent-cloud-workbuddy-authorization.jpg')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={withBase('/credentials/tencent-cloud-workbuddy-authorization.jpg')}
+                      alt={
+                        zhUI
+                          ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书'
+                          : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'
+                      }
+                      width="1200"
+                      height="848"
+                      decoding="async"
+                    />
+                  </a>
+                  <figcaption>
+                    <span class="micro-label">{zhUI ? '合作资质' : 'Credentials'}</span>
+                    <p class="credential-title">
+                      {zhUI
+                        ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书'
+                        : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'}
+                    </p>
+                    <a
+                      class="text-link"
+                      href={withBase('/credentials/tencent-cloud-workbuddy-authorization.jpg')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {zhUI ? '查看证书' : 'View the certificate'}
+                      <ArrowUpRight size={16} />
+                      <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+                    </a>
+                  </figcaption>
+                </figure>
+              )}
             </div>
           </section>
         )}
