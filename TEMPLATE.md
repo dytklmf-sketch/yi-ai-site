@@ -8,9 +8,9 @@
 - Original notice retained in `LICENSE.md`.
 - Reference checkout: `../astrowind-upstream/`; it is not the running website.
 
-The independent project began from the reference template. Its build configuration,
-TypeScript/formatting conventions and `src/components/ui/WidgetWrapper.astro` were
-retained or adapted. Brand layouts, page content, navigation, contact behavior and
+The independent project began from the reference template. Its build configuration
+and TypeScript/formatting conventions were retained; the seventh round replaced the
+remaining template component and Tailwind styling with a plain-CSS design system. Brand layouts, page content, navigation, contact behavior and
 styles were rewritten for 易AI. Unused demo source/configuration was moved to
 `../yi-ai-template-archive/`, outside the application and distributable source.
 
@@ -24,9 +24,7 @@ Direct dependencies use exact versions and the pnpm lockfile:
 
 - Astro 7.3.1: static generation and local preview.
 - TypeScript 5.9.3: source checks.
-- Tailwind CSS 4.3.3: styling toolchain.
 - `@lucide/astro` 1.47.0: interface icons.
-- `tailwind-merge` 3.6.0: adapted section wrapper utility.
 - Playwright 1.58.2 and axe-core integration 4.11.1: browser verification.
 
 Install hooks are restricted by `pnpm-workspace.yaml` to esbuild.
@@ -43,15 +41,15 @@ guarantee that the software is vulnerability-free.
   generated concept, with outlined Chinese and English lockups in
   `public/brand/logo-*.svg`, and transparent PNG equivalents.
 - `public/brand/favicon.svg`: the same compact Yi symbol.
-- `public/fonts/`: self-hosted Manrope and Noto Sans SC subsets with OFL notices.
+- `public/fonts/`: self-hosted Manrope, Noto Sans SC and JetBrains Mono subsets with OFL notices.
 - The model-catalog screenshot was removed at the owner's request on 2026-09-18.
   It is not included in the current project or build.
 
 ## Typography and Design Reference
 
 Font source: `https://github.com/google/fonts`, pinned commit
-`1edf95b4328bc5997ca93d2c0c7205272ec7347f`, directories `ofl/manrope` and
-`ofl/notosanssc`. The corresponding OFL files are redistributed unchanged.
+`1edf95b4328bc5997ca93d2c0c7205272ec7347f`, directories `ofl/manrope`,
+`ofl/notosanssc` and `ofl/jetbrainsmono`. The corresponding OFL files are redistributed unchanged.
 See `BRAND.md` for local regeneration and source filenames.
 
 The owner supplied `https://dayusea.com/` as a design reference. Its live desktop

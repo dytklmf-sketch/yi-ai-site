@@ -2,7 +2,12 @@ import type { Lang, Service } from './yi-ai';
 
 type Details = {
   steps: { title: string; text: string }[];
-  pricing: string[];
+  /** What a quote or a resource match actually depends on, as short labels. */
+  brief: string[];
+  /** A filled-in request shown in the page hero. The company and figures are placeholders, not a customer. */
+  sample?: { title: string; fields: [string, string][] };
+  /** One-line quote example beside the checklist, for pages whose hero shows something else. Placeholder figures. */
+  briefExample?: string;
   discuss: string[];
   confirm: string[];
 };
@@ -11,127 +16,138 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
   zh: {
     workbuddy: {
       steps: [
-        { title: '明确采购对象', text: '说明团队角色、计划使用人数、现有账号和目标时间。' },
-        { title: '核对产品条件', text: '逐项确认版本、数量、授权期限与报价口径，区分产品权益与额外服务。' },
-        { title: '确认再推进', text: '确认订单内容、交付方式与双方联系窗口，再安排后续采购。' },
+        { title: '提交需求', text: '人数、部门、开通时间与现有账号。' },
+        { title: '核对条件', text: '版本、授权范围与报价，额外服务单独列出。' },
+        { title: '确认下单', text: '确认订单与开通时间后安排采购。' },
       ],
-      pricing: ['产品版本与计划采购数量', '使用期限、开始时间与续费安排', '订单与结算要求，以及另行约定的服务'],
-      discuss: ['代理采购路径与条件咨询', '团队需求、版本和数量梳理', '采购时间与合作窗口对接'],
-      confirm: ['具体版本权益、授权及折扣', '企业部署、培训和技术支持', '交付时间、续费和售后责任'],
+      brief: ['使用人数', '开通日期', '授权期限', '现有账号', '发票要求'],
+      sample: {
+        title: '采购需求',
+        fields: [
+          ['部门', '×× 公司市场部'],
+          ['使用人数', '约 20 人'],
+          ['希望开通', '下月初'],
+          ['现有账号', '5 人在用个人账号'],
+          ['咨询内容', '可选版本与报价'],
+        ],
+      },
+      discuss: ['版本差别与适合的团队规模', '按人数和期限的报价', '个人账号转为团队采购', '续费与人数调整'],
+      confirm: ['具体版本权益与授权条款', '折扣与付款方式', '企业部署、培训和技术支持', '交付时间与售后责任'],
     },
     'model-services': {
       steps: [
-        { title: '说明场景与角色', text: '区分应用接入、企业用量采购和供应合作，列出模型与接口要求。' },
-        { title: '对齐比较口径', text: '核对用量、限额、计费单位和验证条件，避免只比较单个价格。' },
-        { title: '约定合作边界', text: '明确结算、异常联络与变更方式，按确认的范围安排下一步。' },
+        { title: '说明需求', text: '角色、模型与预估调用量。' },
+        { title: '统一口径比价', text: '对齐 token 构成、并发和计费单位。' },
+        { title: '约定结算', text: '结算周期、异常联络人与模型变更通知。' },
       ],
-      pricing: ['模型类型、版本与输入输出构成', '预估用量、峰值并发和调用节奏', '计费单位、结算周期与供应合作方式'],
-      discuss: ['模型 API 接入需求', '企业用量及结算方案沟通', '直接合作供应渠道对接'],
-      confirm: ['具体模型可用范围及接口差异', '测试额度、稳定性与响应约定', '数据处理、计费异常与退出安排'],
+      brief: ['模型与版本', '月调用量', '输入输出比例', '并发与延迟', '结算方式'],
+      briefExample: '客服应用，OpenAI 兼容接口，每月约 2000 万 token，输入约占七成，希望洽谈企业用量价格与月结。',
+      discuss: ['接口兼容与迁移', '企业用量价格与结算', '测试与效果验证', '供应渠道合作'],
+      confirm: ['具体可用模型与接口差异', '限额、稳定性与响应约定', '数据处理方式', '计费异常与退出安排'],
     },
     infrastructure: {
       steps: [
-        { title: '描述工作负载', text: '说明项目用途、运行环境、资源需求和预计周期，不先预设设备型号。' },
-        { title: '核对实际资源', text: '逐项讨论计算、存储、网络与环境条件，确认是否存在可合作范围。' },
-        { title: '划清责任再安排', text: '明确访问权限、运维、备份及退出责任，再确认具体方案。' },
+        { title: '描述工作负载', text: '推理或训练、模型规模与使用周期。' },
+        { title: '核对资源', text: '确认计算、存储与网络能否匹配。' },
+        { title: '划分责任', text: '权限、运维、备份与到期退出。' },
       ],
-      pricing: ['所需资源类型、数量及占用周期', '网络、存储与运行环境要求', '实际可提供范围及双方责任分工'],
-      discuss: ['自建机房资源匹配条件', '部署环境与资源依赖讨论', '基础设施合作范围梳理'],
-      confirm: ['位置、设备、容量及可用资源', '对外租用、部署和运维范围', '认证、备份、网络与 SLA 条款'],
+      brief: ['工作负载类型', '模型规模', '计算与存储', '网络要求', '使用周期'],
+      sample: {
+        title: '工作负载需求',
+        fields: [
+          ['工作负载', '推理服务'],
+          ['用途', '内部知识库问答'],
+          ['模型', '开源大模型，私有化部署'],
+          ['使用周期', '约一年'],
+          ['希望上线', '下季度'],
+          ['咨询内容', '机房资源能否匹配'],
+        ],
+      },
+      discuss: ['资源能否匹配工作负载', '部署环境与网络', '使用周期与合作方式', '资源供应合作'],
+      confirm: ['位置、设备与可用容量', '对外租用与运维范围', '认证、备份与 SLA', '到期迁移与退出'],
     },
   },
   en: {
     workbuddy: {
       steps: [
-        {
-          title: 'Define the purchase',
-          text: 'Describe team roles, intended users, existing accounts and the target start date.',
-        },
-        {
-          title: 'Check product terms',
-          text: 'Confirm the edition, quantity, authorization period and quotation basis. Separate product entitlements from extra services.',
-        },
-        {
-          title: 'Agree before proceeding',
-          text: 'Confirm the order, delivery method and contact points before arranging procurement.',
-        },
+        { title: 'Send the need', text: 'Seats, team, start date, existing accounts.' },
+        { title: 'We check terms', text: 'Editions, authorization and pricing; extras listed apart.' },
+        { title: 'Order', text: 'Procurement starts once you confirm the order and date.' },
       ],
-      pricing: [
-        'Product edition and intended quantity',
-        'Subscription period, start date and renewal arrangements',
-        'Order and settlement requirements, plus any separately agreed services',
-      ],
+      brief: ['Seats', 'Start date', 'Authorization period', 'Existing accounts', 'Invoicing'],
+      sample: {
+        title: 'Purchase request',
+        fields: [
+          ['Team', 'Marketing, [Company]'],
+          ['Users', 'About 20'],
+          ['Start', 'Early next month'],
+          ['Accounts', '5 on personal accounts'],
+          ['Asking for', 'Editions and a quote'],
+        ],
+      },
       discuss: [
-        'Reseller procurement routes and conditions',
-        'Team requirements, editions and quantities',
-        'Purchasing timelines and contact points',
+        'Edition differences and team fit',
+        'Pricing by seats and period',
+        'Personal accounts to a team purchase',
+        'Renewals and seat changes',
       ],
       confirm: [
-        'Edition entitlements, authorization and discounts',
+        'Edition entitlements and authorization terms',
+        'Discounts and payment terms',
         'Enterprise deployment, training and technical support',
-        'Delivery timing, renewal and after-sales responsibilities',
+        'Delivery timing and after-sales responsibilities',
       ],
     },
     'model-services': {
       steps: [
-        {
-          title: 'Describe your role and use case',
-          text: 'Distinguish application access, enterprise procurement and supply cooperation. List models and interface requirements.',
-        },
-        {
-          title: 'Compare on equal terms',
-          text: 'Align usage, limits, billing units and validation conditions instead of comparing one headline price.',
-        },
-        {
-          title: 'Agree on the boundary',
-          text: 'Confirm settlement, incident contacts and change handling before the next step.',
-        },
+        { title: 'State the need', text: 'Your role, models and rough volume.' },
+        { title: 'Compare like for like', text: 'Same token mix, concurrency and billing units.' },
+        { title: 'Agree settlement', text: 'Billing cycle, anomaly contacts, model-change notices.' },
       ],
-      pricing: [
-        'Model type, version and input/output mix',
-        'Expected volume, peak concurrency and request patterns',
-        'Billing units, settlement period and supply arrangement',
-      ],
+      brief: ['Models and versions', 'Monthly volume', 'Input/output ratio', 'Concurrency and latency', 'Settlement'],
+      briefExample: 'Support app, OpenAI-compatible API, ~20M tokens a month, 70% input, wants monthly billing.',
       discuss: [
-        'Model API access requirements',
-        'Enterprise usage and settlement discussions',
-        'Direct supply-channel cooperation',
+        'Interface compatibility and migration',
+        'Enterprise pricing and settlement',
+        'Testing and quality checks',
+        'Supply-channel cooperation',
       ],
       confirm: [
         'Available models and interface differences',
-        'Test allowances, reliability and response terms',
-        'Data handling, billing disputes and exit arrangements',
+        'Limits, reliability and response terms',
+        'Data handling',
+        'Billing disputes and exit arrangements',
       ],
     },
     infrastructure: {
       steps: [
-        {
-          title: 'Describe the workload',
-          text: 'Share the project, runtime, resource needs and duration before assuming a hardware model.',
-        },
-        {
-          title: 'Check actual resources',
-          text: 'Discuss compute, storage, networking and environment conditions to establish whether cooperation is possible.',
-        },
-        {
-          title: 'Assign responsibilities',
-          text: 'Clarify access, operations, backups and exit responsibilities before agreeing on a proposal.',
-        },
+        { title: 'Describe the workload', text: 'Inference or training, model size, duration.' },
+        { title: 'Check resources', text: 'Whether compute, storage and network fit.' },
+        { title: 'Split responsibilities', text: 'Access, operations, backups and exit.' },
       ],
-      pricing: [
-        'Resource types, quantities and duration',
-        'Network, storage and runtime requirements',
-        'Confirmed available scope and division of responsibilities',
-      ],
+      brief: ['Workload type', 'Model size', 'Compute and storage', 'Network needs', 'Duration'],
+      sample: {
+        title: 'Workload request',
+        fields: [
+          ['Workload', 'Inference service'],
+          ['Use', 'Internal knowledge-base Q&A'],
+          ['Model', 'Open-source LLM, self-hosted'],
+          ['Duration', 'About a year'],
+          ['Start', 'Next quarter'],
+          ['Asking', 'Whether your resources fit'],
+        ],
+      },
       discuss: [
-        'Matching conditions for self-built resources',
-        'Runtime and deployment dependencies',
-        'Infrastructure cooperation scope',
+        'Whether resources fit the workload',
+        'Deployment environment and networking',
+        'Duration and cooperation model',
+        'Resource supply cooperation',
       ],
       confirm: [
-        'Location, equipment, capacity and availability',
-        'External rental, deployment and operations scope',
-        'Certifications, backups, networking and SLA terms',
+        'Location, equipment and available capacity',
+        'External rental and operations scope',
+        'Certifications, backups and SLA terms',
+        'Migration and exit at the end of the term',
       ],
     },
   },

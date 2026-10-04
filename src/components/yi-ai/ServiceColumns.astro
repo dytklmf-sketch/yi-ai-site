@@ -1,0 +1,52 @@
+---
+import { ArrowRight, Check } from '@lucide/astro';
+import ServiceIcon from './ServiceIcon.astro';
+import { home } from '../../data/home';
+import { services, pathFor, inquiryPath, type Lang } from '../../data/yi-ai';
+import { zh } from '../../data/zh';
+import { en } from '../../data/en';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = lang === 'zh' ? zh : en;
+const h = home[lang];
+---
+
+{/* All three side by side, so visitors compare the services at a glance instead of switching tabs. */}
+<ol class="service-columns">
+  {
+    services.map((slug, i) => {
+      const page = t.services[slug];
+      return (
+        <li class="service-column" data-service-column={slug} data-service={slug} data-reveal style={`--d:${i}`}>
+          <span class="service-art" aria-hidden="true" />
+          <div class="service-card-head">
+            <ServiceIcon service={slug} size={22} tile brand />
+            <span class="service-card-layer">{h.layers[slug].name}</span>
+          </div>
+          <h3 class="service-column-title">{page.label}</h3>
+          <p class="service-column-summary">{page.summary}</p>
+          <ul class="check-grid" aria-label={h.scenariosLabel}>
+            {page.scenarios.map((item) => (
+              <li>
+                <Check size={15} />
+                {item.title}
+              </li>
+            ))}
+          </ul>
+          <div class="service-column-foot">
+            <a class="btn btn-outline" href={pathFor(lang, slug)}>
+              {t.explore}
+              <ArrowRight size={17} />
+            </a>
+            <a class="text-link" href={inquiryPath(lang, slug)}>
+              {t.primary}
+            </a>
+          </div>
+        </li>
+      );
+    })
+  }
+</ol>

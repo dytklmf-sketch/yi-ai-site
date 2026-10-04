@@ -1,5 +1,7 @@
 ---
+import { pathFor } from '../data/yi-ai';
 
+const zhHome = pathFor('zh');
 ---
 
 <!doctype html>
@@ -7,9 +9,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta http-equiv="refresh" content="0;url=/zh/" />
+    <meta name="robots" content={Astro.site ? 'noindex, follow' : 'noindex, nofollow'} />
+    <meta http-equiv="refresh" content={`0;url=${zhHome}`} />
     <title>易AI · 让 AI 易懂、易用、易落地</title>
   </head>
-  <body><h1>易AI</h1><p>让 AI 易懂、易用、易落地。</p><a href="/zh/">中文首页</a> <a href="/en/">English</a></body>
+  <body
+    ><h1>易AI</h1><p>让 AI 易懂、易用、易落地。</p><a href={zhHome}>中文首页</a>
+    <a href={pathFor('en')}>English</a></body
+  >
 </html>

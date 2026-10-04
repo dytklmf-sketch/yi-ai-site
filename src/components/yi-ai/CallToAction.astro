@@ -2,47 +2,43 @@
 import { ArrowUpRight } from '@lucide/astro';
 import { inquiryPath, type Lang, type Service } from '../../data/yi-ai';
 import ContactPanel from './ContactPanel.astro';
+import StackVisual from './StackVisual.astro';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 interface Props {
   lang: Lang;
   service?: Service;
-  chapter?: boolean;
+  /** Show the full contact panel inside the band instead of a link to the contact page. */
+  inline?: boolean;
 }
-const { lang, service, chapter = false } = Astro.props;
+const { lang, service, inline = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
 ---
 
-<section id={chapter ? 'inquiry' : undefined} class:list={['cta-band', { 'home-chapter': chapter }]}>
-  <div class="site-container cta-grid" data-reveal={chapter || undefined}>
+<section id={inline ? 'inquiry' : undefined} class:list={['cta-band', { 'cta-inline': inline }]}>
+  <div class="cta-bg" aria-hidden="true"><span class="hero-grid-lines"></span></div>
+  <div class="container cta-layout">
+    <div class="cta-copy" data-reveal>
+      <h2 class="cta-title">{t.ctaTitle}</h2>
+      <p class="cta-body">{t.ctaBody}</p>
+      {
+        !inline && (
+          <a class="btn btn-light btn-lg" href={inquiryPath(lang, service)}>
+            {t.primary}
+            <ArrowUpRight size={18} />
+          </a>
+        )
+      }
+    </div>
     {
-      chapter ? (
-        <>
-          <div class="cta-intro">
-            <div>
-              <>
-                <p class="eyebrow light">{lang === 'zh' ? '06 / 联系合作' : '06 / LET’S TALK'}</p>
-                <h2>{t.ctaTitle}</h2>
-              </>
-            </div>
-            <p>{t.ctaBody}</p>
-          </div>
+      inline ? (
+        <div data-reveal>
           <ContactPanel lang={lang} compact />
-        </>
+        </div>
       ) : (
-        <>
-          <div>
-            <p class="eyebrow light">LET’S MAKE IT HAPPEN</p>
-            <h2>{t.ctaTitle}</h2>
-          </div>
-          <div class="cta-right">
-            <p>{t.ctaBody}</p>
-            <a class="button button-light" href={inquiryPath(lang, service)}>
-              {t.primary}
-              <ArrowUpRight size={18} />
-            </a>
-          </div>
-        </>
+        <div class="cta-visual">
+          <StackVisual lang={lang} id={`cta-${service ?? 'all'}`} labels={false} active={service} />
+        </div>
       )
     }
   </div>

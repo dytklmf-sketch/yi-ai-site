@@ -1,10 +1,12 @@
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
+import { base, indexing, site } from './scripts/site-indexing.mjs';
 
-// A preview has no production canonical origin or sitemap.
+// Canonical origin, subpath and sitemap come from SITE_ORIGIN / SITE_BASE; see scripts/site-indexing.mjs.
 export default defineConfig({
+  site,
+  base,
   output: 'static',
   trailingSlash: 'always',
   devToolbar: { enabled: false },
-  vite: { plugins: [tailwindcss()] },
+  integrations: [indexing],
 });

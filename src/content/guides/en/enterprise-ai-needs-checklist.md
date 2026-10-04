@@ -1,8 +1,8 @@
 ---
 lang: en
 pairKey: enterprise-ai-needs-checklist
-title: Turn an enterprise AI idea into a one-page brief
-description: Define a task, its inputs, acceptance criteria and responsibilities before selecting a tool. A practical starting point for enterprise AI procurement.
+title: A one-page enterprise AI brief
+description: The task, the data, acceptance criteria and the owner.
 service: workbuddy
 updatedAt: '2026-09-19'
 order: 2

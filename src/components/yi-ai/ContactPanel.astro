@@ -3,6 +3,7 @@ import { Copy, ArrowUpRight, Mail, MessageCircle, Check } from '@lucide/astro';
 import { contact, services, type Lang } from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
+import ServiceIcon from './ServiceIcon.astro';
 interface Props {
   lang: Lang;
   compact?: boolean;
@@ -10,6 +11,7 @@ interface Props {
 const { lang, compact = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
 const Heading = compact ? 'h3' : 'h2';
+const key = `${lang}-${compact ? 'compact' : 'full'}`;
 const initialLabel = t.services.workbuddy.label;
 const topicLabels = {
   workbuddy: 'WorkBuddy',
@@ -26,68 +28,71 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
   data-subject={t.contact.subject}
   data-body={t.contact.emailBody}
 >
-  <fieldset class="topic-field" aria-describedby={`contact-topic-hint-${lang}-${compact ? 'compact' : 'full'}`}>
-    <legend>{t.contact.topic}</legend>
-    <p class="topic-hint" id={`contact-topic-hint-${lang}-${compact ? 'compact' : 'full'}`}>{t.contact.topicHint}</p>
+  <fieldset class="topic-field">
+    <legend><span class="step-tag mono">01</span>{t.contact.topic}</legend>
     <div class="topic-options">
       {
         services.map((slug, i) => (
           <label>
             <input type="radio" name="topic" value={slug} checked={i === 0} data-label={t.services[slug].label} />
             <span>
+              <ServiceIcon service={slug} size={16} class="topic-code" />
               {topicLabels[slug]}
-              <Check size={14} aria-hidden="true" />
+              <Check size={15} aria-hidden="true" />
             </span>
           </label>
         ))
       }
     </div>
+    <div class="topic-preparation" aria-live="polite">
+      <span class="micro-label">{t.contact.prepare}</span>
+      {
+        services.map((slug, i) => (
+          <p data-topic-preparation={slug} hidden={i !== 0}>
+            {t.services[slug].preparation.join(lang === 'zh' ? '、' : ' · ')}
+          </p>
+        ))
+      }
+    </div>
   </fieldset>
+  <p class="contact-step">
+    <span class="step-tag mono">02</span>{lang === 'zh' ? '选择联系方式' : 'Choose how to reach us'}
+  </p>
   <div class="contact-options">
     <section class="contact-option">
-      <div class="contact-symbol"><MessageCircle size={26} stroke-width={1.4} /></div>
-      <Heading>{t.contact.wechatTitle}</Heading><p>{t.contact.wechatText}</p>
-      <span class="contact-id" tabindex="0">{contact.wechat}</span>
+      <div class="contact-option-head">
+        <span class="contact-symbol"><MessageCircle size={20} stroke-width={1.6} /></span>
+        <Heading>{t.contact.wechatTitle}</Heading>
+      </div>
+      <p>{t.contact.wechatText}</p>
+      <span class="contact-id mono" tabindex="0">{contact.wechat}</span>
       <button
         type="button"
-        class="button button-primary copy-button"
+        class="btn btn-primary copy-button"
         data-copy={contact.wechat}
         data-success={t.contact.copied}
         data-failure={t.contact.fallback}
-        aria-describedby={`contact-copy-status-${lang}-${compact ? 'compact' : 'full'}`}
-        ><Copy size={16} />{t.contact.copy}</button
+        aria-describedby={`contact-copy-status-${key}`}
+        ><Copy size={16} /><span class="copy-label">{t.contact.copy}</span></button
       >
-      <p
-        class="copy-status"
-        id={`contact-copy-status-${lang}-${compact ? 'compact' : 'full'}`}
-        role="status"
-        aria-live="polite"
-      >
-      </p>
+      <p class="copy-status" id={`contact-copy-status-${key}`} role="status" aria-live="polite"></p>
     </section>
     <section class="contact-option">
-      <div class="contact-symbol blue"><Mail size={26} stroke-width={1.4} /></div>
-      <Heading>{t.contact.emailTitle}</Heading><p>{t.contact.emailText}</p>
-      <a class="contact-id email-address" href={`mailto:${contact.email}`}>{contact.email}</a>
-      <a class="button button-outline inquiry-email" href={href}>{t.contact.emailAction}<ArrowUpRight size={17} /></a>
+      <div class="contact-option-head">
+        <span class="contact-symbol"><Mail size={20} stroke-width={1.6} /></span>
+        <Heading>{t.contact.emailTitle}</Heading>
+      </div>
+      <p>{t.contact.emailText}</p>
+      <a class="contact-id email-address mono" href={`mailto:${contact.email}`}>{contact.email}</a>
+      <a class="btn btn-outline inquiry-email" href={href}>{t.contact.emailAction}<ArrowUpRight size={17} /></a>
     </section>
-  </div>
-  <div class="topic-preparation" aria-live="polite">
-    <span>{t.contact.prepare}</span>
-    {
-      services.map((slug, i) => (
-        <p data-topic-preparation={slug} hidden={i !== 0}>
-          {t.services[slug].preparation.join(lang === 'zh' ? '、' : ' · ')}
-        </p>
-      ))
-    }
   </div>
   <p class="contact-note">{t.contact.note}</p>
   <noscript
     ><p class="contact-note">
       {
         lang === 'zh'
-          ? '你可以直接选择微信号手动复制，或在邮件中注明所需业务。'
+          ? '可直接选择微信号手动复制，或在邮件中注明所需业务。'
           : 'Select the WeChat ID to copy it manually, or mention your service of interest in the email.'
       }
     </p></noscript

@@ -1,0 +1,51 @@
+---
+import { serviceIcons } from './icons';
+import { withBase, type Service } from '../../data/yi-ai';
+
+interface Props {
+  service: Service;
+  size?: number;
+  /** `tile` draws the service's coloured square behind the icon. */
+  tile?: boolean;
+  /**
+   * Draw the service's own product mark (the WorkBuddy tile, the CCG API signal, the data-center cabinet) instead of
+   * the line-art glyph. Opt-in per call site: partner marks read as logos, which suits the business cards but is
+   * too heavy for small chips, list rows and the capability hub.
+   */
+  brand?: boolean;
+  class?: string;
+}
+const { service, size = 18, tile = false, brand = false, class: className } = Astro.props;
+const Icon = serviceIcons[service];
+const marks: Partial<Record<Service, string>> = {
+  workbuddy: '/partners/workbuddy.svg',
+  'model-services': '/partners/ccg-api.svg',
+  infrastructure: '/partners/datacenter.svg',
+};
+const mark = brand ? marks[service] : undefined;
+---
+
+{
+  brand && mark ? (
+    tile ? (
+      <span class:list={['service-tile', className]} data-service={service} aria-hidden="true">
+        <img src={withBase(mark)} alt="" width={size} height={size} class="service-mark" />
+      </span>
+    ) : (
+      <img
+        src={withBase(mark)}
+        alt=""
+        width={size}
+        height={size}
+        class:list={['service-mark', className]}
+        aria-hidden="true"
+      />
+    )
+  ) : tile ? (
+    <span class:list={['service-tile', className]} data-service={service} aria-hidden="true">
+      <Icon size={size} />
+    </span>
+  ) : (
+    <Icon size={size} class={className} aria-hidden="true" />
+  )
+}

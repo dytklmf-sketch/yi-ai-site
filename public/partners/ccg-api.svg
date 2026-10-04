@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Version B: Broadcast / signal waves -->
+  <defs>
+    <linearGradient id="bg_b" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#060511"/>
+      <stop offset="100%" stop-color="#0d0922"/>
+    </linearGradient>
+    <radialGradient id="bgGlow_b" cx="50%" cy="58%" r="48%">
+      <stop offset="0%" stop-color="#3730a3" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#3730a3" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Arc gradients: bright cyan at top, fade toward base -->
+    <linearGradient id="wG1" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="wG2" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#4338ca" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="wG3" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#312e81" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="dotFill_b" cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="white"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </radialGradient>
+    <filter id="wGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="dotGlow_b" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="120" height="120" rx="26" fill="url(#bg_b)"/>
+  <rect width="120" height="120" rx="26" fill="url(#bgGlow_b)"/>
+
+  <!-- Broadcast arcs from center (60,82), opening angle ~200°, counterclockwise sweep -->
+  <!-- Arc 1: r=13, endpoints: (72,80) and (48,80), top at (60,69) -->
+  <path d="M 72 80 A 13 13 0 1 0 48 80"
+        fill="none" stroke="url(#wG1)" stroke-width="4.5"
+        stroke-linecap="round" filter="url(#wGlow)"/>
+
+  <!-- Arc 2: r=24, endpoints: (83,77) and (37,77), top at (60,58) -->
+  <path d="M 83 77 A 24 24 0 1 0 37 77"
+        fill="none" stroke="url(#wG2)" stroke-width="3.2"
+        stroke-linecap="round" filter="url(#wGlow)" opacity="0.8"/>
+
+  <!-- Arc 3: r=35, endpoints: (94,74) and (26,74), top at (60,47) -->
+  <path d="M 94 74 A 35 35 0 1 0 26 74"
+        fill="none" stroke="url(#wG3)" stroke-width="2"
+        stroke-linecap="round" opacity="0.55"/>
+
+  <!-- Center base dot -->
+  <circle cx="60" cy="82" r="9"  fill="#4338ca" opacity="0.3" filter="url(#dotGlow_b)"/>
+  <circle cx="60" cy="82" r="5.5" fill="url(#dotFill_b)" filter="url(#wGlow)"/>
+  <circle cx="58" cy="80" r="1.8" fill="white" opacity="0.65"/>
+</svg>

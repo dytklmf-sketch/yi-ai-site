@@ -6,17 +6,20 @@ export type PageSlug = Service | 'contact';
 export const pageSlugs: PageSlug[] = [...services, 'contact'];
 export type SitePage = PageSlug | 'about' | 'resources';
 export const contact: { wechat: string; email: string; wechatQr?: string } = {
-  wechat: 'CCGAI008',
+  wechat: 'Li___CaB6',
   email: 'yi__ai@126.com',
 };
 export const modelProduct = {
-  name: 'CCG',
+  name: 'CCG API',
   url: 'https://ccg-cli.online/models/',
 };
-export const pathFor = (lang: Lang, slug?: SitePage) => (slug ? `/${lang}/${slug}/` : `/${lang}/`);
-export const articlePath = (lang: Lang, slug: string) => `/${lang}/resources/${slug}/`;
+// Every site URL goes through `withBase` so the build can live under a subpath (SITE_BASE).
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const withBase = (path: string) => `${basePath}${path}`;
+export const pathFor = (lang: Lang, slug?: SitePage) => withBase(slug ? `/${lang}/${slug}/` : `/${lang}/`);
+export const articlePath = (lang: Lang, slug: string) => withBase(`/${lang}/resources/${slug}/`);
 export const shareImage = (lang: Lang, slug?: SitePage, article?: string) =>
-  `/brand/share-${lang}${slug ? `-${slug}` : ''}${article ? `-${article}` : ''}.png`;
+  withBase(`/brand/share-${lang}${slug ? `-${slug}` : ''}${article ? `-${article}` : ''}.png`);
 export const navigationPages: (SitePage | undefined)[] = [undefined, ...services, 'resources', 'about'];
 export const inquiryPath = (lang: Lang, service?: Service) =>
   `${pathFor(lang, 'contact')}${service ? `?topic=${service}` : ''}`;
@@ -28,9 +31,10 @@ export type ServiceCopy = {
   title: string;
   intro: string;
   audience: string;
-  audienceTitle: string;
-  lead: string;
-  points: { title: string; text: string }[];
+  /** One line for service cards. */
+  summary: string;
+  /** Typical situations, as a short label plus one line. Hypothetical, not case studies. */
+  scenarios: { title: string; text: string }[];
   preparation: string[];
   boundary: string;
 };
@@ -38,20 +42,11 @@ export type ServiceCopy = {
 export type SiteCopy = {
   nav: { home: string; workbuddy: string; models: string; infrastructure: string; contact: string };
   otherLanguage: string;
-  promise: string[];
-  heroHeadline: [string, string];
+  heroHeadline: string;
   heroIntro: string;
   primary: string;
   secondary: string;
-  servicesTitle: string;
-  servicesIntro: string;
   explore: string;
-  scenariosTitle: string;
-  scenarios: { title: string; text: string; service: Service }[];
-  manifestTitle: string;
-  manifestBody: string;
-  principles: { title: string; text: string }[];
-  processTitle: string;
   steps: { title: string; text: string }[];
   faqTitle: string;
   faq: { service: Service; question: string; answer: string }[];
@@ -60,10 +55,11 @@ export type SiteCopy = {
   services: Record<Service, ServiceCopy>;
   contact: {
     seoTitle: string;
+    /** Meta description only; the page shows the shorter intro. */
+    seoDescription: string;
     title: string;
     intro: string;
     topic: string;
-    topicHint: string;
     wechatTitle: string;
     wechatText: string;
     emailTitle: string;

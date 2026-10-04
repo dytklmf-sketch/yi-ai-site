@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { launchBrowser } from './browser.mjs';
-import { testHomeChapters } from './test-home-chapters.mjs';
-import { testRoundThree } from './test-round-three.mjs';
+
+const settle = (page, ms = 120) => page.waitForTimeout(ms);
+const scrollToElement = (page, selector, block = 'start') =>
+  page.locator(selector).evaluate((el, block) => el.scrollIntoView({ block, behavior: 'instant' }), block);
 
 export async function testEnhancements(base, routes) {
   const report = {
@@ -14,53 +16,144 @@ export async function testEnhancements(base, routes) {
   for (const engine of ['chromium', 'webkit']) {
     console.log(`Checking enhanced workflows: ${engine}`);
     const browser = await launchBrowser(engine);
-    const result = { engine, version: browser.version(), flows: [], errors: [], motion: {}, chapters: {} };
+    const result = { engine, version: browser.version(), flows: [], errors: [], motion: {} };
     try {
       const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
       const page = await context.newPage();
       page.on('pageerror', (error) => result.errors.push(error.message));
-      result.chapters = await testHomeChapters(page, base, engine);
-      result.roundThree = await testRoundThree(page, base, engine, routes);
+
       for (const route of routes) {
         await page.goto(`${base}${route.path}`, { waitUntil: 'networkidle' });
-        const response = await page
-          .locator('.language-link')
-          .click()
-          .then(() => page.waitForLoadState('networkidle'));
-        void response;
+        await page.locator('.language-link').click();
+        await page.waitForLoadState('networkidle');
         assert.equal(new URL(page.url()).pathname, route.counterpart);
         await page.goBack({ waitUntil: 'networkidle' });
         assert.equal(new URL(page.url()).pathname, route.path);
         if (route.kind === 'article') {
-          const anchors = await page.locator('.desktop-toc a').evaluateAll((links) =>
-            links.map((link) => ({
-              href: link.getAttribute('href'),
-              exists: !!document.getElementById(decodeURIComponent(link.hash.slice(1))),
-            }))
+          const toc = page.locator('.desktop-toc ol a');
+          const anchors = await toc.evaluateAll((links) =>
+            links.map((link) => !!document.getElementById(decodeURIComponent(link.hash.slice(1))))
           );
-          assert(anchors.length >= 5 && anchors.every((anchor) => anchor.exists));
-          await page.locator('.desktop-toc a').nth(1).click();
+          assert(anchors.length >= 5 && anchors.every(Boolean));
+          await toc.nth(1).click();
           await page.waitForFunction(
             () => {
               const element = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-              if (!element) return false;
-              const top = element.getBoundingClientRect().top;
-              return top >= 80 && top < 400;
+              const top = element?.getBoundingClientRect().top ?? -1;
+              return top >= 72 && top < 400;
             },
             undefined,
             { timeout: 2500 }
           );
-          const target = await page.evaluate(() => {
-            const element = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-            return element.getBoundingClientRect().top;
+          // Smooth scrolling may still be settling; the TOC must catch up once it does.
+          await page
+            .waitForFunction(
+              () => document.querySelectorAll('.desktop-toc ol a')[1]?.getAttribute('aria-current') === 'location',
+              undefined,
+              { timeout: 2500 }
+            )
+            .catch(() => {});
+          assert.equal(await toc.nth(1).getAttribute('aria-current'), 'location', 'TOC follows the reader');
+          // The counterpart article opens at the matching section.
+          const expected = await page.locator('[data-language-fragments]').evaluate((el) => {
+            const pairs = JSON.parse(el.dataset.languageFragments);
+            return pairs[decodeURIComponent(location.hash.slice(1))];
           });
-          assert(target >= 80 && target < 400, `TOC offset: ${engine} ${target}`);
+          assert.equal(
+            decodeURIComponent(new URL(await page.locator('.language-link').evaluate((a) => a.href)).hash.slice(1)),
+            expected
+          );
+          const progress = await page
+            .locator('[data-reading-progress]')
+            .evaluate((el) => Number(el.style.getPropertyValue('--progress')));
+          assert(progress > 0 && progress < 1, `Reading progress follows the article: ${progress}`);
           assert(
-            (await page.locator('.article-inquiry .button').getAttribute('href')).endsWith(`topic=${route.service}`)
+            (await page.locator('.article-inquiry .btn-light').getAttribute('href')).endsWith(`topic=${route.service}`)
+          );
+          assert(
+            (await page.locator('.toc-cta').getAttribute('href')).endsWith(`topic=${route.service}`),
+            'TOC inquiry keeps the article service'
           );
         }
       }
-      result.flows.push('26 language counterpart round-trips and browser back; 12 article TOCs and topic-aware CTAs');
+      result.flows.push('26 language round-trips; 12 article TOCs, section pairing, reading progress and topic CTAs');
+
+      for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
+        await page.goto(`${base}/zh/${service}/`, { waitUntil: 'networkidle' });
+        assert.equal(await page.locator('.subnav a').count(), 3);
+        await page.locator('.subnav a[href="#process"]').click();
+        await page.waitForFunction(() => {
+          const top = document.getElementById('process').getBoundingClientRect().top;
+          // WebKit can land a sub-pixel above the top (e.g. -0.03px) with rem-scaled layouts.
+          return top >= -1 && top < 260;
+        });
+        await page
+          .waitForFunction(
+            () => document.querySelector('.subnav a[href="#process"]')?.getAttribute('aria-current') === 'location',
+            undefined,
+            { timeout: 2500 }
+          )
+          .catch(() => {});
+        assert.equal(await page.locator('.subnav a[href="#process"]').getAttribute('aria-current'), 'location');
+        assert.equal(new URL(page.url()).hash, '#process');
+        const covered = await page.evaluate(() => {
+          const bar = document.querySelector('.subnav').getBoundingClientRect().bottom;
+          return document.querySelector('#process .section-title, #process h2').getBoundingClientRect().top < bar;
+        });
+        assert(!covered, `Sticky section nav must not cover the heading: ${service}`);
+      }
+      result.flows.push('Service section nav: anchor offset under sticky bars and aria-current tracking');
+
+      // Home: dark header over the night hero, solid afterwards; the three services sit side by side.
+      await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
+      const header = page.locator('.site-header');
+      assert.equal(await header.evaluate((el) => el.classList.contains('is-solid')), false);
+      await scrollToElement(page, '#services');
+      await settle(page, 200);
+      assert.equal(await header.evaluate((el) => el.classList.contains('is-solid')), true);
+      assert.equal(await page.locator('.service-column:visible').count(), 3, 'All three services visible at once');
+      // Chapters: at desktop sizes every home section fills one screen and the three columns share one row.
+      for (const [width, height] of [
+        [1440, 789],
+        [1920, 945],
+        [2560, 1305],
+      ]) {
+        await page.setViewportSize({ width, height });
+        await settle(page, 150);
+        const fit = await page.evaluate(() => {
+          const sections = [...document.querySelectorAll('main.chapters > section')];
+          const tops = [...document.querySelectorAll('.service-column')].map((el) => el.offsetTop);
+          return {
+            over: sections.filter((s) => s.offsetHeight > innerHeight + 1).map((s) => s.id || s.className),
+            short: sections.filter((s) => s.offsetHeight < innerHeight - 1).map((s) => s.id || s.className),
+            row: Math.max(...tops) - Math.min(...tops) < 1,
+          };
+        });
+        assert.deepEqual(fit.over, [], `Chapters taller than one screen at ${width}×${height}`);
+        assert.deepEqual(fit.short, [], `Chapters shorter than one screen at ${width}×${height}`);
+        assert(fit.row, `Service columns share one row at ${width}×${height}`);
+      }
+      await page.setViewportSize({ width: 1440, height: 960 });
+      await scrollToElement(page, '#faq');
+      // Let the reveal finish so the pointer targets the settled filter row.
+      await page.waitForFunction(() => getComputedStyle(document.querySelector('.faq-aside')).transform === 'none');
+      await page.locator('[data-faq-filter] button[data-filter="infrastructure"]').click();
+      await page
+        .waitForFunction(() => document.querySelectorAll('.faq-list details:not([hidden])').length === 2, undefined, {
+          timeout: 2000,
+        })
+        .catch(() => {});
+      assert.equal(await page.locator('.faq-list details:visible').count(), 2);
+      assert.equal(
+        await page.locator('[data-faq-filter] button[data-filter="infrastructure"]').getAttribute('aria-pressed'),
+        'true'
+      );
+      await page.locator('[data-faq-filter] button[data-filter="all"]').click();
+      assert.equal(await page.locator('.faq-list details:visible').count(), 6);
+      result.flows.push(
+        'Header surface change, three service columns in one row, one-screen chapters at 3 desktop sizes, FAQ filter'
+      );
+
       for (const width of [390, 768, 1024, 1199, 1200]) {
         await page.setViewportSize({ width, height: 844 });
         await page.goto(`${base}/en/workbuddy/`, { waitUntil: 'networkidle' });
@@ -68,37 +161,25 @@ export async function testEnhancements(base, routes) {
         if (width < 1200) {
           await page.locator('.mobile-menu summary').focus();
           await page.keyboard.press('Enter');
-          await page.waitForTimeout(250);
+          await page.waitForTimeout(300);
           assert(await page.locator('.mobile-menu nav').isVisible());
           await page.keyboard.press('Escape');
           assert.equal(await page.locator('.mobile-menu').getAttribute('open'), null);
           assert(await page.locator('.mobile-menu summary').evaluate((el) => el === document.activeElement));
           await page.locator('.mobile-menu summary').click();
           await page.locator('.site-header').click({ position: { x: 1, y: 1 } });
-          assert.equal(await page.locator('.mobile-menu').getAttribute('open'), null);
+          assert.equal(await page.locator('.mobile-menu').getAttribute('open'), null, 'Outside click closes');
           await page.locator('.mobile-menu summary').click();
-          await page.waitForTimeout(250);
+          await page.waitForTimeout(300);
           assert(await page.locator('.mobile-menu nav').isVisible(), 'Rapid reopen must not lose a click');
           await page.locator('.mobile-menu nav a').first().focus();
-          assert.equal(
-            await page.locator('.mobile-menu').getAttribute('open'),
-            '',
-            `Internal focus must retain the menu: ${engine} ${width}px`
-          );
-          await page.locator('.mobile-menu nav a').last().focus();
+          assert.equal(await page.locator('.mobile-menu').getAttribute('open'), '', `Internal focus: ${engine}`);
+          await page.locator('.mobile-sheet a').last().focus();
           await page.keyboard.press('Tab');
           await page.waitForFunction(() => !document.querySelector('.mobile-menu').open);
-          assert.equal(
-            await page.locator('.mobile-menu').getAttribute('open'),
-            null,
-            `Tab-out must close the menu: ${engine} ${width}px`
-          );
           await page.locator('.mobile-menu summary').click();
           await page.locator('.mobile-menu').evaluate((menu) => {
-            menu
-              .querySelector('nav')
-              .getAnimations()
-              .forEach((animation) => animation.finish());
+            menu.querySelectorAll('*').forEach((el) => el.getAnimations().forEach((animation) => animation.finish()));
             document.querySelector('main a').focus();
           });
           await page.waitForTimeout(50);
@@ -113,32 +194,31 @@ export async function testEnhancements(base, routes) {
 
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(`${base}/en/resources/model-api-procurement/`, { waitUntil: 'networkidle' });
-      await page.locator('.mobile-toc summary').click();
-      await page.waitForTimeout(250);
-      await page.locator('.mobile-toc a').nth(1).click();
-      await page.waitForTimeout(550);
       const fixed = page.locator('.mobile-inquiry');
+      assert.equal(await fixed.getAttribute('data-hidden'), '', 'Inquiry bar waits until the reader has scrolled');
+      await page.locator('.mobile-toc summary').click();
+      await page.waitForTimeout(400);
+      await page.locator('.mobile-toc a').nth(2).click();
+      await page.waitForTimeout(600);
+      assert.equal(await fixed.getAttribute('data-hidden'), null);
       assert(await fixed.isVisible());
       assert((await fixed.locator('a').getAttribute('href')).includes('topic=model-services'));
-      await page.locator('.footer-bottom a').focus();
-      await page.waitForFunction(() => {
-        const link = document.querySelector('.footer-bottom a').getBoundingClientRect();
-        const bar = document.querySelector('.mobile-inquiry').getBoundingClientRect();
-        return link.top >= 71 && link.bottom <= bar.top;
+      await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+      await settle(page, 200);
+      assert.equal(await fixed.getAttribute('data-hidden'), '', 'Inquiry bar steps aside for the footer');
+      const footerReachable = await page.evaluate(() => {
+        const bottom = document.querySelector('.footer-bottom').getBoundingClientRect().bottom;
+        return bottom <= innerHeight + 1;
       });
-      assert(
-        await page
-          .locator('.footer-bottom a')
-          .evaluate(
-            (el) =>
-              el.getBoundingClientRect().bottom <= document.querySelector('.mobile-inquiry').getBoundingClientRect().top
-          ),
-        'Fixed CTA must not obscure focused footer content'
-      );
+      assert(footerReachable, 'Footer must be fully reachable');
+      await page.evaluate(() => window.scrollTo({ top: innerHeight * 2, behavior: 'instant' }));
+      await settle(page, 200);
       await fixed.locator('a').click();
+      await page.waitForURL(/\/en\/contact\//);
       assert(await page.locator('input[value="model-services"]').isChecked());
       assert.equal(await page.locator('.mobile-inquiry').count(), 0);
       await page.locator('.language-link').click();
+      await page.waitForURL(/\/zh\/contact\//);
       assert(await page.locator('input[value="model-services"]').isChecked());
       const mail = new URL(await page.locator('.inquiry-email').getAttribute('href'));
       assert(mail.searchParams.get('subject').includes('模型服务'));
@@ -150,35 +230,33 @@ export async function testEnhancements(base, routes) {
       );
       await page.locator('[data-copy]').click();
       await page.waitForFunction(() => document.querySelector('[data-contact-panel]').dataset.copyState === 'failure');
-      assert.equal(await page.evaluate(() => getSelection().toString()), 'CCGAI008');
+      assert.equal(await page.evaluate(() => getSelection().toString()), 'Li___CaB6');
       assert((await page.locator('.copy-status').innerText()).includes('手动复制'));
-      result.flows.push(
-        'Mobile TOC, fixed inquiry, unobscured footer focus, localized contact topic, clipboard fallback'
-      );
+      result.flows.push('Mobile TOC, inquiry bar show/hide, footer reach, localized contact topic, clipboard fallback');
 
+      await page.setViewportSize({ width: 1440, height: 960 });
       await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
-      await page.locator('.faq-list summary').first().focus();
-      await page.keyboard.press('Enter');
-      await page
-        .locator('.disclosure-content')
-        .first()
-        .evaluate(async (el) => {
+      const firstDisclosure = page.locator('.faq-list .disclosure-content').first();
+      const finished = () =>
+        firstDisclosure.evaluate(async (el) => {
           await Promise.all(el.getAnimations().map((animation) => animation.finished.catch(() => {})));
         });
+      await page.locator('.faq-list summary').first().focus();
+      await page.keyboard.press('Enter');
+      await finished();
       assert(await page.locator('.faq-list details[open] p').isVisible());
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.faq-list details[open]').count(), 0);
       await page.locator('.faq-list summary').first().click();
-      await page
-        .locator('.disclosure-content')
-        .first()
-        .evaluate(async (el) => {
-          await Promise.all(el.getAnimations().map((animation) => animation.finished.catch(() => {})));
-        });
+      await finished();
       await page.locator('.faq-list summary').first().click();
       await page.waitForFunction(() => !document.querySelector('.faq-list details').open);
+      // Rapid double click settles in the last requested state.
+      await page.locator('.faq-list summary').first().click();
+      await page.locator('.faq-list summary').first().click();
+      await page.waitForTimeout(500);
       assert.equal(await page.locator('.faq-list details[open]').count(), 0);
-      result.flows.push('FAQ animated open/close, keyboard activation and Escape');
+      result.flows.push('FAQ animated open/close, keyboard activation, Escape and interrupted toggles');
 
       // 1440 physical pixels at 200% zoom correspond to 720 CSS pixels.
       const zoom = await browser.newContext({ viewport: { width: 720, height: 480 }, deviceScaleFactor: 2 });
@@ -195,22 +273,28 @@ export async function testEnhancements(base, routes) {
       await zoom.close();
       result.flows.push('All 26 routes: 200% equivalent reflow (1440 physical / 720 CSS px, DPR 2)');
 
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.setViewportSize({ width: 1440, height: 960 });
-      await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
-      assert(await page.evaluate(() => document.getAnimations().length === 0));
-      await page.locator('.service-card').first().hover();
+      const calm = await browser.newContext({ viewport: { width: 1440, height: 960 }, reducedMotion: 'reduce' });
+      const calmPage = await calm.newPage();
+      await calmPage.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
+      await settle(calmPage, 100);
+      assert(
+        await calmPage.evaluate(() => document.getAnimations().every((animation) => animation.playState !== 'running')),
+        'Reduced motion: nothing keeps running'
+      );
+      assert.equal(await calmPage.evaluate(() => document.documentElement.classList.contains('reveal-ready')), false);
+      await scrollToElement(calmPage, '#guides');
+      await calmPage.locator('.guide-card').first().hover();
       assert.equal(
-        await page
-          .locator('.service-card')
+        await calmPage
+          .locator('.guide-card')
           .first()
           .evaluate((el) => getComputedStyle(el).transform),
         'none'
       );
-      await page.locator('.faq-list summary').first().click();
-      assert(await page.locator('.faq-list details[open] p').isVisible());
-      assert(await page.evaluate(() => document.getAnimations().length === 0));
-      result.flows.push('Reduced motion: no entrance, hover movement, disclosure animation or native page transition');
+      await calmPage.locator('.faq-list summary').first().click();
+      assert(await calmPage.locator('.faq-list details[open] p').isVisible());
+      await calm.close();
+      result.flows.push('Reduced motion: no entrance, reveal, hover movement or disclosure animation');
 
       const fallback = await browser.newContext();
       await fallback.addInitScript(() => {
@@ -218,113 +302,92 @@ export async function testEnhancements(base, routes) {
       });
       const fallbackPage = await fallback.newPage();
       await fallbackPage.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
-      assert(await fallbackPage.locator('#services').evaluate((el) => getComputedStyle(el).opacity === '1'));
+      assert(
+        await fallbackPage.evaluate(() =>
+          [...document.querySelectorAll('[data-reveal]')].every((el) => getComputedStyle(el).opacity === '1')
+        )
+      );
       await fallback.close();
       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
       const plain = await noJS.newPage();
-      await plain.goto(`${base}/en/`, { waitUntil: 'networkidle' });
-      await plain.evaluate(() => document.fonts.ready);
-      await plain.locator('.chapter-next').click();
-      // Poll from the driver: page-side animation-frame polling is disabled with JS.
-      let positioned = false;
-      for (let attempt = 0; attempt < 100; attempt++) {
-        positioned = await plain.evaluate(
-          () => Math.abs(document.querySelector('#services').getBoundingClientRect().top - 71) < 2
-        );
-        if (positioned) break;
-        await plain.waitForTimeout(50);
-      }
-      assert(positioned, `No-JS chapter positioning: ${engine}`);
       await plain.goto(`${base}/en/resources/model-api-procurement/`);
       assert((await plain.locator('.article-body').innerText()).length > 1500);
       await plain.locator('.mobile-toc summary').click();
       assert(await plain.locator('.mobile-toc nav').isVisible());
+      await plain.goto(`${base}/en/`);
+      await plain.locator('.hero-actions a[href="#services"]').click();
+      await plain.waitForFunction(() => location.hash === '#services');
       await noJS.close();
-      result.flows.push('Missing IntersectionObserver fallback and no-JS article/TOC');
+      result.flows.push('Missing IntersectionObserver fallback and no-JS article/TOC/anchor');
 
       const videoContext = await browser.newContext({
         viewport: { width: 1440, height: 960 },
         reducedMotion: 'no-preference',
         recordVideo: { dir: 'test-results/motion', size: { width: 1440, height: 960 } },
       });
-      await videoContext.addInitScript(() => {
-        const original = Element.prototype.animate;
-        Element.prototype.animate = function (frames, options) {
-          if (this.matches('[data-reveal]')) {
-            this.setAttribute('data-play-count', String(Number(this.getAttribute('data-play-count') || 0) + 1));
-          }
-          return original.call(this, frames, options);
-        };
-      });
       const motion = await videoContext.newPage();
       await motion.goto(`${base}/zh/`, { waitUntil: 'domcontentloaded' });
       await motion.waitForTimeout(80);
-      const initial = await motion.locator('.hero-whale').evaluate((el) => ({
-        transform: getComputedStyle(el).transform,
-        titleOpacity: getComputedStyle(document.querySelector('.hero-brand')).opacity,
-        animation: getComputedStyle(el).animationDuration,
+      const initial = await motion.locator('.hero-title').evaluate((el) => ({
+        animation: getComputedStyle(el).animationName,
+        duration: getComputedStyle(el).animationDuration,
       }));
-      await motion.waitForTimeout(1000);
-      const final = await motion.locator('.hero-whale').evaluate((el) => ({
+      assert.equal(initial.animation, 'enter');
+      const beam = await motion
+        .locator('.hero-visual .stack-wide .beam-pulse')
+        .evaluate((el) => getComputedStyle(el).animationIterationCount);
+      assert.equal(beam, '2', 'Illustration motion ends; nothing loops');
+      await motion.waitForTimeout(1600);
+      const final = await motion.locator('.hero-title').evaluate((el) => ({
         transform: getComputedStyle(el).transform,
         opacity: getComputedStyle(el).opacity,
       }));
-      assert.equal(initial.titleOpacity, '1');
-      assert.equal(initial.animation, '0.9s');
-      assert(['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(final.transform));
-      await motion.mouse.move(720, 480);
-      await motion.mouse.wheel(0, 650);
-      await motion.waitForFunction(
-        () => Math.abs(document.querySelector('#services').getBoundingClientRect().top - 81) < 2
+      assert(['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(final.transform) && final.opacity === '1');
+      // Read the whole page like a visitor, one screen at a time.
+      for (let y = 0; y < (await motion.evaluate(() => document.documentElement.scrollHeight)); y += 640) {
+        await motion.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
+        await motion.waitForTimeout(160);
+      }
+      await motion.waitForTimeout(700);
+      const hiddenAfterReveal = await motion.evaluate(
+        () => [...document.querySelectorAll('[data-reveal]')].filter((el) => !el.classList.contains('is-in')).length
       );
-      await motion.waitForTimeout(600);
-      await motion.locator('.service-card').first().hover();
-      await motion.waitForTimeout(250);
       await motion.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-      await motion.locator('.chapter-next').click();
-      await motion.waitForFunction(() => !document.documentElement.hasAttribute('data-chapter-scrolling'));
-      await motion.waitForTimeout(600);
-      const revealCounts = await motion
-        .locator('[data-play-count]')
-        .evaluateAll((elements) => elements.map((el) => Number(el.getAttribute('data-play-count'))));
-      assert(
-        revealCounts.length > 0 && revealCounts.every((count) => count === 1),
-        'Scroll reveals must play only once'
+      await motion.waitForTimeout(400);
+      const hiddenAfterReturn = await motion.evaluate(
+        () => [...document.querySelectorAll('[data-reveal]')].filter((el) => !el.classList.contains('is-in')).length
       );
-      await motion.locator('.faq-list summary').first().click();
+      assert.equal(hiddenAfterReturn, 0, 'Revealed content never hides again');
+      await motion.locator('.hero .btn').first().hover();
       await motion.waitForTimeout(500);
-      await motion.locator('.faq-list summary').first().click();
-      await motion.waitForTimeout(350);
       const video = motion.video();
       await videoContext.close();
       const videoPath = await video.path();
-      result.motion = { initial, final, revealCounts, video: videoPath };
+      result.motion = { initial, final, beamIterations: beam, hiddenAfterReveal, hiddenAfterReturn, video: videoPath };
 
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
-      await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(600);
-      await page.evaluate(() => {
-        document.querySelectorAll('.hero-whale,.hero-intro,.hero-actions').forEach((el) => {
-          el.getAnimations().forEach((animation) => animation.pause());
-        });
+      const stills = await browser.newContext({
+        viewport: { width: 1440, height: 960 },
+        reducedMotion: 'no-preference',
       });
+      const still = await stills.newPage();
+      await still.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
+      await still.evaluate(() => document.getAnimations().forEach((animation) => animation.pause()));
       for (const [label, time] of [
         ['initial', 0],
-        ['middle', 240],
-        ['final', 1100],
+        ['middle', 450],
+        ['final', 2400],
       ]) {
-        await page.evaluate(
+        await still.evaluate(
           (time) =>
-            document.querySelectorAll('.hero-whale,.hero-intro,.hero-actions').forEach((el) =>
-              el.getAnimations().forEach((animation) => {
-                animation.currentTime = time;
-              })
-            ),
+            document.getAnimations().forEach((animation) => {
+              animation.currentTime = time;
+            }),
           time
         );
-        await page.screenshot({ path: `test-results/motion/${engine}-${label}.png` });
+        await still.screenshot({ path: `test-results/motion/${engine}-${label}.png` });
       }
-      result.flows.push('Natural motion playback recorded; deterministic initial/middle/final screenshots');
+      await stills.close();
+      result.flows.push('Natural motion recorded; entrance ends at rest; finite illustration beam; one-way reveal');
       assert.deepEqual(result.errors, []);
       await context.close();
       report.engines.push(result);

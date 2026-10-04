@@ -48,13 +48,14 @@ low-contrast background.
 
 ## Color and Typography
 
-| Use                | Value        |
-| ------------------ | ------------ |
-| Cobalt             | `#245BDB`    |
-| Graphite           | `#20242C`    |
-| Pale blue          | `#E6EFFF`    |
-| Latin typography   | Manrope      |
-| Chinese typography | Noto Sans SC |
+| Use                | Value          |
+| ------------------ | -------------- |
+| Cobalt             | `#245BDB`      |
+| Graphite           | `#20242C`      |
+| Pale blue          | `#E6EFFF`      |
+| Latin typography   | Manrope        |
+| Chinese typography | Noto Sans SC   |
+| Codes and labels   | JetBrains Mono |
 
 Typography is self-hosted, with variable weights and `font-display: swap`.
 Headings use 600 weight, the main promise uses 500, and body copy uses 400.
@@ -73,6 +74,8 @@ reviewed source files from Google Fonts commit
 
 - `ofl/manrope/Manrope[wght].ttf`, saved as `Manrope.ttf`.
 - `ofl/notosanssc/NotoSansSC[wght].ttf`, saved as `NotoSansSC.ttf`.
+- `ofl/jetbrainsmono/JetBrainsMono[wght].ttf`, saved as `JetBrainsMono.ttf`
+  (subset to basic Latin for codes, numbers and labels).
 
 Keep source files in a separate font-source directory, not in `public/`.
 Use Python 3.9+ with `fonttools[woff]==4.60.2`, `brotli==1.2.0` and
@@ -96,9 +99,9 @@ The font subset includes local Markdown articles as well as Astro and TypeScript
 
 ## Motion
 
-The header lockup is static. The desktop hero uses the transparent PNG at its
-original aspect ratio, moving 6px once over 900ms; tablet presentation is static
-and phone layouts omit the large symbol. Never animate individual paths or distort
+The header lockup is static. The hero shows the isometric three-layer illustration,
+not the logo; its copy and illustration enter once, and the illustration's light
+beam runs a finite two cycles, then stops. Never animate individual paths or distort
 the silhouette. Reduced-motion preferences remove entrance and page transitions.
 Do not add continuous floating, spinning, parallax or other looping brand motion.
 

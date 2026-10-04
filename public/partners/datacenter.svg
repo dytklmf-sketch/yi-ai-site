@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Data center">
+  <defs>
+    <!-- Isometric slabs: a bright lid, a mid left face and a deeper right face, repeated three times so the mark
+         still reads as a stacked compute at 48px. -->
+    <linearGradient id="dcLid" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#a8c8ff"/>
+      <stop offset="100%" stop-color="#5b8cf0"/>
+    </linearGradient>
+    <linearGradient id="dcLid2" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#8fb6ff"/>
+      <stop offset="100%" stop-color="#4a7ae4"/>
+    </linearGradient>
+    <linearGradient id="dcLid3" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#7ea2f5"/>
+      <stop offset="100%" stop-color="#3f6ad0"/>
+    </linearGradient>
+    <linearGradient id="dcSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3f6ad0"/>
+      <stop offset="100%" stop-color="#24418f"/>
+    </linearGradient>
+    <linearGradient id="dcSide2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3357b8"/>
+      <stop offset="100%" stop-color="#1d3480"/>
+    </linearGradient>
+    <radialGradient id="dcGlow" cx="50%" cy="52%" r="56%">
+      <stop offset="0%" stop-color="#3b7bff" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#3b7bff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="120" height="120" rx="26" fill="#0b1020"/>
+  <rect width="120" height="120" rx="26" fill="url(#dcGlow)"/>
+
+  <!-- top slab -->
+  <path d="M60 26 L86 40 L60 54 L34 40 Z" fill="url(#dcLid)"/>
+  <path d="M34 40 L60 54 L60 66 L34 52 Z" fill="url(#dcSide)"/>
+  <path d="M86 40 L86 52 L60 66 L60 54 Z" fill="url(#dcSide2)"/>
+
+  <!-- middle slab -->
+  <path d="M60 48 L86 62 L60 76 L34 62 Z" fill="url(#dcLid2)"/>
+  <path d="M34 62 L60 76 L60 88 L34 74 Z" fill="url(#dcSide)"/>
+  <path d="M86 62 L86 74 L60 88 L60 76 Z" fill="url(#dcSide2)"/>
+
+  <!-- bottom slab -->
+  <path d="M60 70 L86 84 L60 98 L34 84 Z" fill="url(#dcLid3)"/>
+  <path d="M34 84 L60 98 L60 110 L34 96 Z" fill="url(#dcSide)"/>
+  <path d="M86 84 L86 96 L60 110 L60 98 Z" fill="url(#dcSide2)"/>
+
+  <!-- unit slots on each lid, following the isometric shear -->
+  <g stroke="#eaf2ff" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round">
+    <path d="M50 34 L62 40"/>
+    <path d="M50 56 L62 62"/>
+    <path d="M50 78 L62 84"/>
+  </g>
+
+  <!-- status LEDs, brightest on the front slab -->
+  <g fill="#7cf0c0">
+    <circle cx="70" cy="45" r="2"/>
+    <circle cx="70" cy="67" r="2"/>
+    <circle cx="70" cy="89" r="2.4"/>
+  </g>
+  <circle cx="70" cy="95" r="2" fill="#ffd166"/>
+</svg>

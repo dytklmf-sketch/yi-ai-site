@@ -2,7 +2,7 @@
 lang: en
 pairKey: workbuddy-procurement-checklist
 title: What to confirm before buying WorkBuddy
-description: Prepare a WorkBuddy inquiry with a practical checklist covering users, editions, authorization periods, purchasing conditions and responsibilities.
+description: Seats, edition, authorization period and services outside the product.
 service: workbuddy
 updatedAt: '2026-09-19'
 order: 1

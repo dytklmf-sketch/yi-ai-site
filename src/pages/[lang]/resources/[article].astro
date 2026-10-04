@@ -1,12 +1,11 @@
 ---
 import { render } from 'astro:content';
-import { ArrowUpRight, ChevronDown } from '@lucide/astro';
+import { ArrowUpRight, ArrowRight, ChevronDown } from '@lucide/astro';
 import YiAiLayout from '../../../layouts/YiAiLayout.astro';
-import WidgetWrapper from '../../../components/ui/WidgetWrapper.astro';
 import GuideCards from '../../../components/yi-ai/GuideCards.astro';
 import { getGuides } from '../../../data/routes';
 import { editorial } from '../../../data/editorial';
-import { brandName, inquiryPath, pathFor } from '../../../data/yi-ai';
+import { articlePath, brandName, inquiryPath, pathFor, shareImage } from '../../../data/yi-ai';
 import { zh } from '../../../data/zh';
 import { en } from '../../../data/en';
 export async function getStaticPaths() {
@@ -31,6 +30,12 @@ const related = [
   ...otherGuides.filter((item) => item.data.service === data.service),
   ...otherGuides.filter((item) => item.data.service !== data.service && item.data.order % 2 === 1),
 ].slice(0, 3);
+const minutes = Math.max(
+  2,
+  Math.round(
+    lang === 'zh' ? guide.body!.replace(/\s/g, '').length / 450 : guide.body!.split(/\s+/).filter(Boolean).length / 220
+  )
+);
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -40,6 +45,10 @@ const schema = {
   dateModified: data.updatedAt,
   author: { '@type': 'Organization', name: brandName(lang) },
   citation: data.sources.map((source) => source.url),
+  ...(Astro.site && {
+    mainEntityOfPage: new URL(articlePath(lang, data.pairKey), Astro.site).href,
+    image: new URL(shareImage(lang, 'resources', data.pairKey), Astro.site).href,
+  }),
 };
 ---
 
@@ -52,25 +61,34 @@ const schema = {
   description={data.description}
   structuredData={schema}
 >
-  <section class="page-hero article-hero">
-    <div class="site-container">
+  <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
+  <section class="page-hero article-hero" data-service={data.service}>
+    <div class="page-hero-bg" aria-hidden="true"></div>
+    <div class="container article-hero-inner">
       <nav class="breadcrumb" aria-label={lang === 'zh' ? '面包屑导航' : 'Breadcrumb'}>
-        <a href={pathFor(lang)}>{brandName(lang)}</a><span>/</span><a href={pathFor(lang, 'resources')}>{e.resources}</a
+        <a href={pathFor(lang)}>{brandName(lang)}</a><span aria-hidden="true">/</span><a
+          href={pathFor(lang, 'resources')}>{e.resources}</a
         >
       </nav>
-      <p class="eyebrow">{t.services[data.service].label}</p><h1>{data.title}</h1><p class="article-description">
-        {data.description}
+      <p class="eyebrow" data-enter>
+        {t.services[data.service].label}
       </p>
-      <p class="article-meta">
-        {brandName(lang)}<span aria-hidden="true">·</span>{e.updated}
-        <time datetime={data.updatedAt}>{data.updatedAt}</time>
+      <h1 class="page-title article-title" data-enter style="--d:1">{data.title}</h1>
+      <p class="page-intro article-description" data-enter style="--d:2">{data.description}</p>
+      <p class="article-meta" data-enter style="--d:3">
+        <span>{brandName(lang)}</span>
+        <span aria-hidden="true">·</span>
+        <span>{e.updated} <time class="mono" datetime={data.updatedAt}>{data.updatedAt}</time></span>
+        <span aria-hidden="true">·</span>
+        <span>{lang === 'zh' ? `约 ${minutes} 分钟阅读` : `${minutes} min read`}</span>
       </p>
     </div>
   </section>
-  <div class="site-container article-layout" data-language-fragments={JSON.stringify(fragmentPairs)}>
+  <div class="container article-layout" data-language-fragments={JSON.stringify(fragmentPairs)}>
     <aside class="article-sidebar">
       <nav class="desktop-toc" data-section-nav aria-label={e.contents}>
-        <p>{e.contents}</p><ol>
+        <p class="micro-label">{e.contents}</p>
+        <ol>
           {
             toc.map((item) => (
               <li>
@@ -79,9 +97,13 @@ const schema = {
             ))
           }
         </ol>
+        <a class="btn btn-primary btn-sm toc-cta" href={inquiryPath(lang, data.service)}
+          >{t.primary}<ArrowUpRight size={16} /></a
+        >
       </nav>
       <details class="mobile-toc">
-        <summary>{e.contents}<ChevronDown size={18} /></summary><nav data-section-nav aria-label={e.contents}>
+        <summary>{e.contents}<ChevronDown size={18} /></summary>
+        <nav data-section-nav aria-label={e.contents}>
           <ol>
             {
               toc.map((item) => (
@@ -94,10 +116,11 @@ const schema = {
         </nav>
       </details>
     </aside>
-    <article class="article-body">
+    <article class="article-body prose">
       <Content />
       <section class="article-sources" aria-labelledby="sources">
-        <h2 id="sources">{e.sources}</h2><ol>
+        <h2 id="sources">{e.sources}</h2>
+        <ol>
           {
             data.sources.map((source) => (
               <li>
@@ -109,22 +132,27 @@ const schema = {
               </li>
             ))
           }
-        </ol><p>{e.sourceNote}</p>
+        </ol>
+        <p>{e.sourceNote}</p>
       </section>
       <div class="article-inquiry">
-        <p>{e.relatedService}</p><h2>{t.services[data.service].label}</h2><div>
-          <a class="button button-primary" href={inquiryPath(lang, data.service)}
-            >{t.primary}<ArrowUpRight size={18} /></a
-          ><a class="text-link" href={pathFor(lang, data.service)}>{t.explore}<ArrowUpRight size={18} /></a>
+        <p class="micro-label">{e.relatedService}</p>
+        <h2>{t.services[data.service].label}</h2>
+        <p>{t.services[data.service].intro}</p>
+        <div>
+          <a class="btn btn-light" href={inquiryPath(lang, data.service)}>{t.primary}<ArrowUpRight size={18} /></a>
+          <a class="btn btn-ghost-light" href={pathFor(lang, data.service)}>{t.explore}<ArrowRight size={18} /></a>
         </div>
       </div>
     </article>
   </div>
-  <WidgetWrapper class="guides-band"
-    ><div class="section-head">
-      <h2>{e.related}</h2><a class="text-link" href={pathFor(lang, 'resources')}
-        >{e.allGuides}<ArrowUpRight size={18} /></a
-      >
-    </div><GuideCards lang={lang} guides={related} /></WidgetWrapper
-  >
+  <section class="section section-tint">
+    <div class="container">
+      <div class="section-head section-head-split">
+        <h2 class="section-title">{e.related}</h2>
+        <a class="text-link" href={pathFor(lang, 'resources')}>{e.allGuides}<ArrowRight size={16} /></a>
+      </div>
+      <GuideCards lang={lang} guides={related} />
+    </div>
+  </section>
 </YiAiLayout>

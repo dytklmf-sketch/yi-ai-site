@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: workbuddy-procurement-checklist
-title: WorkBuddy 采购前，要确认哪些事？
-description: 从团队人数、产品版本到授权期限和服务边界，用一份采购清单准备 WorkBuddy 咨询，避免把未确认的权益当作采购承诺。
+title: WorkBuddy 采购前的确认事项
+description: 采购 WorkBuddy 前要确认的事项：使用人数、版本、授权期限，以及产品不包含的服务。
 service: workbuddy
 updatedAt: '2026-09-19'
 order: 1

@@ -1,8 +1,8 @@
 ---
 lang: en
 pairKey: infrastructure-responsibilities
-title: Make infrastructure responsibilities explicit
-description: Clarify ownership from hardware to applications, access, backups and exit. Separate agreed responsibilities from services that still need confirmation.
+title: Splitting data-center responsibilities
+description: 'Hardware, access, backups and exit: who owns each.'
 service: infrastructure
 updatedAt: '2026-09-19'
 order: 6

@@ -38,23 +38,25 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     const other = lang === 'zh' ? 'en' : 'zh';
     const pages: (SitePage | undefined)[] = [undefined, ...pageSlugs, 'about', 'resources'];
     for (const slug of pages) {
+      // Chinese lines join without a space; English lines join with one.
+      const sep = lang === 'zh' ? '' : ' ';
       const title = !slug
-        ? t.heroHeadline.join(' ')
+        ? t.heroHeadline
         : slug === 'contact'
           ? t.contact.seoTitle
           : slug === 'about'
-            ? e.aboutTitle.replace('\n', ' ')
+            ? e.aboutTitle.replace('\n', sep)
             : slug === 'resources'
               ? e.resources
               : t.services[slug].seoTitle;
       const description = !slug
         ? t.heroIntro
         : slug === 'contact'
-          ? t.contact.intro
+          ? t.contact.seoDescription
           : slug === 'about'
             ? e.aboutIntro
             : slug === 'resources'
-              ? e.guidesIntro
+              ? e.guidesSeoDescription
               : t.services[slug].intro;
       routes.push({
         lang,

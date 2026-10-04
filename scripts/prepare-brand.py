@@ -63,6 +63,12 @@ def main():
     if not args.skip_fonts:
         make_subset(latin, latin_chars, fonts / "manrope-latin.woff2")
         make_subset(chinese, chinese_chars, fonts / "noto-sans-sc-site.woff2")
+        # Mono accents: codes, numbers and contact details only need basic Latin.
+        make_subset(
+            args.font_source / "JetBrainsMono.ttf",
+            "".join(chr(code) for code in range(32, 127)) + "·©→",
+            fonts / "jetbrains-mono-latin.woff2",
+        )
 
     latin_font = instantiateVariableFont(TTFont(latin), {"wght": 650})
     chinese_font = instantiateVariableFont(TTFont(chinese), {"wght": 650})
@@ -109,7 +115,7 @@ def main():
     for filename in ("logo-symbol-small.svg", "favicon.svg"):
         ET.ElementTree(small).write(brand / filename, encoding="unicode")
     print("Prepared six outlined whale A lockups, four symbol variants and optical favicon."
-          + (" Existing fonts retained." if args.skip_fonts else " Two WOFF2 subsets updated."))
+          + (" Existing fonts retained." if args.skip_fonts else " Three WOFF2 subsets updated."))
 
 
 if __name__ == "__main__":

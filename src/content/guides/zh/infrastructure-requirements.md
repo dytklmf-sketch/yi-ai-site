@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: infrastructure-requirements
-title: 基础设施需求，从工作负载写起
-description: 用工作负载、计算存储、网络、运行周期和责任边界描述基础设施需求，先核对匹配条件，再讨论设备和合作方案。
+title: 基础设施需求怎么写
+description: 描述基础设施需求要写的几项：工作负载类型、模型规模、使用周期和数据存放位置。
 service: infrastructure
 updatedAt: '2026-09-19'
 order: 5

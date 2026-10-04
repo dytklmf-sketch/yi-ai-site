@@ -1,0 +1,90 @@
+---
+import { MessagesSquare } from '@lucide/astro';
+import ServiceIcon from './ServiceIcon.astro';
+import { home, partners } from '../../data/home';
+import { services, withBase, type Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const h = home[lang];
+const tags = ['ENTERPRISE AI APPS', 'MODEL SUPPLY', 'DATA CENTER', 'ONE CONTACT'];
+// The partner logos travel in one looping lane. The list is rendered four times so a quarter-travel loop is
+// seamless; only the first copy carries an accessible name, everything else stays decorative.
+---
+
+<section class="section why-band" id="why" aria-labelledby="why-title">
+  <div class="why-bg" aria-hidden="true"><span class="hero-grid-lines"></span></div>
+  <div class="container">
+    <div class="section-head section-head-split" data-reveal>
+      <h2 id="why-title" class="section-title">{h.whyTitle}</h2>
+      <span class="hub-count mono" aria-hidden="true">WHY EASY AI</span>
+    </div>
+    <ol class="why-grid">
+      {
+        h.why.map((reason, i) => (
+          <li class="why-card" data-reveal style={`--d:${i}`}>
+            <span class="why-line" aria-hidden="true" />
+            <span class="why-head">
+              <span class="why-icon" aria-hidden="true">
+                {services[i] ? <ServiceIcon service={services[i]} size={22} /> : <MessagesSquare size={22} />}
+              </span>
+              <span class="why-index mono" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </span>
+            <span class="why-tag mono" aria-hidden="true">
+              {tags[i]}
+            </span>
+            <h3>{reason.title}</h3>
+            <p>{reason.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+  {
+    partners.length > 0 && (
+      <div class="partners-strip" data-partners data-reveal>
+        <p class="partners-kicker">{h.partnersKicker}</p>
+        <div class="partner-lane">
+          <div class="partner-run">
+            {[0, 1, 2, 3].map((copy) => (
+              <ul class="partner-set">
+                {partners.map((partner) => (
+                  <li class="partner-plate">
+                    <img
+                      src={withBase(partner.logo)}
+                      alt={copy === 0 ? partner[lang] : ''}
+                      height={partner.size}
+                      style={`--h:${partner.size}px`}
+                      decoding="async"
+                    />
+                    {partner.wordmark && (
+                      <span class="partner-wordmark" aria-hidden="true">
+                        {partner.wordmark[0]}
+                        <span>{partner.wordmark[1]}</span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+        <div class="partner-controls">
+          <button
+            class="partner-toggle"
+            type="button"
+            aria-label={h.partnersPause[0]}
+            data-labels={h.partnersPause.join('|')}
+            hidden
+          >
+            <span class="partner-toggle-icon" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    )
+  }
+</section>

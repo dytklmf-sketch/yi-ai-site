@@ -9,6 +9,10 @@ async function walk(dir) {
   );
   return parts.flat();
 }
+// Production builds (SITE_ORIGIN, optional SITE_BASE) must be indexable; plain builds stay noindex previews.
+const origin = process.env.SITE_ORIGIN;
+const base = (process.env.SITE_BASE || '').replace(/\/$/, '');
+const local = (url) => url.slice(base.length);
 const files = await walk('dist');
 const html = files.filter((file) => file.endsWith('.html'));
 const routes = JSON.parse(await readFile('dist/site-manifest.json', 'utf8'));
@@ -18,7 +22,15 @@ assert.equal(new Set(routes.map((route) => route.path)).size, 26);
 assert.equal(new Set(routes.map((route) => route.title)).size, 26);
 assert.equal(new Set(routes.map((route) => route.image)).size, 26);
 for (const route of routes) {
-  const text = await readFile(`dist${route.path}index.html`, 'utf8');
+  assert(route.path.startsWith(`${base}/`) && route.image.startsWith(`${base}/brand/`), `${route.path}: base path`);
+  const text = await readFile(`dist${local(route.path)}index.html`, 'utf8');
+  if (origin) {
+    const canonical = new URL(route.path, origin).href;
+    assert(text.includes(`<link rel="canonical" href="${canonical}">`), `${route.path}: canonical`);
+    assert(text.includes(`<meta property="og:url" content="${canonical}">`), `${route.path}: og:url`);
+    assert(text.includes(`hreflang="x-default"`), `${route.path}: x-default alternate`);
+    assert(!text.includes('noindex'), `${route.path}: production pages must be indexable`);
+  }
   assert(routes.some((other) => other.path === route.counterpart && other.counterpart === route.path));
   assert(text.includes(route.image));
   if (route.kind === 'article') {
@@ -32,43 +44,118 @@ for (const route of routes) {
 assert.match(await readFile('dist/404.html', 'utf8'), /<title>页面未找到/);
 for (const file of html) {
   const text = await readFile(file, 'utf8');
-  assert.match(text, /content="noindex, nofollow"/, `${file}: noindex required`);
+  if (!origin || file === 'dist/404.html' || file === 'dist/index.html')
+    assert.match(text, /content="noindex, (?:no)?follow"/, `${file}: noindex required`);
+  for (const [, url] of text.matchAll(/(?:href|src|content)="(\/[^"]*)"/g))
+    assert(url.startsWith(`${base}/`) && !url.startsWith('//'), `${file}: ${url} ignores the base path`);
   assert(!text.includes('astrowind.vercel.app'), `${file}: template origin leaked`);
   assert(!text.includes('googletagmanager'), `${file}: tracking leaked`);
-  assert(!text.includes('rel="canonical"'), `${file}: no canonical before a domain is chosen`);
+  if (!origin) assert(!text.includes('rel="canonical"'), `${file}: no canonical before a domain is chosen`);
   assert(!text.includes('model-catalog.jpg'), `${file}: removed product screenshot must not return`);
   if (file !== 'dist/index.html') {
     assert(text.includes('application/ld+json'), `${file}: structured brand data missing`);
     assert(text.includes('og:image'), `${file}: sharing metadata missing`);
     assert(text.includes('name="description"'), `${file}: description missing`);
-    assert(text.includes('/brand/favicon.svg?v=whale-a'), `${file}: use the current optical favicon`);
+    assert(text.includes(`${base}/brand/favicon.svg?v=whale-a`), `${file}: use the current optical favicon`);
+  }
+  // Round 12: chapter titles are short labels, not slogans.
+  for (const [, heading] of text.matchAll(/<h2[^>]*class="(?:section-title|cta-title)"[^>]*>([^<]*)</g))
+    assert(
+      !/[。，,.\n]/.test(heading.trim()) && heading.trim().length <= 32,
+      `${file}: heading "${heading}" reads as a slogan`
+    );
+  assert(
+    !/先[^<]{0,12}再|写不全|逐条/.test(text.replace(/<article[\s\S]*<\/article>/, '')),
+    `${file}: AI-style copy pattern`
+  );
+  if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file)) {
+    assert(text.includes('class="service-sample'), `${file}: hero sample missing`);
+    if (file.includes('/model-services/')) {
+      assert(
+        text.includes('class="service-sample sample-window api-card"'),
+        `${file}: the CCG API request card is missing`
+      );
+      assert(text.includes('https://ccg-cli.online/v1/chat/completions'), `${file}: use the public CCG API base URL`);
+      assert(
+        /<code><span class="type-line"[^>]*>curl /.test(text),
+        `${file}: no stray whitespace at the top of the request`
+      );
+      assert(/&lt;(?:模型名|model)&gt;/.test(text), `${file}: the model name stays a placeholder`);
+      assert(text.includes('CCG API'), `${file}: name the product CCG API`);
+    } else
+      assert(text.includes('class="service-sample sample-window request-sheet"'), `${file}: request sheet missing`);
+    assert(!text.includes('id="scope"') && !text.includes('id="brief"'), `${file}: scope and brief merged`);
+    assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
+    assert.equal((text.match(/class="step-card-index/g) || []).length, 3, `${file}: three step cards`);
+    assert.equal((text.match(/class="tag-list"/g) || []).length, 1, `${file}: quote inputs as chips`);
+    assert.equal(
+      (text.match(/<a href="#[a-z]+"><span class="mono">/g) || []).length,
+      3,
+      `${file}: three chapters in the subnav`
+    );
+  }
+  if (file.endsWith('/about/index.html')) {
+    assert(text.includes('<span class="mono">CCG API</span>'), `${file}: the product is named CCG API`);
+    assert(!text.includes('principle'), `${file}: the working-rules block stays removed`);
+    assert.equal((text.match(/<section /g) || []).length, 4, `${file}: four chapters`);
   }
   if (file.endsWith('/zh/index.html') || file.endsWith('/en/index.html')) {
-    assert(!text.replaceAll('CCGAI008', '').includes('CCG'), `${file}: product displaced the brand`);
-    assert(text.includes('hero-side-panel'), `${file}: hero cooperation panel missing`);
-    assert.equal(
-      (text.match(/hero-route-number/g) || []).length,
-      3,
-      `${file}: hero must retain all three cooperation routes`
-    );
+    assert(!text.includes('CCG'), `${file}: product displaced the brand`);
+    assert(!text.includes('hero-routes'), `${file}: the hero routes stay removed; the columns below carry them`);
+    assert.equal((text.match(/data-service-column=/g) || []).length, 3, `${file}: one column per service`);
+    assert(!text.includes('role="tab"'), `${file}: services are side-by-side columns, not tabs`);
+    assert(!text.includes('id="process"'), `${file}: the process lives in the inquiry chapter`);
     assert.equal((text.match(/class="guide-card"/g) || []).length, 3, `${file}: one featured guide per service`);
-    assert.equal((text.match(/class="faq-number"/g) || []).length, 6, `${file}: two FAQs per service`);
-    assert.equal((text.match(/class="step-prompts"/g) || []).length, 4, `${file}: four cooperation stages`);
+    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 6, `${file}: two FAQs per service`);
+    assert.equal((text.match(/class="check-grid"/g) || []).length, 3, `${file}: scenarios on each service card`);
+    assert(!/\bL[123]\b/.test(text.replace(/<svg[\s\S]*?<\/svg>/g, '')), `${file}: layer codes stay off the page`);
+    assert(!text.includes('cta-steps'), `${file}: the inquiry carries no step list`);
+    assert(!text.includes('class="section promise"'), `${file}: the slogan-only promise chapter stays removed`);
     assert(text.includes('data-contact-panel'), `${file}: consultation should work on the homepage`);
+    // Round 15: a "why Easy AI" chapter with four factual reasons. Round 17: the seven partners named by the owner.
+    // Round 17c: their logos in a chapter of their own. Round 18: the partners moved inside the why chapter as one
+    // looping lane; the list repeats for the loop, so only the first copy carries an accessible name.
+    assert(text.includes('id="why"'), `${file}: why-Easy-AI chapter missing`);
+    assert.equal((text.match(/class="why-card"/g) || []).length, 4, `${file}: four reasons`);
+    assert(/id="why"[\s\S]*id="guides"/.test(text), `${file}: the why chapter (with its partners) precedes the guides`);
+    assert.equal((text.match(/class="partner-plate"/g) || []).length, 32, `${file}: 8 partners × 4 copies`);
+    const named = [...text.matchAll(/<img src="[^"]*\/partners\/[^"]+" alt="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(named.length, 8, `${file}: each partner announced once`);
+    assert(named.includes(file.includes('/en/') ? 'China Mobile' : '中国移动'), `${file}: partner names`);
+    assert(named.includes(file.includes('/en/') ? 'DAYUSEA' : '大鱼出海'), `${file}: the eighth partner`);
+    assert.equal((text.match(/class="partner-set"/g) || []).length, 4, `${file}: four copies loop the lane`);
+    assert(text.includes('class="partner-toggle"'), `${file}: pause control for the lane`);
     for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
       assert(text.includes(`/contact/?topic=${service}`), `${file}: service-specific inquiry is missing`);
       assert(text.includes(`data-topic-preparation="${service}"`), `${file}: preparation copy is missing`);
     }
   }
 }
-assert.equal(files.filter((file) => file.includes('sitemap')).length, 0);
+if (origin) {
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.deepEqual(
+    locs.sort(),
+    routes.map((route) => new URL(route.path, origin).href).sort(),
+    'Sitemap lists every route'
+  );
+  assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, 26);
+  assert.match(await readFile('dist/robots.txt', 'utf8'), new RegExp(`Sitemap: ${origin}${base}/sitemap.xml`));
+  assert(!(await readFile('dist/_headers', 'utf8')).includes('X-Robots-Tag'), 'Production headers must allow indexing');
+  for (const css of files.filter((file) => file.endsWith('.css')))
+    for (const [, url] of (await readFile(css, 'utf8')).matchAll(/url\((\/[^)]*)\)/g))
+      assert(url.startsWith(`${base}/`), `${css}: ${url} ignores the base path`);
+} else {
+  assert.equal(files.filter((file) => file.includes('sitemap')).length, 0);
+  assert.match(await readFile('dist/robots.txt', 'utf8'), /Disallow: \//);
+}
 assert.equal(files.filter((file) => file.includes('decapcms')).length, 0);
-assert.match(await readFile('dist/robots.txt', 'utf8'), /Disallow: \//);
 assert(!files.includes('dist/products/model-catalog.jpg'));
-for (const font of ['manrope-latin', 'noto-sans-sc-site']) {
+for (const font of ['manrope-latin', 'noto-sans-sc-site', 'jetbrains-mono-latin']) {
   const bytes = await readFile(`dist/fonts/${font}.woff2`);
   assert.equal(bytes.subarray(0, 4).toString(), 'wOF2');
-  assert(bytes.length < 180000);
+  // The Chinese subset grows with the copy (686 characters in round 9); Latin subsets stay well below.
+  assert(bytes.length < (font === 'noto-sans-sc-site' ? 190000 : 180000), `${font}: ${bytes.length} bytes`);
 }
 for (const lang of ['zh', 'en']) {
   for (const variant of ['', '-mono', '-inverse']) {
@@ -144,6 +231,7 @@ await writeFile(
   JSON.stringify(
     {
       testedAt: new Date().toISOString(),
+      mode: origin ? `production ${origin}${base}/` : 'noindex preview',
       htmlPages: html.length,
       sharingImages: brandImages.length - 1,
       totalBytes: inventory.reduce((sum, item) => sum + item.bytes, 0),
@@ -156,5 +244,5 @@ await writeFile(
   )
 );
 console.log(
-  `PASS: ${html.length} pages; noindex/brand/assets/no sitemap; external JS files ${scriptBytes} bytes (inline scripts measured by browser tests).`
+  `PASS: ${html.length} pages; ${origin ? `indexable at ${origin}${base}/ with canonical/sitemap` : 'noindex preview, no sitemap'}; brand/assets; external JS files ${scriptBytes} bytes (inline scripts measured by browser tests).`
 );

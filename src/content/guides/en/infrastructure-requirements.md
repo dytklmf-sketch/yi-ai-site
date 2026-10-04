@@ -1,8 +1,8 @@
 ---
 lang: en
 pairKey: infrastructure-requirements
-title: Define infrastructure needs through the workload
-description: Describe workloads, compute, storage, networking, duration and responsibilities before discussing equipment and an infrastructure proposal.
+title: How to describe infrastructure needs
+description: Workload type, model size, duration and data location.
 service: infrastructure
 updatedAt: '2026-09-19'
 order: 5

@@ -1,11 +1,11 @@
 ---
-import { ArrowUpRight, BookOpen } from '@lucide/astro';
+import { ArrowUpRight } from '@lucide/astro';
 import type { CollectionEntry } from 'astro:content';
 import { articlePath, type Lang } from '../../data/yi-ai';
 import { editorial } from '../../data/editorial';
-import { refinement } from '../../data/refinement';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
+import ServiceIcon from './ServiceIcon.astro';
 interface Props {
   lang: Lang;
   guides: CollectionEntry<'guides'>[];
@@ -13,45 +13,52 @@ interface Props {
 }
 const { lang, guides, featured = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
-const r = refinement[lang];
+// Every guide opens with 先给结论 and 适用条件 and closes with 常见问题, so those headings say nothing about this
+// particular guide. The middle sections are what actually differ, and the two languages carry the same ones in the
+// same order, so the card can list them without the pairing drifting apart.
+const bodySections = (body: string) => [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).slice(2, -1);
 ---
 
 <div class:list={['guide-grid', { 'guide-grid-featured': featured }]}>
   {
-    guides.map(({ data }, i) => (
-      <a class="guide-card" href={articlePath(lang, data.pairKey)} data-reveal data-delay={i % 3}>
-        <div class="guide-label">
-          <>
-            <BookOpen size={18} />
-            <span>{t.services[data.service].label}</span>
-          </>
-        </div>
-        <h3>{data.title}</h3>
-        <span class="guide-audience">
-          {r.guideAudience} · {r.audiences[data.service]}
-        </span>
-        <p>{data.description}</p>
-        {featured && (
-          <ul class="guide-preview">
-            {r.guideChecks[data.service].map((item, index) => (
-              <li>
-                <span aria-hidden="true">0{index + 1}</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        )}
-        <div class="guide-meta">
-          <>
-            <span>{r.guideType}</span>
-            <time datetime={data.updatedAt}>{data.updatedAt}</time>
-          </>
-        </div>
-        <span class="card-link">
-          {editorial[lang].readGuide}
-          <ArrowUpRight size={18} />
-        </span>
-      </a>
-    ))
+    guides.map(({ data, body }, i) => {
+      const sections = body ? bodySections(body) : [];
+      return (
+        <a
+          class="guide-card"
+          href={articlePath(lang, data.pairKey)}
+          data-service={data.service}
+          data-reveal
+          style={`--d:${i % 3}`}
+        >
+          <span class="guide-label">
+            <ServiceIcon service={data.service} size={16} tile />
+            {t.services[data.service].label}
+          </span>
+          <h3>{data.title}</h3>
+          <p class="guide-desc">{data.description}</p>
+          {sections.length > 0 && (
+            <p class="guide-contents">
+              <span class="guide-contents-label mono">{editorial[lang].guideContents}</span>
+              {sections.join(' · ')}
+            </p>
+          )}
+          <span class="guide-foot">
+            <span class="guide-link">
+              {editorial[lang].readGuide}
+              <span class="guide-arrow">
+                <ArrowUpRight size={16} />
+              </span>
+            </span>
+            <span class="guide-meta">
+              {editorial[lang].updated}{' '}
+              <time class="mono" datetime={data.updatedAt}>
+                {data.updatedAt}
+              </time>
+            </span>
+          </span>
+        </a>
+      );
+    })
   }
 </div>

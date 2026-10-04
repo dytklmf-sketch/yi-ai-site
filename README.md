@@ -1,21 +1,27 @@
 # 易AI / Easy AI Independent Brand Website
 
 Local bilingual brand-and-guides edition: **让 AI 真正用起来，在业务中落地。**
-CCG is a model-service product entry, not the site identity or application backend.
+CCG API is a model-service product entry, not the site identity or application backend. Site copy always names it `CCG API` (`modelProduct.name`).
 
-## Third-Round Refinement
+## Seventh-Round Redesign
 
-The current execution plan and acceptance record are in `plan.md`. The complete
-handoff map, absolute paths, review prompt and per-round update procedure are in
-`HANDOFF.md`.
-The homepage retains seven chapters, with three equal service cards, four
-cooperation steps, three featured guides and six categorized FAQs. Each service
-card separates its detail link from a topic-aware inquiry. The final chapter and
-contact page share `ContactPanel.astro` and `src/scripts/contact.ts`.
+The current plan and acceptance record are in `plan.md`; the handoff map, review
+prompt and per-round procedure are in `HANDOFF.md`.
+The site is organized around one idea: 易AI works across three layers, the
+application layer (WorkBuddy), the model layer (model services and supply) and the
+compute layer (self-built infrastructure). `StackVisual.astro` draws those layers
+as one isometric illustration, reused in the dark homepage hero, the layer cards
+and the service page heroes.
+
+The homepage runs hero → three layer cards with a sticky illustration → the
+易懂 · 易用 · 易落地 promise → four cooperation stages → three featured guides →
+filterable FAQ → the shared inquiry panel. Hovering or focusing a hero route
+lights up its layer; reading a layer card syncs the illustration. Service, about,
+resources, article and contact pages share `PageHero.astro`, a sticky section
+nav or table of contents, reading progress and a phone inquiry bar.
 Topic choices survive reloads, language changes and browser Back without storing
 customer information. Articles translate section fragments between paired headings;
-service pages use a six-part contents navigation and consistent section IDs.
-Guide dates reflect editorial changes, not cosmetic updates.
+service pages keep a six-part contents navigation and stable section IDs.
 
 ## Run Locally
 
@@ -48,7 +54,7 @@ No deployment is performed by these commands.
 Both `/zh/` and `/en/` have a homepage plus:
 
 - `workbuddy/`: enterprise AI applications and WorkBuddy procurement consulting.
-- `model-services/`: model APIs, supply cooperation, and the CCG product entry.
+- `model-services/`: model APIs, supply cooperation, and the CCG API product entry.
 - `infrastructure/`: confirmed self-built data-center capability.
 - `contact/`: inquiry topic, selectable/copyable WeChat ID, and email inquiry.
 - `about/`: confirmed positioning, capabilities and product relationships.
@@ -63,7 +69,8 @@ Edit Chinese copy in `src/data/zh.ts`, English copy in `src/data/en.ts`, and con
 details/product links in `src/data/yi-ai.ts`. The approved Chinese brand is 易AI;
 the English name is `Easy AI`, with a space and uppercase AI. Schema metadata retains both names.
 Templates are in `src/pages/`; shared metadata/navigation is in
-`src/layouts/YiAiLayout.astro`; styling is in `src/styles/yi-ai.css`.
+`src/layouts/YiAiLayout.astro`; styling is one plain-CSS design system in `src/styles/site.css`
+(no utility framework); page sections live in `src/components/yi-ai/`.
 Business processes, quotation inputs and scope are in `src/data/service-details.ts`.
 About/resource copy is in `src/data/editorial.ts`.
 
@@ -82,40 +89,22 @@ The optional QR configuration remains unset; no placeholder QR is shown.
 
 ## Motion and Layout
 
-The header mark stays still. The desktop hero symbol moves once by 6px;
-supporting copy enters within 600ms. Below-fold groups reveal once with native
-IntersectionObserver and Web Animations, without hidden-by-default content.
-Cards move only on hover-capable pointers; menus and FAQ use native details.
-Same-origin page transitions use CSS `@view-transition` without a client router.
-Reduced-motion preferences disable nonessential animation and displacement.
+The header lockup stays still. The hero copy and illustration enter once within
+about a second; the illustration's light beam runs twice and stops. Below-fold
+groups reveal once with IntersectionObserver; content is visible in the HTML and
+is only hidden after the observer is ready, so no-JS and missing-observer readers
+see everything, and revealed content never fades back out. Cards lift only on
+hover-capable pointers. The menu sheet and FAQ use native `details` with Web
+Animations layered on top. Reduced-motion preferences remove entrance motion,
+reveals and hover displacement. There is no looping motion, animation library,
+client router or scroll hijacking; pages scroll natively.
 
-Below 1200px navigation collapses. Phone layouts have a fixed consultation entry,
-except on the contact page, with reserved bottom space for safe-area and focus.
-Body text is 17px desktop / 16px phone; cards use 8px corners, buttons 12px.
-No loops, tracking, animation library or nested scroll container is included.
-The expanded homepage route rail and article cards can exceed a phone viewport;
-they retain native scrolling and reachable links rather than shrinking the text.
-
-The homepages use seven viewport-height chapters, with the footer naturally following
-the final inquiry chapter instead of becoming a separate paged screen.
-Desktop layouts at least 1200px wide and 800px high, with a fine pointer, use explicit
-page-by-page navigation: one vertical wheel gesture turns one chapter, including
-the gesture's inertial tail. PageUp/Down, arrow keys, Home/End and chapter links
-share the same 640–1000ms easing. Reverse gestures and new chapter links can
-redirect a transition. Native wheel scrolling is prevented only in this mode.
-Side anchors indicate the current section; fragment links and browser history
-remain usable. Keyboard navigation focuses the destination.
-Ordinary chapters have one resting position below the header. Scrollbar dragging
-and other scroll paths settle to a complete chapter after release, without a
-distance cutoff. The footer is also a complete desktop screen.
-Oversized sections retain a readable interval, so expanded answers are not skipped.
-Phones, short windows and reduced-motion users keep native reading. Native CSS
-snapping provides the no-JavaScript fallback; articles and business pages retain
-their continuous reading layout. Browser zoom and editable controls are not paged.
-
-Content groups begin their single 600ms entrance before they come into view;
-content already visible after a fast scroll is never faded back to zero.
-The timing controller is loaded only on the two homepages.
+Navigation collapses into a sheet below 1200px. Phones get a fixed consultation
+bar, except on the contact page, which hides over the first screen and the closing
+inquiry band. Body text is 17px desktop / 16px phone. Colours come from CSS custom
+properties: night `#070B16`, cobalt `#245BDB`, ink `#111726`; muted text keeps at
+least 4.5:1 contrast on every light surface. Headings use Manrope / Noto Sans SC;
+codes, numbers and labels use a local JetBrains Mono subset.
 
 ## Validation
 
@@ -123,32 +112,28 @@ The timing controller is loaded only on the two homepages.
 pnpm check
 pnpm build
 pnpm test
-PREVIEW_URL=http://127.0.0.1:4322 pnpm test:round-four
 pnpm exec playwright install chromium webkit ffmpeg
 PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser
 pnpm audit
 ```
 
 Start the static preview before browser checks. Alternatively set `BROWSER_EXECUTABLE`
-to a locally installed Chromium-based browser; a browser download is then unnecessary.
+to a locally installed Chromium-based browser. On Linux, WebKit also needs its
+system libraries (`pnpm exec playwright install-deps webkit`).
 Run `check` and `build` sequentially: they share Astro's generated content cache.
-Browser checks cover 26 content routes at eight widths (320, 360, 390, 768,
-1024, 1200, 1440 and 1920px), axe accessibility scans,
-internal links, language counterparts, contact interactions, keyboard input,
-no-JavaScript reading, and 404 behavior. Enhanced tests run Chromium and WebKit
-round trips, article contents, reduced motion, missing observer fallback,
-200% equivalent reflow and motion screenshots/recordings.
-`scripts/test-chapter-transition.mjs` adds frame-by-frame continuity, interrupted
-navigation, keyboard focus and simulated small-delta wheel regressions in both engines.
-`scripts/test-page-turning.mjs` covers single-page gestures, momentum, arbitrary
-midpoint resting positions, dragging, keyboard paging and the desktop footer.
-`scripts/test-round-three.mjs` covers bilingual 1200x800, 1440x960 and 1524x1227
-chapter geometry, inline consultation, persistent topics and paired article sections.
-`scripts/test-round-four.mjs` covers first-visit service routes, fixed-bar reachability,
-short mobile windows, contact feedback stability, topic-aware email links and both engines.
-Simulated wheel input is not a physical touchpad hardware benchmark.
-Reports/screenshots go to `test-results/`; executable JavaScript stays below
-the existing 20KB per-page budget.
+
+`scripts/test-build.mjs` asserts the static output: 28 pages, noindex (or, for a
+production build, canonical/sitemap/base-path URLs), brand assets, fonts, homepage structure and the 20KB JavaScript budget.
+`scripts/test-browser.mjs` checks 26 content routes at eight widths (320, 360, 390,
+768, 1024, 1200, 1440 and 1920px) for overflow, fonts, logos and hero routes, runs
+axe at 390 and 1440px, then covers internal links, language counterparts, the menu,
+contact topics, clipboard success and fallback, keyboard input, no-JavaScript
+reading and the 404. It finishes with `scripts/test-enhancements.mjs` in Chromium
+and WebKit: language round trips, article contents and reading progress, service
+section navigation, header states, the route/layer illustration sync, FAQ filter
+and animation, menu focus handling at five breakpoints, the phone inquiry bar,
+200% equivalent reflow, reduced motion, missing observer fallback and a motion
+recording. Reports and screenshots go to `test-results/`.
 Performance figures are local, unthrottled browser observations, not Lighthouse
 scores or production Core Web Vitals. Tests do not contact model providers.
 After validation, `pnpm package:preview` writes verified archives, screenshots,
@@ -167,22 +152,36 @@ Do not fabricate data-center photography. The selected A whale logo is an offlin
 vector refinement of the earlier skill-generated EAI concept. Normal builds,
 tests and asset exports require no image API or credentials.
 The outlined logo, transparent exports and font-subset workflow are documented in
-`BRAND.md`. Manrope and Noto Sans SC are self-hosted with OFL notices, not fetched
+`BRAND.md`. Manrope, Noto Sans SC and JetBrains Mono are self-hosted with OFL notices, not fetched
 from Google during page visits.
 
-## Publication Gate
+## Publication
 
-This edition is a local preview. Every page has `noindex, nofollow`; `robots.txt`
-disallows crawling; `_headers` contains an additional noindex header for hosts
-that support that file. There is no sitemap or production canonical URL.
-Locale alternates and sharing-image paths are local preview references.
+A plain `pnpm build` is a local preview: every page has `noindex, nofollow`,
+`robots.txt` disallows crawling, `_headers` adds a noindex header and there is no
+sitemap or canonical URL.
 
-After the owner approves a formal domain and publication, separately configure
-the site origin, absolute canonical/locale/share URLs, sitemap, crawl rules,
-host-specific headers, and a genuine HTTP 404. Recheck accessibility and metadata
-on that host before search submission. Do not publish this directory on CCG or
-remove indexing safeguards without explicit authorization. GEO visibility and
-search inclusion are not guaranteed by the site implementation.
+The owner approved publication at **https://ccg-cli.online/yi_ai/** (2026-09-30).
+`SITE_ORIGIN` and `SITE_BASE` switch the build to production (see
+`scripts/site-indexing.mjs`): every internal URL gets the `/yi_ai` prefix through
+`withBase()` in `src/data/yi-ai.ts`, pages carry absolute canonical, `og:url`,
+`og:image` and `hreflang` (with `x-default`) links, and `sitemap.xml` lists all 26
+routes with language alternates. The entry page and 404 stay noindex.
+
+```sh
+pnpm build:production   # SITE_ORIGIN=https://ccg-cli.online SITE_BASE=/yi_ai
+pnpm test:production    # production assertions
+scripts/deploy-ccg.sh   # build, test and publish on this server
+scripts/deploy-ccg.sh --rollback
+```
+
+The server's nginx serves `/var/www/yi_ai` (a symlink to a timestamped directory
+in `/var/www/releases/`) through `/etc/nginx/snippets/yi-ai-site.conf`, included
+once in the `ccg-cli.online` HTTPS server. Browser tests run against the root
+preview build, so run `pnpm build` again after a production build before local
+testing. Crawlers only read `robots.txt` at the origin root, which belongs to CCG;
+submit `https://ccg-cli.online/yi_ai/sitemap.xml` in search consoles instead.
+GEO visibility and search inclusion are not guaranteed by the site implementation.
 
 See `IMPLEMENTATION_PLAN.md` for status and `LAUNCH_CHECKLIST.md` for deliberately
 deferred publication/material requirements. The pre-upgrade snapshot is outside

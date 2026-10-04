@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: infrastructure-responsibilities
-title: 机房合作，先写清楚责任边界
-description: 从设备到应用、从访问权限到备份退出，梳理机房合作中的责任分工，把需要单独确认的服务写清楚，而不是默认全部包含。
+title: 机房合作的责任划分
+description: 机房合作中的设备、访问权限、备份和到期退出，各由哪一方负责、如何写进协议。
 service: infrastructure
 updatedAt: '2026-09-19'
 order: 6

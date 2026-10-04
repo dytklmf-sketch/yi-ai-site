@@ -1,22 +1,32 @@
 ---
 import YiAiLayout from '../layouts/YiAiLayout.astro';
+import StackVisual from '../components/yi-ai/StackVisual.astro';
 import { ArrowLeft } from '@lucide/astro';
+import { pathFor } from '../data/yi-ai';
 ---
 
 <YiAiLayout
   lang="zh"
   notFound
+  darkHero
   title="页面未找到 / Page not found"
   description="返回易AI 首页 / Return to the Easy AI homepage."
 >
-  <section class="not-found site-container">
-    <p class="eyebrow">404 / PAGE NOT FOUND</p>
-    <h1>这条路，<br />换个方向出发。</h1>
-    <p>你访问的页面不存在。<br />This page could not be found.</p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="/zh/"><ArrowLeft size={17} />返回首页</a><a class="text-link" href="/en/"
-        >English home</a
-      >
+  <section class="hero not-found">
+    <div class="hero-bg" aria-hidden="true"><span class="hero-grid-lines"></span><span class="hero-glow"></span></div>
+    <div class="container hero-layout">
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-light mono">404 / PAGE NOT FOUND</p>
+        <h1 class="hero-title">
+          <span>未找到该页面，</span><span class="hero-title-accent">请从首页重新进入。</span>
+        </h1>
+        <p class="hero-lead">你访问的页面不存在。<br />This page could not be found.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href={pathFor('zh')}><ArrowLeft size={17} />返回首页</a>
+          <a class="btn btn-ghost-light btn-lg" href={pathFor('en')}>English home</a>
+        </div>
+      </div>
+      <div class="hero-visual"><StackVisual lang="zh" id="nf" labels={false} /></div>
     </div>
   </section>
 </YiAiLayout>

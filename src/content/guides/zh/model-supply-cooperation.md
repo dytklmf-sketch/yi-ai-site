@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: model-supply-cooperation
-title: 模型供应合作，首次沟通准备什么？
-description: 整理资源范围、供应依据、接口条件、用量约束和结算责任，让模型供应合作从可核对的信息开始，不以模糊渠道描述替代确认。
+title: 模型供应合作的准备材料
+description: 作为供应方洽谈模型供应合作时要准备的材料：资源范围、供应依据、接口条件和结算方式。
 service: model-services
 updatedAt: '2026-09-19'
 order: 4

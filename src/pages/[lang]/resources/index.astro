@@ -1,14 +1,16 @@
 ---
+import { ArrowRight } from '@lucide/astro';
 import YiAiLayout from '../../../layouts/YiAiLayout.astro';
-import WidgetWrapper from '../../../components/ui/WidgetWrapper.astro';
 import GuideCards from '../../../components/yi-ai/GuideCards.astro';
 import CallToAction from '../../../components/yi-ai/CallToAction.astro';
+import PageHero from '../../../components/yi-ai/PageHero.astro';
 import { editorial } from '../../../data/editorial';
 import { refinement } from '../../../data/refinement';
-import { brandName, pathFor, services, type Lang } from '../../../data/yi-ai';
+import { pathFor, services, type Lang } from '../../../data/yi-ai';
 import { languages, getGuides } from '../../../data/routes';
 import { zh } from '../../../data/zh';
 import { en } from '../../../data/en';
+import ServiceIcon from '../../../components/yi-ai/ServiceIcon.astro';
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
 }
@@ -18,44 +20,36 @@ const t = lang === 'zh' ? zh : en;
 const guides = await getGuides(lang);
 ---
 
-<YiAiLayout lang={lang} slug="resources" title={e.resources} description={e.guidesIntro}>
-  <section class="page-hero">
-    <div class="site-container">
-      <nav class="breadcrumb" aria-label={lang === 'zh' ? '面包屑导航' : 'Breadcrumb'}>
-        <a href={pathFor(lang)}>{brandName(lang)}</a><span>/</span><span>{e.resources}</span>
-      </nav>
-      <div class="page-hero-grid">
-        <div><p class="eyebrow">{e.resources}</p><h1>{e.guidesTitle}</h1></div><div class="page-hero-copy">
-          <p>{e.guidesIntro}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <nav
-    class="guide-topics site-container"
-    data-section-nav
-    aria-label={lang === 'zh' ? '指南分类' : 'Guide categories'}
-  >
-    {services.map((service) => <a href={`#${service}`}>{t.services[service].label}</a>)}
-  </nav>
+<YiAiLayout lang={lang} slug="resources" title={e.resources} description={e.guidesIntro} chapters>
+  <PageHero lang={lang} crumb={e.resources} title={e.resources} intro={e.guidesIntro} compact>
+    <nav slot="meta" class="topic-tabs" data-section-nav aria-label={lang === 'zh' ? '指南分类' : 'Guide categories'}>
+      {
+        services.map((service) => (
+          <a href={`#${service}`}>
+            <ServiceIcon service={service} size={16} />
+            {t.services[service].label}
+          </a>
+        ))
+      }
+    </nav>
+  </PageHero>
   {
-    services.map((service) => (
-      <WidgetWrapper id={service} class="resource-section">
-        <>
-          <div class="section-head">
+    services.map((service, i) => (
+      <section id={service} class:list={['section', 'resource-section', { 'section-tint': i % 2 === 1 }]}>
+        <div class="container">
+          <div class="section-head section-head-split" data-reveal>
             <div>
-              <>
-                <p class="eyebrow">{refinement[lang].audiences[service]}</p>
-                <h2>{t.services[service].label}</h2>
-              </>
+              <p class="eyebrow">{refinement[lang].audiences[service]}</p>
+              <h2 class="section-title">{t.services[service].label}</h2>
             </div>
             <a class="text-link" href={pathFor(lang, service)}>
               {t.explore}
+              <ArrowRight size={16} />
             </a>
           </div>
           <GuideCards lang={lang} guides={guides.filter(({ data }) => data.service === service)} />
-        </>
-      </WidgetWrapper>
+        </div>
+      </section>
     ))
   }
   <CallToAction lang={lang} />

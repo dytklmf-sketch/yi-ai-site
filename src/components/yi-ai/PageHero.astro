@@ -1,0 +1,54 @@
+---
+import { brandName, pathFor, type Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+  crumb: string;
+  /** Optional middle breadcrumb level. */
+  parent?: { href: string; text: string };
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  compact?: boolean;
+}
+const { lang, crumb, parent, eyebrow, title, intro, compact = false } = Astro.props;
+const hasVisual = Astro.slots.has('visual');
+---
+
+<section class:list={['page-hero', { 'page-hero-compact': compact, 'page-hero-with-visual': hasVisual }]}>
+  <div class="page-hero-bg" aria-hidden="true"></div>
+  <div class="container page-hero-layout">
+    <div class="page-hero-copy">
+      <nav class="breadcrumb" aria-label={lang === 'zh' ? '面包屑导航' : 'Breadcrumb'}>
+        <a href={pathFor(lang)}>{brandName(lang)}</a>
+        <span aria-hidden="true">/</span>
+        {
+          parent && (
+            <>
+              <a href={parent.href}>{parent.text}</a>
+              <span aria-hidden="true">/</span>
+            </>
+          )
+        }
+        <span aria-current="page">{crumb}</span>
+      </nav>
+      {
+        eyebrow && (
+          <p class="eyebrow" data-enter>
+            {eyebrow}
+          </p>
+        )
+      }
+      <h1 class="page-title" data-enter style="--d:1">{title}</h1>
+      {
+        intro && (
+          <p class="page-intro" data-enter style="--d:2">
+            {intro}
+          </p>
+        )
+      }
+      <div data-enter style="--d:3"><slot name="actions" /><slot name="meta" /></div>
+    </div>
+    <slot name="visual" />
+  </div>
+</section>

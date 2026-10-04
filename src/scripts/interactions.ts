@@ -1,6 +1,18 @@
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
-const header = document.querySelector<HTMLElement>('.site-header');
+// Keep aria-expanded in step immediately; the native toggle event arrives a task later.
+const closeMenu = () => {
+  if (!menu) return;
+  menu.open = false;
+  menu.querySelector('summary')?.setAttribute('aria-expanded', 'false');
+};
+const header = document.querySelector<HTMLElement>('[data-header]');
+const darkHero = document.body.classList.contains('has-dark-hero')
+  ? document.querySelector<HTMLElement>('main > .hero')
+  : null;
+const mobileInquiry = document.querySelector<HTMLElement>('[data-mobile-inquiry]');
+const progress = document.querySelector<HTMLElement>('[data-reading-progress]');
+const progressTarget = document.querySelector<HTMLElement>('.article-body');
 const animations = new Set<Animation>();
 const play = (element: Element, frames: Keyframe[], options: KeyframeAnimationOptions) => {
   const animation = element.animate(frames, options);
@@ -9,11 +21,34 @@ const play = (element: Element, frames: Keyframe[], options: KeyframeAnimationOp
   return animation;
 };
 
-const headerState = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
-headerState();
-window.addEventListener('scroll', headerState, { passive: true });
+// Scroll-driven state is batched into one frame.
+let frame = 0;
+const onScroll = () => {
+  frame = 0;
+  const y = window.scrollY;
+  header?.classList.toggle('is-scrolled', y > 8);
+  if (header && darkHero)
+    header.classList.toggle('is-solid', darkHero.getBoundingClientRect().bottom <= header.offsetHeight);
+  if (mobileInquiry) {
+    // Stay out of the way over the first screen and the closing inquiry band.
+    const cta = document.querySelector('.cta-band, .site-footer')?.getBoundingClientRect();
+    const hide = y < innerHeight * 0.6 || (cta ? cta.top < innerHeight - 40 : false);
+    mobileInquiry.toggleAttribute('data-hidden', hide);
+  }
+  if (progress && progressTarget) {
+    const box = progressTarget.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight * 0.6)));
+    progress.style.setProperty('--progress', ratio.toFixed(4));
+  }
+  highlightSection();
+};
+const requestScroll = () => {
+  if (!frame) frame = requestAnimationFrame(onScroll);
+};
+window.addEventListener('scroll', requestScroll, { passive: true });
+window.addEventListener('resize', requestScroll);
+window.addEventListener('pageshow', requestScroll);
 
-const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-section-nav] a[href^="#"]')];
 const fragmentId = (hash: string) => {
   try {
     return decodeURIComponent(hash.slice(1));
@@ -21,38 +56,29 @@ const fragmentId = (hash: string) => {
     return '';
   }
 };
+const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-section-nav] a[href^="#"]')];
 const sectionTargets = [...new Set(sectionLinks.map((link) => document.getElementById(fragmentId(link.hash))))].filter(
   (target): target is HTMLElement => target !== null
 );
-if (sectionTargets.length) {
-  let pending = false;
-  const highlightSection = () => {
-    const inset =
-      Math.max(
-        header?.getBoundingClientRect().bottom || 0,
-        parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
-      ) + 24;
-    const active = sectionTargets.findLast((target) => target.getBoundingClientRect().top <= inset);
-    sectionLinks.forEach((link) => {
-      if (active?.id === fragmentId(link.hash)) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
-    pending = false;
-  };
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(highlightSection);
-      }
-    },
-    { passive: true }
-  );
-  window.addEventListener('resize', highlightSection);
-  window.addEventListener('pageshow', highlightSection);
-  highlightSection();
+function highlightSection() {
+  if (!sectionTargets.length) return;
+  const subnav = document.querySelector('.subnav')?.getBoundingClientRect().bottom || 0;
+  const inset = Math.max(header?.getBoundingClientRect().bottom || 0, subnav) + 48;
+  const active = sectionTargets.findLast((target) => target.getBoundingClientRect().top <= inset);
+  sectionLinks.forEach((link) => {
+    const current = active?.id === fragmentId(link.hash);
+    if (current) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+    // Keep the active tab visible in horizontally scrolling navs.
+    const row = link.parentElement;
+    if (current && row && row.scrollWidth > row.clientWidth) {
+      const left = link.offsetLeft - (row.clientWidth - link.offsetWidth) / 2;
+      if (Math.abs(row.scrollLeft - left) > 24) row.scrollTo({ left, behavior: reduced.matches ? 'auto' : 'smooth' });
+    }
+  });
 }
+onScroll();
+
 const fragmentPairs: Record<string, string> | undefined = (() => {
   const pairs = document.querySelector<HTMLElement>('[data-language-fragments]')?.dataset.languageFragments;
   return pairs ? JSON.parse(pairs) : undefined;
@@ -76,50 +102,59 @@ document.addEventListener('click', (event) => {
 });
 syncLanguageFragment();
 
+// Height animation for disclosures; the menu sheet fades and slides instead.
 document.querySelectorAll<HTMLDetailsElement>('.faq-list details, .mobile-menu, .mobile-toc').forEach((details) => {
   const summary = details.querySelector('summary');
-  const content = summary?.nextElementSibling;
+  const content = summary?.nextElementSibling as HTMLElement | null;
+  const sheet = details.classList.contains('mobile-menu');
   let running: Animation | undefined;
   let desiredOpen = details.open;
   details.addEventListener('toggle', () => {
     if (!details.open) {
-      const previous = running;
+      running?.cancel();
       running = undefined;
-      previous?.cancel();
       desiredOpen = false;
     }
+    if (sheet) summary?.setAttribute('aria-expanded', String(details.open));
   });
   summary?.addEventListener('click', async (event) => {
     if (reduced.matches || !content || typeof content.animate !== 'function') return;
     event.preventDefault();
-    const opening = !details.open || (running ? !desiredOpen : false);
+    const opening = running ? !desiredOpen : !details.open;
     const fromHeight = details.open ? content.getBoundingClientRect().height : 0;
     const fromOpacity = details.open ? getComputedStyle(content).opacity : '0';
-    const currentClip = details.open ? getComputedStyle(content).clipPath : 'inset(0 0 100% 0)';
-    const fromClip = currentClip === 'none' ? 'inset(0)' : currentClip;
     desiredOpen = opening;
-    const previous = running;
+    running?.cancel();
     running = undefined;
-    previous?.cancel();
     if (opening) details.open = true;
     const height = content.getBoundingClientRect().height;
-    const flowContent = !details.classList.contains('mobile-menu');
-    const animation = play(
-      content,
-      [
-        {
-          opacity: fromOpacity,
-          ...(flowContent ? { height: `${fromHeight}px`, overflow: 'hidden' } : { clipPath: fromClip }),
-        },
-        {
-          opacity: opening ? 1 : 0,
-          ...(flowContent
-            ? { height: `${opening ? height : 0}px`, overflow: 'hidden' }
-            : { clipPath: opening ? 'inset(0)' : 'inset(0 0 100% 0)' }),
-        },
-      ],
-      { duration: 220, easing: 'ease-out' }
-    );
+    const frames: Keyframe[] = sheet
+      ? [
+          { opacity: fromOpacity, transform: details.open && !opening ? 'none' : 'translateY(-8px)' },
+          { opacity: opening ? 1 : 0, transform: opening ? 'none' : 'translateY(-8px)' },
+        ]
+      : [
+          { opacity: fromOpacity, height: `${fromHeight}px`, overflow: 'hidden' },
+          { opacity: opening ? 1 : 0, height: `${opening ? height : 0}px`, overflow: 'hidden' },
+        ];
+    const animation = play(content, frames, { duration: sheet ? 240 : 300, easing: 'cubic-bezier(.22,1,.36,1)' });
+    if (sheet && opening) {
+      content.querySelectorAll<HTMLElement>('nav a').forEach((link, i) =>
+        play(
+          link,
+          [
+            { opacity: 0, transform: 'translateY(10px)' },
+            { opacity: 1, transform: 'none' },
+          ],
+          {
+            duration: 420,
+            delay: 40 + i * 35,
+            easing: 'cubic-bezier(.22,1,.36,1)',
+            fill: 'backwards',
+          }
+        )
+      );
+    }
     running = animation;
     await animation.finished.catch(() => {});
     // A canceled animation must never overwrite a newer click or external close.
@@ -134,113 +169,100 @@ document.addEventListener('keydown', (event) => {
   const active = document.activeElement?.closest<HTMLDetailsElement>('details[open]');
   const target = menu?.open ? menu : active;
   if (target) {
-    target.open = false;
+    if (target === menu) closeMenu();
+    else target.open = false;
     target.querySelector('summary')?.focus();
   }
 });
 document.addEventListener('click', (event) => {
-  if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+  if (!menu?.open || !(event.target instanceof Element)) return;
+  if (!menu.contains(event.target) || event.target.closest('.mobile-sheet a')) closeMenu();
 });
 menu?.addEventListener('focusout', (event) => {
   if (event.relatedTarget instanceof Node) {
-    if (!menu.contains(event.relatedTarget)) menu.open = false;
+    if (!menu.contains(event.relatedTarget)) closeMenu();
   } else {
     // Browsers can omit the next target when focus leaves the document.
     requestAnimationFrame(() => {
-      if (!menu.contains(document.activeElement)) menu.open = false;
+      if (document.activeElement !== document.body && !menu.contains(document.activeElement)) closeMenu();
     });
   }
 });
+menu?.querySelector('summary')?.setAttribute('aria-expanded', 'false');
 window.matchMedia('(min-width: 1200px)').addEventListener('change', (event) => {
-  if (event.matches && menu) menu.open = false;
+  if (event.matches) closeMenu();
 });
 reduced.addEventListener('change', (event) => {
   if (event.matches) animations.forEach((animation) => animation.cancel());
 });
 
-const chapterNav = document.querySelector<HTMLElement>('.chapter-nav');
-const chapterLinks = [...document.querySelectorAll<HTMLAnchorElement>('.chapter-nav a')];
-const initialChapter = chapterLinks.find((link) => link.hash === location.hash)?.hash;
-if (
-  initialChapter &&
-  (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming)?.type !== 'back_forward'
-) {
-  // WebKit can settle on the first snap point instead of an incoming fragment.
-  const restoreFragment = () =>
-    requestAnimationFrame(() => {
-      if (window.scrollY === 0 && location.hash === initialChapter) {
-        document.getElementById(initialChapter.slice(1))?.scrollIntoView({ block: 'start', behavior: 'instant' });
+// FAQ service filter (progressive: without JS every question stays listed).
+document.querySelectorAll<HTMLElement>('[data-faq-filter]').forEach((group) => {
+  const list = group.closest('.faq-layout')?.querySelector('.faq-list');
+  const buttons = [...group.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
+  if (!list) return;
+  group.hidden = false;
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      list.querySelectorAll<HTMLDetailsElement>('details[data-service]').forEach((item) => {
+        const show = filter === 'all' || item.dataset.service === filter;
+        if (!show) item.open = false;
+        item.hidden = !show;
+        if (show && !reduced.matches) play(item, [{ opacity: 0 }, { opacity: 1 }], { duration: 260 });
+      });
+    })
+  );
+});
+
+// Progressive reveal: content is visible in HTML and only hidden once the observer is ready.
+if (!reduced.matches && 'IntersectionObserver' in window) {
+  const targets = [...document.querySelectorAll<HTMLElement>('[data-reveal]')].filter(
+    (element) => element.getBoundingClientRect().top > innerHeight * 0.92
+  );
+  if (targets.length) {
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          target.classList.add('is-in');
+          observer.unobserve(target);
+        }),
+      // No bottom inset: in full-screen chapters the last line of a section may sit at the very bottom edge.
+      { threshold: 0 }
+    );
+    targets.forEach((element) => observer.observe(element));
+    document.querySelectorAll('[data-reveal]').forEach((element) => {
+      if (!targets.includes(element as HTMLElement)) element.classList.add('is-in');
+    });
+    document.documentElement.classList.add('reveal-ready');
+    reduced.addEventListener('change', (event) => {
+      if (event.matches) {
+        observer.disconnect();
+        document.querySelectorAll('[data-reveal]').forEach((element) => element.classList.add('is-in'));
       }
     });
-  if (document.readyState === 'complete') restoreFragment();
-  else window.addEventListener('load', restoreFragment, { once: true });
-}
-if (chapterLinks.length && chapterNav) {
-  const sections = [...document.querySelectorAll<HTMLElement>('.home-chapter')];
-  const inquiry = document.getElementById('inquiry');
-  let scheduled = false;
-  const updateChapterNav = () => {
-    const active = sections.findLast((section) => section.getBoundingClientRect().top <= innerHeight * 0.45);
-    const blue = inquiry?.getBoundingClientRect();
-    chapterLinks.forEach((link) => {
-      if (link.hash === `#${active?.id}`) link.setAttribute('aria-current', 'step');
-      else link.removeAttribute('aria-current');
-      const box = link.getBoundingClientRect();
-      const midpoint = box.top + box.height / 2;
-      link.dataset.tone = blue && midpoint >= blue.top && midpoint < blue.bottom ? 'inverse' : 'default';
-    });
-    scheduled = false;
-  };
-  const scheduleChapterNav = () => {
-    if (!scheduled) {
-      scheduled = true;
-      requestAnimationFrame(updateChapterNav);
-    }
-  };
-  window.addEventListener('scroll', scheduleChapterNav, { passive: true });
-  window.addEventListener('resize', scheduleChapterNav);
-  window.addEventListener('pageshow', scheduleChapterNav);
-  updateChapterNav();
+  }
 }
 
-// Elements stay visible in HTML and until an animation actually starts.
-if (!reduced.matches && 'IntersectionObserver' in window && typeof Element.prototype.animate === 'function') {
-  const home = document.documentElement.classList.contains('home-story');
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(({ target, isIntersecting }) => {
-        if (!isIntersecting) return;
-        observer.unobserve(target);
-        const content = home ? target.querySelector<HTMLElement>('.site-container') : (target as HTMLElement);
-        if (!content) return;
-        const delay = home ? 0 : Math.min(2, Math.max(0, Number(content.dataset.delay) || 0)) * 60;
-        // Start home groups while still offscreen; never hide text already visible after a fast scroll.
-        const alreadyVisible = home && content.getBoundingClientRect().top < window.innerHeight;
-        play(
-          content,
-          [
-            { opacity: alreadyVisible ? 1 : 0, transform: alreadyVisible ? 'none' : 'translateY(8px)' },
-            { opacity: 1, transform: 'none' },
-          ],
-          {
-            duration: home ? 600 : 400,
-            delay,
-            easing: home ? 'cubic-bezier(.22,1,.36,1)' : 'cubic-bezier(.2,.65,.3,1)',
-            fill: 'backwards',
-          }
-        );
-      });
-    },
-    home ? { threshold: 0, rootMargin: '0px 0px -4% 0px' } : { threshold: 0.08 }
-  );
-  const targets = home ? '.home-chapter:not(#intro)' : '[data-reveal]';
-  document.querySelectorAll<HTMLElement>(targets).forEach((element) => {
-    // Do not animate both a group and its children.
-    if (home || !element.querySelector('[data-reveal]')) observer.observe(element);
+// The partner lane travels only while motion is allowed: `is-motion` starts the travel and reveals the toggle.
+document.querySelectorAll<HTMLElement>('[data-partners]').forEach((strip) => {
+  const toggle = strip.querySelector<HTMLButtonElement>('.partner-toggle');
+  const sync = () => {
+    strip.classList.toggle('is-motion', !reduced.matches);
+    strip.classList.remove('is-paused');
+    if (!toggle) return;
+    toggle.hidden = reduced.matches;
+    const [pause] = (toggle.dataset.labels ?? '').split('|');
+    toggle.setAttribute('aria-label', pause ?? '');
+  };
+  sync();
+  reduced.addEventListener('change', sync);
+  if (!toggle) return;
+  const [pause, resume] = (toggle.dataset.labels ?? '').split('|');
+  toggle.addEventListener('click', () => {
+    const paused = strip.classList.toggle('is-paused');
+    toggle.setAttribute('aria-label', paused ? resume : pause);
   });
-  reduced.addEventListener('change', (event) => {
-    if (event.matches) {
-      observer.disconnect();
-    }
-  });
-}
+});

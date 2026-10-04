@@ -1,8 +1,8 @@
 ---
 lang: en
 pairKey: model-supply-cooperation
-title: Prepare for a model supply partnership discussion
-description: Bring verifiable resource scope, supply permissions, interface conditions, usage constraints and settlement responsibilities to the first conversation.
+title: What to bring to a model supply discussion
+description: Resource scope, supply rights, interfaces and settlement.
 service: model-services
 updatedAt: '2026-09-19'
 order: 4

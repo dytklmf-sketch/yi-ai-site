@@ -1,7 +1,6 @@
 ---
-import '../styles/yi-ai.css';
-import { ArrowUpRight, Globe, Menu, Plus, MessageCircle } from '@lucide/astro';
-import BrandMark from '../components/yi-ai/BrandMark.astro';
+import '../styles/site.css';
+import { ArrowUpRight, ArrowRight, Globe, MessageCircle, Mail } from '@lucide/astro';
 import {
   brandName,
   contact,
@@ -9,7 +8,9 @@ import {
   inquiryPath,
   articlePath,
   shareImage,
+  withBase,
   navigationPages,
+  services,
   type Lang,
   type SitePage,
   type Service,
@@ -28,14 +29,18 @@ interface Props {
   service?: Service;
   structuredData?: Record<string, unknown>;
   notFound?: boolean;
-  homeChapters?: boolean;
+  /** The page opens on a dark hero; the header starts transparent with light ink. */
+  darkHero?: boolean;
+  /** Each top-level section is a full-screen chapter on desktop. */
+  chapters?: boolean;
 }
-const { lang, slug, article, service, structuredData } = Astro.props;
+const { lang, slug, article, service, structuredData, darkHero = false, chapters = false } = Astro.props;
 const currentPath = article ? articlePath(lang, article) : pathFor(lang, slug);
 const route = Astro.props.notFound ? undefined : (await getRoutes()).find((entry) => entry.path === currentPath);
 const title = route?.title ?? Astro.props.title;
 const description = route?.description ?? Astro.props.description;
 const t = lang === 'zh' ? zh : en;
+const e = editorial[lang];
 const brand = brandName(lang);
 const labels = {
   home: t.nav.home,
@@ -43,16 +48,20 @@ const labels = {
   'model-services': t.nav.models,
   infrastructure: t.nav.infrastructure,
   contact: t.nav.contact,
-  resources: editorial[lang].resources,
-  about: editorial[lang].about,
+  resources: e.resources,
+  about: e.about,
 };
 const links = navigationPages.map((page) => ({
   href: pathFor(lang, page),
   text: labels[page || 'home'],
-  active: slug === page,
+  active: !Astro.props.notFound && slug === page,
 }));
 const otherLang = lang === 'zh' ? 'en' : 'zh';
 const alternatePath = (locale: Lang) => (article ? articlePath(locale, article) : pathFor(locale, slug));
+// Indexing, canonical URLs and absolute share links exist only for a build with a real origin (SITE_ORIGIN).
+const site = Astro.site;
+const indexable = Boolean(site) && !Astro.props.notFound;
+const absolute = (path: string) => (site ? new URL(path, site).href : path);
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -60,37 +69,48 @@ const schema = {
   alternateName: brandName(otherLang),
   description,
   inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  ...(indexable && { url: absolute(pathFor(lang)) }),
   about: { '@type': 'Brand', name: brand, alternateName: brandName(otherLang) },
 };
+const logoWidth = lang === 'zh' ? 220.47 : 302.59;
+const zhUI = lang === 'zh';
 ---
 
 <!doctype html>
-<html lang={lang === 'zh' ? 'zh-CN' : 'en'} data-lang={lang} class:list={{ 'home-story': Astro.props.homeChapters }}>
+<html lang={zhUI ? 'zh-CN' : 'en'} data-lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content={darkHero ? '#070b16' : '#ffffff'} />
+    {
+      indexable ? (
+        <link rel="canonical" href={absolute(currentPath)} />
+      ) : (
+        <meta name="robots" content="noindex, nofollow" />
+      )
+    }
     <meta name="description" content={description} />
     <meta property="og:title" content={`${title} | ${brand}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:site_name" content={brand} />
-    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
-    <meta property="og:image" content={shareImage(lang, slug, article)} />
+    <meta property="og:locale" content={zhUI ? 'zh_CN' : 'en_US'} />
+    {indexable && <meta property="og:url" content={absolute(currentPath)} />}
+    <meta property="og:image" content={absolute(shareImage(lang, slug, article))} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={`${title} | ${brand}`} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="/brand/favicon.svg?v=whale-a" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href={withBase('/brand/favicon.svg?v=whale-a')} type="image/svg+xml" />
+    <link rel="preload" href={withBase('/fonts/manrope-latin.woff2')} as="font" type="font/woff2" crossorigin />
     {
-      lang === 'zh' && (
-        <link rel="preload" href="/fonts/noto-sans-sc-site.woff2" as="font" type="font/woff2" crossorigin />
+      zhUI && (
+        <link rel="preload" href={withBase('/fonts/noto-sans-sc-site.woff2')} as="font" type="font/woff2" crossorigin />
       )
     }
-    <link rel="alternate" hreflang="zh-CN" href={alternatePath('zh')} />
-    <link rel="alternate" hreflang="en" href={alternatePath('en')} />
+    <link rel="alternate" hreflang="zh-CN" href={absolute(alternatePath('zh'))} />
+    <link rel="alternate" hreflang="en" href={absolute(alternatePath('en'))} />
+    {indexable && <link rel="alternate" hreflang="x-default" href={absolute(alternatePath('zh'))} />}
     <title>{title} | {brand}</title>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
     {
@@ -102,13 +122,32 @@ const schema = {
         />
       )
     }
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
-  <body class:list={{ 'has-mobile-inquiry': slug !== 'contact' }}>
-    <a class="skip-link" href="#main">{lang === 'zh' ? '跳转到正文' : 'Skip to content'}</a>
-    <header class="site-header">
-      <div class="site-container nav-row">
-        <BrandMark lang={lang} />
-        <nav class="desktop-nav" aria-label={lang === 'zh' ? '主导航' : 'Primary navigation'}>
+  <body class:list={{ 'has-dark-hero': darkHero, 'has-mobile-inquiry': slug !== 'contact' }}>
+    <a class="skip-link" href="#main">{zhUI ? '跳转到正文' : 'Skip to content'}</a>
+    <header class="site-header" data-header>
+      <div class="container header-row">
+        <a class="brand-mark" href={pathFor(lang)} aria-label={zhUI ? '易AI 首页' : `${brand} home`}>
+          <img
+            class="logo-default"
+            src={withBase(`/brand/logo-${lang}.svg`)}
+            alt={brand}
+            width={logoWidth}
+            height="72"
+          />
+          <img
+            class="logo-inverse"
+            src={withBase(`/brand/logo-${lang}-inverse.svg`)}
+            alt=""
+            aria-hidden="true"
+            width={logoWidth}
+            height="72"
+          />
+        </a>
+        <nav class="desktop-nav" aria-label={zhUI ? '主导航' : 'Primary navigation'}>
           {
             links.map((link) => (
               <a href={link.href} aria-current={link.active ? 'page' : undefined}>
@@ -117,67 +156,121 @@ const schema = {
             ))
           }
         </nav>
-        <div class="nav-actions">
+        <div class="header-actions">
           <a
             class="language-link"
             href={alternatePath(otherLang)}
             lang={otherLang}
-            aria-label={lang === 'zh' ? 'Switch to English' : '切换到中文'}><Globe size={15} />{t.otherLanguage}</a
+            aria-label={zhUI ? 'Switch to English' : '切换到中文'}><Globe size={15} />{t.otherLanguage}</a
           >
-          <a class="button button-primary header-cta" href={inquiryPath(lang, service)}
+          <a class="btn btn-primary btn-sm header-cta" href={inquiryPath(lang, service)}
             >{t.nav.contact}<ArrowUpRight size={16} /></a
           >
           <details class="mobile-menu">
-            <summary aria-label={lang === 'zh' ? '导航菜单' : 'Navigation menu'}><Menu size={22} /></summary>
-            <nav aria-label={lang === 'zh' ? '移动端导航' : 'Mobile navigation'}>
-              {
-                links.map((link) => (
-                  <a href={link.href} aria-current={link.active ? 'page' : undefined}>
-                    {link.text}
-                  </a>
-                ))
-              }
-              <a href={inquiryPath(lang, service)}>{t.nav.contact}<ArrowUpRight size={17} /></a>
-            </nav>
+            <summary aria-label={zhUI ? '导航菜单' : 'Navigation menu'}>
+              <span class="burger" aria-hidden="true"><span></span><span></span></span>
+            </summary>
+            <div class="mobile-sheet">
+              <nav aria-label={zhUI ? '移动端导航' : 'Mobile navigation'}>
+                {
+                  links.map((link, i) => (
+                    <a href={link.href} aria-current={link.active ? 'page' : undefined} style={`--i:${i}`}>
+                      <span>{link.text}</span>
+                      <ArrowRight size={18} />
+                    </a>
+                  ))
+                }
+              </nav>
+              <div class="mobile-sheet-foot">
+                <a class="btn btn-primary btn-block" href={inquiryPath(lang, service)}
+                  >{t.nav.contact}<ArrowUpRight size={18} /></a
+                >
+                <p>
+                  <span>{zhUI ? '微信' : 'WeChat'} · <span class="mono">{contact.wechat}</span></span>
+                  <a href={`mailto:${contact.email}`} class="mono">{contact.email}</a>
+                </p>
+              </div>
+            </div>
           </details>
         </div>
       </div>
     </header>
-    <main id="main" tabindex="-1"><slot /></main>
+
+    <main id="main" tabindex="-1" class:list={{ chapters }}><slot /></main>
+
     <footer class="site-footer">
-      <div class="site-container footer-grid">
-        <div class="footer-brand"><BrandMark lang={lang} compact /><p>{t.promise.join(' ')}</p></div>
-        <div>
-          <p class="footer-label">{lang === 'zh' ? '我们的服务' : 'OUR SERVICES'}</p>
-          <nav class="footer-links" aria-label={lang === 'zh' ? '页脚导航' : 'Footer navigation'}>
-            {links.slice(1).map((link) => <a href={link.href}>{link.text}</a>)}
-          </nav>
+      <div class="container">
+        <div class="footer-lead">
+          <p class="footer-promise">
+            {
+              zhUI ? (
+                <>
+                  让 AI <em>易懂</em>、<em>易用</em>、<em>易落地</em>。
+                </>
+              ) : (
+                <>
+                  Make AI <em>easy</em> to understand, use and put to work.
+                </>
+              )
+            }
+          </p>
+          {
+            slug !== 'contact' && (
+              <a class="btn btn-light" href={inquiryPath(lang, service)}>
+                {t.primary}
+                <ArrowUpRight size={18} />
+              </a>
+            )
+          }
         </div>
-        <div>
-          <p class="footer-label">{lang === 'zh' ? '保持联系' : 'GET IN TOUCH'}</p>
-          <div class="footer-links">
-            <a href={`mailto:${contact.email}`}>{contact.email}<ArrowUpRight size={14} /></a>
-            <a href={pathFor(lang, 'contact')}>{lang === 'zh' ? '微信' : 'WeChat'} · {contact.wechat}</a>
-            <a href={pathFor(lang, 'contact')}>{t.nav.contact}<Plus size={14} /></a>
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <img src={withBase(`/brand/logo-${lang}-inverse.svg`)} alt={brand} width={logoWidth} height="72" />
+            <p>
+              {
+                (zhUI
+                  ? ['WorkBuddy 代理采购', '模型服务与供应合作', '自建机房资源']
+                  : ['WorkBuddy procurement', 'Model services & supply', 'Self-built data center']
+                ).map((item, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    <span class="nowrap">{item}</span>
+                  </>
+                ))
+              }
+            </p>
+          </div>
+          <nav class="footer-col" aria-label={zhUI ? '业务' : 'Services'}>
+            <p class="footer-label">{zhUI ? '业务' : 'Services'}</p>
+            {services.map((item) => <a href={pathFor(lang, item)}>{t.services[item].label}</a>)}
+          </nav>
+          <nav class="footer-col" aria-label={zhUI ? '了解更多' : 'More'}>
+            <p class="footer-label">{zhUI ? '了解更多' : 'More'}</p>
+            <a href={pathFor(lang, 'resources')}>{e.resources}</a>
+            <a href={pathFor(lang, 'about')}>{e.about}</a>
+            <a href={pathFor(lang, 'contact')}>{t.nav.contact}</a>
+          </nav>
+          <div class="footer-col">
+            <p class="footer-label">{zhUI ? '联系' : 'Contact'}</p>
+            <a href={pathFor(lang, 'contact')} class="footer-contact"
+              ><MessageCircle size={16} /><span class="mono">{contact.wechat}</span></a
+            >
+            <a href={`mailto:${contact.email}`} class="footer-contact"
+              ><Mail size={16} /><span class="mono">{contact.email}</span></a
+            >
           </div>
         </div>
-      </div>
-      <div class="site-container footer-bottom">
-        <span>© 2026 {brand}</span>
-        <span>{lang === 'zh' ? '让技术走进真实业务。' : 'Technology, for real work.'}</span>
-        <a href={alternatePath(otherLang)} lang={otherLang}
-          >{lang === 'zh' ? 'English version' : '中文版'}<Globe size={13} /></a
-        >
+        <div class="footer-bottom">
+          <span>© 2026 {brand}{zhUI ? ' · Easy AI' : ' · 易AI'}</span>
+          <a href={alternatePath(otherLang)} lang={otherLang}><Globe size={14} />{zhUI ? 'English' : '中文'}</a>
+        </div>
       </div>
     </footer>
+
     {
       slug !== 'contact' && (
-        <div class="mobile-inquiry">
-          <a
-            class="button button-primary"
-            href={inquiryPath(lang, service)}
-            aria-label={`${t.nav.contact}: ${t.primary}`}
-          >
+        <div class="mobile-inquiry" data-mobile-inquiry>
+          <a class="btn btn-primary" href={inquiryPath(lang, service)} aria-label={`${t.nav.contact}: ${t.primary}`}>
             <MessageCircle size={18} />
             {t.primary}
             <ArrowUpRight size={18} />

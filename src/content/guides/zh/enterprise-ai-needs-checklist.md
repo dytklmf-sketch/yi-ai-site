@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: enterprise-ai-needs-checklist
-title: 企业 AI 需求，如何整理成一页纸？
-description: 用目标、任务、数据、验收和责任五个维度，整理一份可沟通的企业 AI 需求，明确工具采购前需要回答的问题。
+title: 企业 AI 需求一页纸
+description: 把企业 AI 需求整理成一页纸：要解决的工作、使用的数据、验收标准和负责人。
 service: workbuddy
 updatedAt: '2026-09-19'
 order: 2

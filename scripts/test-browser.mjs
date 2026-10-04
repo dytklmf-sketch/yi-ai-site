@@ -46,6 +46,10 @@ try {
         const info = await page.evaluate(() => {
           const overflow = [...document.querySelectorAll('main *,header *,footer *')]
             .filter((el) => {
+              // Horizontally scrolling rows (section tabs, the focusable API code block, the partner lanes) may clip
+              // their own children.
+              if (el.closest('.subnav, .topic-tabs') || el.parentElement?.closest('.api-code, .partner-lane'))
+                return false;
               const box = el.getBoundingClientRect();
               return (
                 el.checkVisibility() &&
@@ -55,6 +59,18 @@ try {
               );
             })
             .map((el) => `${el.tagName}.${el.className}`);
+          const logo = (img) => {
+            const box = img.getBoundingClientRect();
+            return {
+              src: img.getAttribute('src'),
+              naturalHeight: img.naturalHeight,
+              aspectError: box.height
+                ? Math.abs(
+                    box.width / box.height - Number(img.getAttribute('width')) / Number(img.getAttribute('height'))
+                  )
+                : 0,
+            };
+          };
           return {
             overflow,
             totalOverflow: document.documentElement.scrollWidth > innerWidth,
@@ -64,24 +80,21 @@ try {
             lang: document.documentElement.lang,
             mainText: document.querySelector('main').textContent.trim().length,
             canonical: !!document.querySelector('link[rel="canonical"]'),
-            fonts: document.fonts.check('400 16px Manrope') && document.fonts.check('550 32px "Noto Sans SC"', '易'),
+            fonts:
+              document.fonts.check('400 16px Manrope') &&
+              document.fonts.check('550 32px "Noto Sans SC"', '易') &&
+              document.fonts.check('500 13px "JetBrains Mono"'),
             productScreenshot: !!document.querySelector('img[src*="model-catalog"]'),
-            logo: document.querySelector('.brand-mark img')?.getAttribute('src'),
-            logos: [...document.querySelectorAll('.brand-mark img')].map((img) => {
-              const box = img.getBoundingClientRect();
-              return {
-                heightAttribute: img.getAttribute('height'),
-                naturalHeight: img.naturalHeight,
-                aspectError: Math.abs(
-                  box.width / box.height - Number(img.getAttribute('width')) / Number(img.getAttribute('height'))
-                ),
-              };
-            }),
+            headerLogo: logo(document.querySelector('.brand-mark .logo-default')),
+            footerLogo: logo(document.querySelector('.footer-brand img')),
+            visibleHeaderLogos: [...document.querySelectorAll('.brand-mark img')].filter(
+              (img) => getComputedStyle(img).display !== 'none' && Number(getComputedStyle(img).opacity) > 0.5
+            ).length,
             favicon: document.querySelector('link[rel="icon"]')?.getAttribute('href'),
-            accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+            accent: getComputedStyle(document.documentElement).getPropertyValue('--cobalt').trim(),
             bodyFont: getComputedStyle(document.body).fontFamily,
-            heroButton: document.querySelector('.hero-actions .button')
-              ? getComputedStyle(document.querySelector('.hero-actions .button')).backgroundColor
+            primaryButton: document.querySelector('main .btn-primary')
+              ? getComputedStyle(document.querySelector('main .btn-primary')).backgroundColor
               : null,
           };
         });
@@ -89,46 +102,49 @@ try {
         assert.equal(info.h1, 1);
         assert.equal(info.robots, 'noindex, nofollow');
         assert(info.images && info.mainText > 100 && !info.canonical);
-        assert(info.fonts && !info.productScreenshot);
-        assert.equal(info.logo, `/brand/logo-${lang}.svg`);
-        assert.equal(info.logos.length, 2, 'Header and footer must both show the localized lockup');
-        assert(
-          info.logos.every(
-            (logo) => logo.heightAttribute === '72' && logo.naturalHeight === 72 && logo.aspectError < 0.002
-          ),
-          'Updated lockups must retain their intrinsic proportions'
-        );
+        assert(info.fonts && !info.productScreenshot, `Local fonts must load: ${lang}/${suffix}`);
+        assert.equal(info.headerLogo.src, `/brand/logo-${lang}.svg`);
+        assert.equal(info.footerLogo.src, `/brand/logo-${lang}-inverse.svg`);
+        assert.equal(info.visibleHeaderLogos, 1, 'Exactly one header lockup is shown for the current surface');
+        for (const logo of [info.headerLogo, info.footerLogo]) {
+          assert(logo.naturalHeight === 72 && logo.aspectError < 0.002, 'Lockups must keep intrinsic proportions');
+        }
         assert.equal(info.favicon, '/brand/favicon.svg?v=whale-a');
         assert.equal(info.lang, lang === 'zh' ? 'zh-CN' : 'en');
         assert.equal(info.accent, '#245bdb');
         assert(info.bodyFont.includes('Manrope') && info.bodyFont.includes('Noto Sans SC'));
+        if (info.primaryButton) assert.equal(info.primaryButton, 'rgb(36, 91, 219)');
         if (!suffix) {
-          assert.equal(info.heroButton, 'rgb(36, 91, 219)');
+          // Both hero actions sit on the first screen at every width with a usable tap size.
+          const actions = await page.evaluate(() =>
+            [...document.querySelectorAll('.hero .btn')].filter((link) => {
+              const box = link.getBoundingClientRect();
+              return link.checkVisibility() && box.height >= 44 && box.bottom <= innerHeight;
+            })
+          );
+          assert.equal(actions.length, 2, `Hero actions: ${lang} ${width}px`);
+          assert.equal(await page.locator('[data-service-column]').count(), 3, `Service columns: ${lang} ${width}px`);
           if (lang === 'zh') {
-            const heroText = await page.locator('.hero-inner').innerText();
-            assert.equal((heroText.match(/易/g) || []).length, 1, 'Only the brand name should use 易 in the hero');
-            assert.equal(await page.locator('.hero-promise').textContent(), '让 AI 真正用起来，在业务中落地。');
-            assert((await page.locator('.footer-brand p').innerText()).includes('让 AI 易懂， 易用，易落地。'));
+            const heroTitle = await page.locator('.hero-title').innerText();
+            assert(heroTitle.includes('提供'), 'The hero headline carries the verb');
+            assert(!heroTitle.includes('易'), 'The hero headline leaves 易 to the brand positioning line');
+            assert.equal(await page.locator('.hero .eyebrow').innerText(), '企业 AI 应用与算力供应服务商');
+            assert((await page.locator('.hero-lead').innerText()).includes('易懂、易用、易落地'));
+            assert((await page.locator('.footer-promise').innerText()).includes('易懂、易用、易落地'));
           }
-          if (width >= 1200)
-            assert(
-              await page.locator('.chapter-next').evaluate((el) => {
-                const bottom = document.querySelector('.mobile-inquiry').getBoundingClientRect();
-                const limit = bottom.height ? bottom.top : innerHeight;
-                return el.getBoundingClientRect().bottom <= limit;
-              }),
-              `Next chapter cue must remain visible: ${lang} at ${width}px`
-            );
-          if (width >= 1200)
-            assert(
-              await page.locator('#services').evaluate((el) => {
-                const bar = document.querySelector('.mobile-inquiry').getBoundingClientRect();
-                return el.getBoundingClientRect().top >= (bar.height ? bar.top : innerHeight) - 1;
-              }),
-              `The next chapter must not share the first screen: ${lang} at ${width}px`
-            );
         }
         if (width === 390 || width === 1440) {
+          // Scan the settled page: axe scrolls while it runs, which would otherwise catch reveals mid-fade.
+          await page.evaluate(async () => {
+            document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+            await new Promise(requestAnimationFrame);
+            await Promise.all(
+              document
+                .getAnimations()
+                .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+                .map((animation) => animation.finished.catch(() => {}))
+            );
+          });
           const a11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
           assert.equal(
             a11y.violations.length,
@@ -156,7 +172,7 @@ try {
                 .map((link) => link.getAttribute('href'))
                 .filter((href) => href.startsWith('/')),
               schema: JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent),
-              brandText: document.body.innerText.replaceAll('CCGAI008', ''),
+              brandText: document.body.innerText,
               externalScripts: [
                 ...new Set([
                   ...executable.filter((script) => script.src).map((script) => script.src),
@@ -330,37 +346,31 @@ try {
     if (small) assert.equal(result.optical, '16-24');
   }
   report.vectorChecks = vectorChecks;
+
+  await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
-  await page.locator('.service-card .card-link').nth(1).click();
-  await page.locator('.page-hero .button').click();
+  await page.locator('.service-column[data-service-column="model-services"] .btn-outline').click();
+  await page.waitForURL(`${base}/zh/model-services/`);
+  // The primary action opens the product in a new tab; enterprise usage stays on this site with its topic.
+  const product = page.locator('.page-hero .btn-primary');
+  assert.equal(await product.getAttribute('href'), 'https://ccg-cli.online/models/');
+  assert.equal(await product.getAttribute('target'), '_blank');
+  assert((await product.innerText()).includes('CCG API'));
+  await page.locator('.page-hero .btn-outline').click();
   assert.equal(new URL(page.url()).searchParams.get('topic'), 'model-services');
   assert(await page.locator('input[value="model-services"]').isChecked());
   report.interactions.push(
     'service inquiry preserves topic; local fonts, localized logos, transparent exports and 16–48px symbols verified'
   );
-  for (const lang of ['zh', 'en']) {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto(`${base}/${lang}/`, { waitUntil: 'networkidle' });
-    await page.screenshot({ path: `test-results/${lang}-home-375-viewport.png` });
-    await page.locator('.chapter-next').focus();
-    await page.waitForTimeout(650);
-    assert(
-      await page
-        .locator('.chapter-next')
-        .evaluate(
-          (el) =>
-            el.getBoundingClientRect().bottom < document.querySelector('.mobile-inquiry').getBoundingClientRect().top
-        ),
-      'The next chapter cue must be reachable above the inquiry bar on a short mobile viewport'
-    );
-  }
+
   for (const width of [390, 768]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto(`${base}/zh/workbuddy/`, { waitUntil: 'networkidle' });
     await page.locator('.mobile-menu summary').click();
+    await page.waitForTimeout(300);
     const alignment = await page.evaluate(() => ({
       headerBottom: document.querySelector('.site-header').getBoundingClientRect().bottom,
-      menuTop: document.querySelector('.mobile-menu nav').getBoundingClientRect().top,
+      menuTop: document.querySelector('.mobile-sheet').getBoundingClientRect().top,
     }));
     assert(
       Math.abs(alignment.headerBottom - alignment.menuTop) <= 1,
@@ -368,23 +378,31 @@ try {
     );
     await page.keyboard.press('Escape');
   }
-  report.interactions.push('phone and tablet menus align with the compact header');
+  report.interactions.push('phone and tablet menus align with the header');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${base}/zh/workbuddy/`, { waitUntil: 'networkidle' });
   await page.locator('.mobile-menu summary').click();
+  await page.waitForTimeout(500);
   assert(await page.locator('.mobile-menu nav').isVisible());
-  const menuBox = await page.locator('.mobile-menu nav').boundingBox();
-  assert(menuBox.x >= 0 && menuBox.x + menuBox.width <= 390);
-  assert(menuBox.y >= 70 && menuBox.width >= 350);
+  assert.equal(await page.locator('.mobile-menu summary').getAttribute('aria-expanded'), 'true');
+  const menuBox = await page.locator('.mobile-sheet').boundingBox();
+  assert(menuBox.x >= 0 && menuBox.x + menuBox.width <= 390 && menuBox.width >= 350);
+  assert.equal(
+    await page.locator('.mobile-menu nav a[aria-current="page"]').getAttribute('href'),
+    '/zh/workbuddy/',
+    'The sheet marks the current page'
+  );
   await page.screenshot({ path: 'test-results/mobile-menu.png' });
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('.mobile-menu').getAttribute('open'), null);
+  assert.equal(await page.locator('.mobile-menu summary').getAttribute('aria-expanded'), 'false');
   await page.locator('.language-link').click();
   assert.equal(new URL(page.url()).pathname, '/en/workbuddy/');
   await page.locator('.mobile-menu summary').click();
   await page.locator('.mobile-menu nav a[href="/en/model-services/"]').click();
-  assert.equal(new URL(page.url()).pathname, '/en/model-services/');
-  await page.locator('.page-hero .button').click();
+  await page.waitForURL(`${base}/en/model-services/`);
+  // On model services the primary action opens CCG API; the enterprise inquiry is the second button.
+  await page.locator('.page-hero .btn-outline').click();
   assert.equal(new URL(page.url()).searchParams.get('topic'), 'model-services');
   assert(await page.locator('input[value="model-services"]').isChecked());
   const mail = new URL(await page.locator('.inquiry-email').getAttribute('href'));
@@ -392,17 +410,24 @@ try {
   await page.locator('label:has(input[value="infrastructure"])').click();
   const updatedMail = new URL(await page.locator('.inquiry-email').getAttribute('href'));
   assert(updatedMail.searchParams.get('body').includes('Infrastructure'));
+  assert(await page.locator('[data-topic-preparation="infrastructure"]').isVisible());
+  assert.equal(await page.locator('[data-topic-preparation]:visible').count(), 1);
+  assert.equal(new URL(page.url()).searchParams.get('topic'), 'infrastructure');
+  assert(
+    (await page.locator('.topic-options label').first().boundingBox()).height >= 44,
+    'Topic options need touch-sized targets'
+  );
   report.interactions.push(
-    'mobile menu, Escape, language counterpart, service-to-contact topic, mail subject and body'
+    'mobile menu, Escape, aria-expanded, language counterpart, service-to-contact topic, mail subject/body and preparation copy'
   );
 
   await context.grantPermissions(['clipboard-write', 'clipboard-read'], { origin: base });
+  const contactHeight = (await page.locator('.contact-option').first().boundingBox()).height;
   await page.locator('[data-copy]').click();
   await page.waitForFunction(() => document.querySelector('.copy-status')?.textContent.includes('copied'));
-  assert((await page.locator('.copy-status').innerText()).includes('copied'));
-  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'CCGAI008');
-  report.interactions.push('real clipboard write/read');
-  const contactHeight = (await page.locator('.contact-option').first().boundingBox()).height;
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'Li___CaB6');
+  assert(Math.abs((await page.locator('.contact-option').first().boundingBox()).height - contactHeight) < 1);
+  report.interactions.push('real clipboard write/read without layout shift');
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
@@ -411,12 +436,13 @@ try {
   });
   await page.locator('[data-copy]').click();
   await page.waitForFunction(() => document.querySelector('.copy-status')?.textContent.includes('manually'));
-  assert((await page.locator('.copy-status').innerText()).includes('manually'));
-  assert.equal(await page.evaluate(() => getSelection()?.toString()), 'CCGAI008');
+  assert.equal(await page.evaluate(() => getSelection()?.toString()), 'Li___CaB6');
   assert(Math.abs((await page.locator('.contact-option').first().boundingBox()).height - contactHeight) < 1);
   report.interactions.push('clipboard denied: localized fallback and selectable ID');
 
   await page.goto(`${base}/zh/contact/`, { waitUntil: 'networkidle' });
+  assert.equal(await page.locator('.mobile-inquiry').count(), 0, 'The contact page has no duplicate inquiry bar');
+  assert.equal(await page.locator('.footer-lead .btn').count(), 0, 'The contact page has no footer inquiry button');
   await page.locator('input[value="workbuddy"]').focus();
   await page.keyboard.press('ArrowRight');
   assert(await page.locator('input[value="model-services"]').isChecked());
@@ -428,13 +454,14 @@ try {
   await page.waitForFunction(() => document.querySelector('.copy-status')?.textContent.includes('已复制'));
   await page.locator('input[value="model-services"]').focus();
   await page.keyboard.press('Tab');
-  assert.equal(await page.evaluate(() => document.activeElement.className), 'contact-id');
+  assert.equal(await page.evaluate(() => document.activeElement.classList.contains('contact-id')), true);
   report.interactions.push('keyboard radio selection, Chinese email subject, Enter-to-copy, contact tab order');
 
   await page.goto(`${base}/zh/contact/?topic=unknown`, { waitUntil: 'networkidle' });
   assert(await page.locator('input[value="workbuddy"]').isChecked());
   await page.goto(`${base}/zh/`, { waitUntil: 'networkidle' });
   await page.locator('.faq-list summary').first().click();
+  await page.waitForTimeout(400);
   assert(await page.locator('.faq-list details[open] p').first().isVisible());
   await page.goto(base, { waitUntil: 'networkidle' });
   await page.waitForURL(`${base}/zh/`);
@@ -447,9 +474,18 @@ try {
     for (const suffix of pages) {
       await plain.goto(`${base}/${lang}/${suffix}`);
       assert((await plain.locator('main').innerText()).length > 100);
+      assert(
+        await plain.evaluate(() =>
+          [...document.querySelectorAll('[data-reveal], [data-enter]')].every(
+            (el) => getComputedStyle(el).opacity === '1'
+          )
+        ),
+        `No-JS content must never be hidden: ${lang}/${suffix}`
+      );
     }
   }
   await plain.goto(`${base}/zh/`);
+  assert.equal(await plain.locator('[data-faq-filter]').isVisible(), false, 'The FAQ filter needs JS');
   await plain.locator('.mobile-menu summary').click();
   assert(await plain.locator('.mobile-menu nav').isVisible());
   await plain.locator('.mobile-menu summary').click();
@@ -463,7 +499,8 @@ try {
 
   const missing = await page.goto(`${base}/intentionally-missing/`, { waitUntil: 'networkidle' });
   assert.equal(missing.status(), 404);
-  assert((await page.locator('h1').innerText()).includes('换个方向'));
+  assert((await page.locator('h1').innerText()).includes('未找到该页面'), '404 keeps its headline');
+  assert.equal(await page.locator('.desktop-nav a[aria-current]').count(), 0, '404 marks no navigation item');
   report.interactions.push('404');
   assert.equal(report.errors.length, 0, JSON.stringify(report.errors));
   assert.equal(report.externalRequests.length, 0, JSON.stringify(report.externalRequests));

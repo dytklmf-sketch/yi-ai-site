@@ -1,0 +1,145 @@
+---
+import { Check, CircleCheck, Zap } from '@lucide/astro';
+import ServiceIcon from './ServiceIcon.astro';
+import { serviceDetails } from '../../data/service-details';
+import { modelProduct, withBase, type Lang, type Service } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+  service: Service;
+}
+const { lang, service } = Astro.props;
+const zhUI = lang === 'zh';
+const sample = serviceDetails[lang][service].sample;
+// Public facts from the CCG API site: OpenAI-compatible base URL and chat endpoint. The model name stays a
+// placeholder; the catalog is the source for current models and prices.
+const apiBase = 'https://ccg-cli.online/v1';
+const request = [
+  `curl ${apiBase}/chat/completions \\`,
+  `  -H "Authorization: Bearer $CCG_API_KEY" \\`,
+  `  -H "Content-Type: application/json" \\`,
+  `  -d '{`,
+  `    "model": "${zhUI ? '<模型名>' : '<model>'}",`,
+  `    "messages": [{"role": "user", "content": "${zhUI ? '你好' : 'Hello'}"}]`,
+  `  }'`,
+];
+
+// One-time typing schedule (ms). Each line or field starts when the previous one ends; CSS plays it once on load.
+const start = 700;
+const schedule = (lengths: number[], perChar: number, gap: number) => {
+  let at = start;
+  return lengths.map((n) => {
+    const slot = { at, n: Math.max(n, 1) };
+    at += Math.max(n, 1) * perChar + gap;
+    return slot;
+  });
+};
+const codeTimes = schedule(
+  request.map((line) => line.length),
+  9,
+  60
+);
+const fieldTimes = sample
+  ? schedule(
+      sample.fields.map(([, value]) => [...value].length),
+      55,
+      140
+    )
+  : [];
+const end = (service === 'model-services' ? codeTimes : fieldTimes).at(-1);
+const doneAt = end ? end.at + end.n * (service === 'model-services' ? 9 : 55) + 200 : start;
+const mark = {
+  workbuddy: { logo: '/partners/workbuddy.svg', name: 'WorkBuddy' },
+  'model-services': { logo: '/partners/ccg-api.svg', name: modelProduct.name },
+  infrastructure: { logo: '', name: zhUI ? '易AI 自建机房' : 'Easy AI data center' },
+}[service];
+---
+
+<div class="sample-stage" data-service={service} style={`--done:${doneAt}ms`}>
+  <span class="sample-plate" aria-hidden="true"></span>
+  <span class="sample-plate sample-plate-far" aria-hidden="true"></span>
+  <span class="sample-badge" aria-hidden="true">
+    {
+      mark.logo ? (
+        <img src={withBase(mark.logo)} alt="" width="48" height="48" />
+      ) : (
+        <ServiceIcon service={service} size={26} />
+      )
+    }
+  </span>
+  <figure class:list={['service-sample', 'sample-window', service === 'model-services' ? 'api-card' : 'request-sheet']}>
+    <span class="sample-sheen" aria-hidden="true"></span>
+    <div class="sample-bar">
+      <span class="sample-brand mono">{mark.name}</span>
+      <span class="sample-status">
+        <span class="sample-status-run" aria-hidden="true">
+          {service === 'model-services' ? (zhUI ? '请求中' : 'Sending') : zhUI ? '填写中' : 'Filling in'}
+        </span>
+        <span class="sample-status-done"><Check size={13} />{zhUI ? '示例' : 'Sample'}</span>
+      </span>
+    </div>
+    {
+      service === 'model-services' ? (
+        <>
+          {/* prettier-ignore */}
+          <pre class="api-code" tabindex="0" aria-label={zhUI ? '调用示例' : 'Request example'}><code>{request.map((line, i) => <>{i > 0 && '\n'}<span class="type-line" style={`--t:${codeTimes[i].at}ms;--n:${codeTimes[i].n}`}>{line}</span></>)}</code></pre>
+          <div class="api-response" aria-hidden="true">
+            <Zap size={14} />
+            <span class="mono">{zhUI ? '兼容 OpenAI 接口 · 支持流式返回' : 'OpenAI-compatible · streaming'}</span>
+          </div>
+          <figcaption>
+            <span>
+              Base URL <code>{apiBase}</code>
+            </span>
+            <span>
+              {zhUI
+                ? '模型名和价格以模型广场为准，API Key 在控制台创建。'
+                : 'Model names and prices are listed in the catalog; create the API key in the console.'}
+            </span>
+          </figcaption>
+        </>
+      ) : (
+        sample && (
+          <>
+            <p class="sample-title">{sample.title}</p>
+            <dl>
+              {sample.fields.map(([label, value], i) => (
+                <div style={`--t:${fieldTimes[i].at}ms;--n:${fieldTimes[i].n}`}>
+                  <dt>{label}</dt>
+                  <dd>
+                    <span class="type-line">{value}</span>
+                  </dd>
+                  <Check class="sample-check" size={14} aria-hidden="true" />
+                </div>
+              ))}
+            </dl>
+            <div class="sample-progress" aria-hidden="true">
+              <span />
+            </div>
+            <figcaption>
+              <CircleCheck size={15} aria-hidden="true" />
+              {zhUI
+                ? '公司与数字为示意，替换为实际情况后发给我们。'
+                : 'Company and figures are placeholders. Send us yours.'}
+            </figcaption>
+          </>
+        )
+      )
+    }
+  </figure>
+  <span class="sample-chip" aria-hidden="true">
+    {
+      service === 'model-services' ? (
+        <>
+          <span class="api-status">200 OK</span>
+          {zhUI ? '已返回' : 'Response'}
+        </>
+      ) : (
+        <>
+          <Check size={14} />
+          {zhUI ? `${sample?.fields.length ?? 0} 项已填好` : `${sample?.fields.length ?? 0} fields filled`}
+        </>
+      )
+    }
+  </span>
+</div>

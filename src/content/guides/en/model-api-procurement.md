@@ -1,8 +1,8 @@
 ---
 lang: en
 pairKey: model-api-procurement
-title: Compare model APIs beyond the headline price
-description: Compare model versions, billing units, latency definitions, usage limits and data responsibilities against the same representative business tasks.
+title: Model API pricing beyond the headline rate
+description: Billing method, input/output mix, limits and settlement.
 service: model-services
 updatedAt: '2026-09-19'
 order: 3

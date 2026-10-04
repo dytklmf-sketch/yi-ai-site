@@ -1,8 +1,8 @@
 ---
 lang: zh
 pairKey: model-api-procurement
-title: 比较模型 API，别只看单价
-description: 从模型版本、计费单位、延迟口径、用量限制和数据边界比较 API 方案，把价格表转化为与实际业务相关的采购依据。
+title: 模型 API 比价：单价之外的成本
+description: 比较模型 API 价格时要对齐的几项：计费方式、输入输出比例、调用限额和结算方式。
 service: model-services
 updatedAt: '2026-09-19'
 order: 3

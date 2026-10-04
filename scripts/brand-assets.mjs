@@ -76,7 +76,13 @@ try {
         ctx.drawImage(logo, 76, 70, aspect * 78, 78);
         ctx.fillStyle = '#20242c';
         ctx.font = '550 46px Manrope, Noto';
-        const words = lang === 'zh' ? [...title] : title.split(' ');
+        // Chinese wraps after a comma or colon when possible, character by character otherwise.
+        const words =
+          lang === 'zh'
+            ? title
+                .match(/[^，：]+[，：]?/g)
+                .flatMap((part) => (ctx.measureText(part).width > 880 ? [...part] : [part]))
+            : title.split(' ');
         const lines = [];
         let line = '';
         for (const word of words) {
@@ -99,7 +105,7 @@ try {
       },
       { lang, title, caption }
     );
-    await page.locator('canvas').screenshot({ path: `public${route.image}` });
+    await page.locator('canvas').screenshot({ path: `public${route.image.slice(route.image.indexOf('/brand/'))}` });
   }
 
   for (const name of Object.keys(logos)) {

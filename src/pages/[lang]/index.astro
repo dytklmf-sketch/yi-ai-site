@@ -1,20 +1,19 @@
 ---
-import { ArrowDown, ArrowUpRight } from '@lucide/astro';
+import { ArrowDown, ArrowUpRight, ArrowRight } from '@lucide/astro';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
-import CallToAction from '../../components/yi-ai/CallToAction.astro';
+import StackVisual from '../../components/yi-ai/StackVisual.astro';
+import ServiceColumns from '../../components/yi-ai/ServiceColumns.astro';
 import GuideCards from '../../components/yi-ai/GuideCards.astro';
-import ServicesChapter from '../../components/yi-ai/ServicesChapter.astro';
-import CapabilitiesChapter from '../../components/yi-ai/CapabilitiesChapter.astro';
-import ProcessChapter from '../../components/yi-ai/ProcessChapter.astro';
 import FaqChapter from '../../components/yi-ai/FaqChapter.astro';
-import WidgetWrapper from '../../components/ui/WidgetWrapper.astro';
+import CallToAction from '../../components/yi-ai/CallToAction.astro';
+import WhyChapter from '../../components/yi-ai/WhyChapter.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
-import { refinement, featuredGuides } from '../../data/refinement';
-import { brandName, services, inquiryPath, pathFor, type Lang } from '../../data/yi-ai';
+import { featuredGuides } from '../../data/refinement';
+import { home } from '../../data/home';
+import { inquiryPath, pathFor, type Lang } from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
-import '../../styles/home-chapters.css';
 
 export function getStaticPaths() {
   return ['zh', 'en'].map((lang) => ({ params: { lang } }));
@@ -22,112 +21,74 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = lang === 'zh' ? zh : en;
-const guides = (await getGuides(lang)).filter(({ data }) => featuredGuides[data.service] === data.pairKey);
+const h = home[lang];
 const e = editorial[lang];
-const r = refinement[lang];
-const serviceLabels = {
-  workbuddy: t.nav.workbuddy,
-  'model-services': t.nav.models,
-  infrastructure: t.nav.infrastructure,
-};
-const chapters = [
-  { id: 'intro', label: t.nav.home },
-  { id: 'services', label: lang === 'zh' ? '我们的服务' : 'Our services' },
-  { id: 'capabilities', label: lang === 'zh' ? '业务能力' : 'Our capabilities' },
-  { id: 'process', label: lang === 'zh' ? '合作流程' : 'Working together' },
-  { id: 'guides', label: e.resources },
-  { id: 'faq', label: lang === 'zh' ? '常见问题' : 'Common questions' },
-  { id: 'inquiry', label: t.primary },
-];
+const guides = (await getGuides(lang)).filter(({ data }) => featuredGuides[data.service] === data.pairKey);
 ---
 
 <YiAiLayout
   lang={lang}
-  homeChapters
-  title={lang === 'zh' ? '让 AI 易懂、易用、易落地' : 'Understand AI. Use it. Put it to work.'}
+  darkHero
+  chapters
+  title={lang === 'zh' ? '企业 AI 应用与算力供应服务商' : 'Your enterprise AI applications and compute provider'}
   description={t.heroIntro}
 >
-  <nav class="chapter-nav" aria-label={lang === 'zh' ? '首页目录' : 'Homepage sections'}>
-    {
-      chapters.map(({ id, label }, index) => (
-        <a href={`#${id}`} aria-label={label}>
-          <span class="chapter-dot" aria-hidden="true" />
-          <span class="chapter-label" aria-hidden="true">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            {label}
-          </span>
-        </a>
-      ))
-    }
-  </nav>
-
-  <section id="intro" class="hero-band home-chapter">
-    <div class="site-container hero-inner">
-      <img
-        class="hero-whale"
-        src="/brand/logo-symbol.png"
-        width="406"
-        height="256"
-        alt=""
-        aria-hidden="true"
-        fetchpriority="high"
-      />
-      <div class="hero-copy">
-        <p class="eyebrow">
-          <span class="status-dot"></span>
-          {lang === 'zh' ? '为真实业务而来的 AI 服务' : 'AI SERVICES FOR REAL WORK'}
-        </p>
-        <h1 class="hero-brand">
-          {brandName(lang)}<span class="hero-alias">{brandName(lang === 'zh' ? 'en' : 'zh')}</span>
-        </h1>
-        <p class="hero-promise">{t.heroHeadline[0]}<br /><span>{t.heroHeadline[1]}</span></p>
-        <p class="hero-intro">{t.heroIntro}</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={18} /></a>
-          <a class="text-link" href="#services">{t.secondary}<ArrowDown size={17} /></a>
-        </div>
-        <ul class="hero-audiences" aria-label={lang === 'zh' ? '服务对象' : 'Who we work with'}>
-          {services.map((service) => <li>{r.audiences[service]}</li>)}
-        </ul>
-      </div>
-      <aside class="hero-side-panel" aria-label={lang === 'zh' ? '易AI 合作路径' : 'Easy AI cooperation routes'}>
-        <p class="eyebrow">{lang === 'zh' ? '从业务目标开始' : 'START WITH THE WORK'}</p>
-        <ol class="hero-route-list">
-          {
-            services.map((slug, i) => (
-              <li>
-                <a href={pathFor(lang, slug)}>
-                  <span class="hero-route-number">0{i + 1}</span>
-                  <span class="hero-route-copy">
-                    <strong>{t.scenarios[i].title}</strong>
-                    <small>{t.services[slug].short}</small>
-                  </span>
-                  <ArrowUpRight size={17} />
-                </a>
-              </li>
-            ))
-          }
-        </ol>
-      </aside>
+  <section class="hero" id="intro" aria-labelledby="hero-title">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="hero-grid-lines"></span><span class="hero-glow"></span>
+      <span class="hud-rings"></span>
+      <span class="hud-floor"></span>
     </div>
-    <a class="chapter-next" href="#services">
-      <span>01 / {chapters[1].label}</span><ArrowDown size={18} />
-    </a>
+    <div class="container hero-layout">
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-light" data-enter>{h.heroEyebrow}</p>
+        <h1 class="hero-title" id="hero-title" data-enter style="--d:1">
+          <span>{h.heroTitle[0]}</span>
+          <span class="hero-title-accent">{h.heroTitle[1]}</span>
+        </h1>
+        <p class="hero-lead" data-enter style="--d:2">{t.heroIntro}</p>
+        <div class="hero-actions" data-enter style="--d:3">
+          <a class="btn btn-primary btn-lg" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={18} /></a>
+          <a class="btn btn-ghost-light btn-lg" href="#services">{t.secondary}<ArrowDown size={18} /></a>
+        </div>
+      </div>
+      <figure class="hero-visual">
+        <span class="hud-corner" aria-hidden="true"></span>
+        <span class="hud-corner" aria-hidden="true"></span>
+        <span class="hud-corner" aria-hidden="true"></span>
+        <span class="hud-corner" aria-hidden="true"></span>
+        <span class="hud-tag mono" aria-hidden="true">ENTERPRISE AI · MODELS · INFRASTRUCTURE</span>
+        <StackVisual lang={lang} id="hero" class="stack-wide" />
+        <StackVisual lang={lang} id="hero-narrow" labels={false} class="stack-narrow" />
+        <figcaption class="mono">{h.stackCaption}</figcaption>
+      </figure>
+    </div>
   </section>
 
-  <ServicesChapter lang={lang} t={t} />
-  <CapabilitiesChapter lang={lang} t={t} />
-  <ProcessChapter lang={lang} t={t} />
-
-  <WidgetWrapper id="guides" class="guides-band" chapter>
-    <div class="section-head">
-      <div><p class="eyebrow">04 / {e.resources}</p><h2>{e.featuredTitle}</h2></div>
-      <a class="text-link" href={pathFor(lang, 'resources')}>{e.allGuides}</a>
+  <section class="section layers" id="services" aria-labelledby="layers-title">
+    <div class="container">
+      <div class="section-head section-head-split" data-reveal>
+        <h2 id="layers-title" class="section-title">{h.stackTitle}</h2>
+        <a class="text-link" href={`${pathFor(lang, 'about')}#relationship`}
+          >{lang === 'zh' ? '品牌与产品关系' : 'Brand and product roles'}<ArrowRight size={16} /></a
+        >
+      </div>
+      <ServiceColumns lang={lang} />
     </div>
-    <GuideCards lang={lang} guides={guides} featured />
-  </WidgetWrapper>
+  </section>
 
-  <FaqChapter lang={lang} t={t} serviceLabels={serviceLabels} />
-  <CallToAction lang={lang} chapter />
-  <script src="../../scripts/chapter-navigation.ts"></script>
+  <WhyChapter lang={lang} />
+
+  <section class="section guides-band" id="guides" aria-labelledby="guides-title">
+    <div class="container">
+      <div class="section-head section-head-split" data-reveal>
+        <h2 id="guides-title" class="section-title">{e.resources}</h2>
+        <a class="text-link" href={pathFor(lang, 'resources')}>{e.allGuides}<ArrowRight size={16} /></a>
+      </div>
+      <GuideCards lang={lang} guides={guides} featured />
+    </div>
+  </section>
+
+  <FaqChapter lang={lang} />
+  <CallToAction lang={lang} inline />
 </YiAiLayout>

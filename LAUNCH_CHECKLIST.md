@@ -1,20 +1,22 @@
 # Publication and Materials Checklist
 
-This deliverable is an independent local preview, not a public launch.
-Missing materials below do not block this iteration.
+Published on 2026-09-30 at https://ccg-cli.online/yi_ai/ with the owner's explicit
+approval (hosted under the CCG domain as a subpath). Missing materials below do not
+block this iteration.
 
 ## Confirm Before Publication
 
-- [ ] Owner-approved production domain and hosting destination, separate from CCG.
+- [x] Owner-approved hosting destination: https://ccg-cli.online/yi_ai/ (subpath on the CCG domain).
+- [ ] Optional later move to a dedicated domain (update `SITE_ORIGIN`/`SITE_BASE` and add redirects).
 - [ ] Confirmed business/legal identity and required publication details.
 - [ ] Business approval of authorization wording, supply descriptions and service boundaries.
 - [ ] Final Chinese/English review and source-link checks from the deployment network.
-- [ ] Explicit approval to change preview indexing restrictions.
-- [ ] Absolute canonical, language, social-image and structured-data URLs using the final origin.
-- [ ] Production sitemap, robots rules and host-specific headers.
-- [ ] Real HTTP 404, HTTPS and redirect checks on the chosen host.
-- [ ] Performance, keyboard, mobile and accessibility checks on that host.
-- [ ] Search submission after approval; no guarantee of indexing or AI-answer inclusion.
+- [x] Explicit approval to change preview indexing restrictions (production build only).
+- [x] Absolute canonical, language, social-image and structured-data URLs using the final origin.
+- [x] Production sitemap (`/yi_ai/sitemap.xml`) and nginx headers; the root `robots.txt` belongs to CCG.
+- [x] Real HTTP 404, HTTPS and redirect checks on the chosen host.
+- [ ] Performance, keyboard, mobile and accessibility checks on that host (automated crawl done; real devices pending).
+- [ ] Submit the sitemap in Baidu/Bing/Google consoles (owner action); no guarantee of indexing or AI-answer inclusion.
 
 ## Add Only When Real and Approved
 
@@ -28,7 +30,7 @@ Missing materials below do not block this iteration.
 ## Preserve These Boundaries
 
 WorkBuddy, model services/supply cooperation and infrastructure remain separate
-and equally important. 易AI / Easy AI is the brand; CCG is one model-service
+and equally important. 易AI / Easy AI is the brand; CCG API is one model-service
 product entry. Do not imply model-developer direct supply, certification,
 deployment, training, support or SLA beyond confirmed scope.
 
