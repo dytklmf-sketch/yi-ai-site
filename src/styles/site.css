@@ -4262,8 +4262,13 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .hud-tag {
     display: none;
   }
+  /* Single column: the ring has to follow the stack, which now sits under the copy instead of beside it. Measured
+     across this band the plates centre at 72-76% of the hero height, so 73% frames them; the smaller diameter keeps
+     the arc around the stack rather than trailing off behind the headline. */
   .hero:not(.about-hero) .hud-rings {
+    --ring: min(34rem, 58vh, 130vw);
     --ring-x: 50%;
+    --ring-y: 73%;
   }
   .hero-layout,
   .faq-layout,

@@ -585,3 +585,71 @@ curl -I http://127.0.0.1:4322/zh/
 ### 状态
 
 - [x] 已部署 `yi-ai-site-20261004095456`。
+
+## 第二十四轮（2026-10-04）：竖屏 Hero 图层特效
+
+### 站长反馈
+
+- 「竖屏的时候，特效不对，这个你要改」——附 858×950 截图，宽版堆叠图被挤在一栏里，标签贴着图块边。
+- 「把当前的代码备份然后提交一下commit，用新的分支，然后再开干」
+
+### 备份
+
+新建分支 `ui/round-24-detail`，先把当时的工作区状态原样提交为基线 `f7a5552`
+（`chore: baseline before round-24 detail pass`），修复作为该分支的下一个提交，不污染 `main`。
+
+### 诊断（实测，不是推测）
+
+`StackVisual.astro` 输出两套堆叠图，靠断点切换：
+
+- `stack-wide`：`viewBox="0 0 700 570"`，为桌面双栏而画——图块偏左，标签占据右侧留白。
+- `stack-narrow`：`viewBox="40 0 420 570"`，**竖版 420×570**，为手机单栏而画，图形左右对称。
+
+问题在于两者切换的断点（`max-width: 767px`）与 `.hero-layout` 塌成单栏的断点（`max-width: 1080px`）不一致。
+于是 **768–1080px 这一整段**把「带标签的宽版」丢进居中单栏：
+
+- 实测标签距图块边缘仅 **4px**（宽版本就指望这两个元素分处 viewBox 两端）。
+- 装饰圆环定位也不同：1080px 以下 `--ring-x: 50%`，以上 `71%`。
+
+### 改动（`src/styles/site.css`，两处）
+
+1. 把 `.stack-wide { display: none }` / `.stack-narrow { display: block }` 这对规则从 `max-width: 767px`
+   块里移出，放进新加的 `@media (max-width: 1080px)` 块——与 `.hero-layout` 塌栏的断点对齐。
+2. 在新块内给 `.stack-narrow` 加高度上限：
+
+   ```css
+   width: auto;
+   max-width: 100%;
+   max-height: min(46vh, 22rem);
+   margin-inline: auto;
+   ```
+
+   原因：窄版 viewBox 是竖版，若放任它填满 `.hero-visual` 的宽度，在这一段会渲染成约 520×706，
+   把 Hero 从约 1052px 顶到约 **1334px**（远超一屏）。限高后宽度按比例回落。
+
+### 实测
+
+| 视口      | 生效版本 | 图尺寸  | 图块中心 vs SVG 中心 | Hero 高 | caption            |
+| --------- | -------- | ------- | -------------------- | ------- | ------------------ |
+| 390×844   | narrow   | 259×352 | 0                    | 970     | （移动端隐藏）     |
+| 768×1024  | narrow   | 259×352 | 0                    | 974     | 应用 · 模型 · 算力 |
+| 858×950   | narrow   | 259×352 | 0                    | 980     | 应用 · 模型 · 算力 |
+| 1024×1366 | narrow   | 259×352 | 0                    | 1039    | 应用 · 模型 · 算力 |
+| 1080×900  | narrow   | 259×352 | 0                    | 1013    | 应用 · 模型 · 算力 |
+| 1081×900  | wide     | 396×322 | 56                   | 900     | 应用 · 模型 · 算力 |
+| 1440×900  | wide     | 497×405 | 71                   | 900     | 应用 · 模型 · 算力 |
+
+- 「图块中心 vs SVG 中心」在单栏段全为 0，说明构图居中；双栏段保留 56/71 的偏移，那是宽版为标签留白所必需。
+- `pnpm check` 0 error / 0 warning；`pnpm build` 28 页；`pnpm test` PASS。
+- **`pnpm test:browser` 本轮全量重跑并通过**（补上第二十二、二十三两轮欠的账）：
+  `PASS: 208 responsive page checks, 52 axe scans, 34 internal links, interactions and JS-disabled routes.`
+  `PASS: Chromium and WebKit enhanced workflows, motion capture, reduced motion and reflow.`
+- 部署 `yi-ai-site-20261004114216`。
+
+### 状态
+
+- [x] 备份分支与基线提交 `f7a5552`。
+- [x] 修复并提交 `0520b46`（分支 `ui/round-24-detail`）。
+- [x] 全量测试通过、已部署 `yi-ai-site-20261004114216`。
+- [ ] 分支未推送、未合并 `main`（项目规则：未经要求不推送、不在 main 上直接提交）。
+- [ ] `WORKBUDDY_PLAN.md` 的六个待确认问题仍等站长答复，未动工。
