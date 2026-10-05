@@ -183,7 +183,7 @@ testing. Crawlers only read `robots.txt` at the origin root, which belongs to CC
 submit `https://ccg-cli.online/yi_ai/sitemap.xml` in search consoles instead.
 GEO visibility and search inclusion are not guaranteed by the site implementation.
 
-See `IMPLEMENTATION_PLAN.md` for status and `LAUNCH_CHECKLIST.md` for deliberately
+See `plan.md` for status (earlier rounds: `docs/history/`) and `LAUNCH_CHECKLIST.md` for deliberately
 deferred publication/material requirements. The pre-upgrade snapshot is outside
 this repository at `../yi-ai-template-archive/before-site-upgrade-20260919-235417.tar.gz`.
 For recovery, extract into a separate directory first; do not automatically

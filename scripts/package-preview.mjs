@@ -49,11 +49,11 @@ for (const name of [
   'AGENTS.md',
   'BRAND.md',
   'HANDOFF.md',
-  'IMPLEMENTATION_PLAN.md',
   'plan.md',
   'LAUNCH_CHECKLIST.md',
+  'docs/history',
 ]) {
-  await cp(name, path.join(output, 'docs', name));
+  await cp(name, path.join(output, 'docs', path.basename(name)), { recursive: true });
 }
 for (const route of routes) {
   const name = `${route.lang}-${route.path.slice(4).replaceAll('/', '-').replace(/-$/, '') || 'home'}`;

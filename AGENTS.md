@@ -48,7 +48,7 @@ automatically commit or push.
 
 ## Per-Round Handoff
 
-After each round of changes, update `HANDOFF.md` and `plan.md` with the round,
+After each round of changes, write the round record to `docs/rounds/NN-topic.md`, keep `HANDOFF.md` (current version) and `plan.md` (open items) short, and include the round,
 actual changes, absolute artifact paths, verified preview URL, tests performed,
 limitations and remaining work. Never label old reports as fresh verification.
 Run `pnpm package:preview` after the required checks, verify `docs/HANDOFF.md`
