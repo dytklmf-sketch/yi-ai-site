@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # check and build share Astro's generated content cache, so they run in order.
+      - run: pnpm check
+      - name: Production build assertions
+        run: pnpm build:production && pnpm test:production
+      - name: Preview build assertions
+        run: pnpm build && pnpm test
+      - run: pnpm exec playwright install --with-deps chromium webkit ffmpeg
+      - name: Browser tests
+        run: |
+          pnpm preview --port 4322 --background
+          PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/*.json

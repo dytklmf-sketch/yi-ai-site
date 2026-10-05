@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
+
+// sha256 of the `js` class snippet in YiAiLayout; mirrored in /etc/nginx/snippets/yi-ai-site-headers.conf.
+const inlineScriptHash = 'sa2BD07tH4oO53uT1B5vNSLM2+gcrREM4WTXttKp6oU=';
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -44,6 +48,12 @@ for (const route of routes) {
 assert.match(await readFile('dist/404.html', 'utf8'), /<title>页面未找到/);
 for (const file of html) {
   const text = await readFile(file, 'utf8');
+  // The nginx CSP allows exactly one inline script by hash; anything else inline would be blocked in production.
+  for (const [, attrs, body] of text.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/\bsrc=|application\/ld\+json/.test(attrs)) continue;
+    const hash = createHash('sha256').update(body).digest('base64');
+    assert.equal(hash, inlineScriptHash, `${file}: unexpected inline script; update the CSP hash in nginx too`);
+  }
   if (!origin || file === 'dist/404.html' || file === 'dist/index.html')
     assert.match(text, /content="noindex, (?:no)?follow"/, `${file}: noindex required`);
   for (const [, url] of text.matchAll(/(?:href|src|content)="(\/[^"]*)"/g))

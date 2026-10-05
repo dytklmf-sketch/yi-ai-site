@@ -9,4 +9,7 @@ export default defineConfig({
   trailingSlash: 'always',
   devToolbar: { enabled: false },
   integrations: [indexing],
+  // Emit every processed script as a file so the CSP can drop script-src 'unsafe-inline'; the only inline
+  // script left is the fixed `js` class snippet in YiAiLayout, allowed by hash (see test-build.mjs).
+  vite: { build: { assetsInlineLimit: 0 } },
 });
