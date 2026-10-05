@@ -287,17 +287,23 @@ export async function testEnhancements(base, routes) {
         'Reduced motion: nothing keeps running'
       );
       assert.equal(await calmPage.evaluate(() => document.documentElement.classList.contains('reveal-ready')), false);
+      // Round 43: home lists guides in the compact list; hovering moves nothing.
       await scrollToElement(calmPage, '#guides');
-      await calmPage.locator('.guide-card').first().hover();
+      await calmPage.locator('.guide-list a').first().hover();
       assert.equal(
         await calmPage
-          .locator('.guide-card')
+          .locator('.guide-list a')
           .first()
           .evaluate((el) => getComputedStyle(el).transform),
         'none'
       );
       await calmPage.locator('.faq-list summary').first().click();
       assert(await calmPage.locator('.faq-list details[open] p').isVisible());
+      // Round 44: the Enterprise card neither rises in nor lifts on hover under reduced motion.
+      await calmPage.goto(`${base}/zh/workbuddy/`, { waitUntil: 'networkidle' });
+      await scrollToElement(calmPage, '#compare');
+      await calmPage.locator('.wb-vs-pro').hover();
+      assert.equal(await calmPage.locator('.wb-vs-pro').evaluate((el) => getComputedStyle(el).transform), 'none');
       await calm.close();
       result.flows.push('Reduced motion: no entrance, reveal, hover movement or disclosure animation');
 
