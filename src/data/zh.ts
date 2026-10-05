@@ -82,7 +82,7 @@ export const zh: SiteCopy = {
       service: 'model-services',
       question: '怎么估算每月费用？',
       answer:
-        '用接口返回的用量字段统计平均输入与输出 Token，乘以每月请求数和单价。模型服务页有估算工具，单价以产品页面或正式报价为准。',
+        '用接口返回的用量字段统计平均输入与输出 Token，乘以每月请求数和单价。算法与示例见资源与指南中的《Token 用量与月度成本怎么估》，单价以产品页面或正式报价为准。',
     },
     {
       service: 'model-services',

@@ -409,6 +409,8 @@ try {
   await page.locator('label:has(input[value="infrastructure"])').click();
   const updatedMail = new URL(await page.locator('.inquiry-email').getAttribute('href'));
   assert(updatedMail.searchParams.get('body').includes('Infrastructure'));
+  // Round 34: the body lists that topic's own quote inputs.
+  assert(updatedMail.searchParams.get('body').includes('Workload type'));
   assert(await page.locator('[data-topic-preparation="infrastructure"]').isVisible());
   assert.equal(await page.locator('[data-topic-preparation]:visible').count(), 1);
   assert.equal(new URL(page.url()).searchParams.get('topic'), 'infrastructure');
@@ -452,6 +454,10 @@ try {
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => document.querySelector('.copy-status')?.textContent.includes('已复制'));
   await page.locator('input[value="model-services"]').focus();
+  // Round 34: the selected topic's brief download sits between the topics and the contact options.
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.classList.contains('topic-brief')), true);
+  assert(await page.evaluate(() => document.activeElement.href.endsWith('/model-usage-brief.txt')));
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.classList.contains('contact-id')), true);
   report.interactions.push('keyboard radio selection, Chinese email subject, Enter-to-copy, contact tab order');

@@ -102,15 +102,16 @@ for (const file of html) {
     assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
     assert.equal((text.match(/class="step-card-index/g) || []).length, 3, `${file}: three step cards`);
     assert.equal((text.match(/class="tag-list"/g) || []).length, 1, `${file}: quote inputs as chips`);
-    // Round 32: a fourth chapter explains editions, access or deployment forms, with downloads and guides.
+    // Round 34: only WorkBuddy keeps the fourth chapter (editions); the other services drop their explainers.
+    const wb = file.includes('/workbuddy/');
     assert.equal(
       (text.match(/<a href="#[a-z]+"><span class="mono">/g) || []).length,
-      4,
-      `${file}: four chapters in the subnav`
+      wb ? 4 : 3,
+      `${file}: chapters in the subnav`
     );
-    assert(/<section id="(?:editions|access|forms)" class="section">/.test(text), `${file}: service explainer`);
+    assert.equal(text.includes('id="editions"'), wb, `${file}: WorkBuddy editions only on its page`);
+    assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
     assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
-    if (file.includes('/model-services/')) assert(text.includes('data-cost-estimator'), `${file}: cost estimator`);
     if (file.includes('/workbuddy/')) assert(text.includes('datetime="2026-12-31"'), `${file}: certificate validity`);
   }
   if (file.endsWith('/faq/index.html')) {
@@ -162,6 +163,7 @@ for (const file of html) {
     for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
       assert(text.includes(`/contact/?topic=${service}`), `${file}: service-specific inquiry is missing`);
       assert(text.includes(`data-topic-preparation="${service}"`), `${file}: preparation copy is missing`);
+      assert(/class="topic-brief" href="[^"]*\/templates\//.test(text), `${file}: brief download in the contact panel`);
     }
   }
 }

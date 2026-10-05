@@ -24,11 +24,15 @@ CSP 去掉 `script-src 'unsafe-inline'`、删除死 CSS、「一屏一章」改�
 
 ## 已完成：第三十二轮业务页详解（2026-10-05）
 
-三个业务页各加详解章节、需求单下载、成本估算器、证书有效期。详见 `docs/rounds/32-service-explainers.md`。
+三个业务页各加详解章节、需求单下载、成本估算器、证书有效期（第三十四轮按站长要求只保留 WorkBuddy）。详见 `docs/rounds/32-service-explainers.md`。
 
 ## 已完成：第三十三轮常见问题页（2026-10-05）
 
 FAQ 6 → 18 条并独立成页，首页只留 3 条；手机首页中文 7654 → 7233px。详见 `docs/rounds/33-faq-page.md`。
+
+## 已完成：第三十四轮（2026-10-05）
+
+按站长要求删除模型服务、基础设施页的详解章节；WorkBuddy 版本与积分精简并按 WorkBuddy 官网风格重做；联系面板按业务预填邮件并提供需求单下载。详见 `docs/rounds/34-contact-briefs.md`。
 
 ## UI 待办
 

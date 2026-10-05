@@ -8,12 +8,12 @@ import ContactPanel from '../../components/yi-ai/ContactPanel.astro';
 import GuideCards from '../../components/yi-ai/GuideCards.astro';
 import ServiceSample from '../../components/yi-ai/ServiceSample.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
-import ServiceExplainer from '../../components/yi-ai/ServiceExplainer.astro';
+import WorkBuddyEditions from '../../components/yi-ai/WorkBuddyEditions.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
-import { serviceExplainers } from '../../data/service-explainers';
+import { serviceBriefs, workbuddyEditions } from '../../data/workbuddy-editions';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -47,17 +47,14 @@ const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
 const { certificate, validUntil } = workbuddyCredential;
-const explainer = service ? serviceExplainers[lang][service] : null;
-// Page order: use cases, process, the service explainer (round 32), guides.
-const chapters: [string, string][] = explainer
-  ? [
-      ['fit', r.serviceContents.fit],
-      ['process', r.serviceContents.process],
-      [explainer.id, explainer.label],
-      ['guides', r.serviceContents.guides],
-    ]
-  : [];
-const briefFile = explainer?.downloads[0];
+// Page order: use cases, process, (WorkBuddy only) editions, guides.
+const chapters: [string, string][] = [
+  ['fit', r.serviceContents.fit],
+  ['process', r.serviceContents.process],
+  ...(service === 'workbuddy' ? [['editions', workbuddyEditions[lang].label] as [string, string]] : []),
+  ['guides', r.serviceContents.guides],
+];
+const briefFile = service ? serviceBriefs[lang][service] : undefined;
 const credentials = {
   partner: workbuddyCredential.partner[lang],
   note: zhUI
@@ -285,9 +282,9 @@ const credentials = {
           </section>
         )}
 
-        <ServiceExplainer lang={lang} service={service} />
+        {service === 'workbuddy' && <WorkBuddyEditions lang={lang} />}
 
-        <section id="guides" class="section section-tint">
+        <section id="guides" class="section">
           <div class="container">
             <div class="section-head section-head-split" data-reveal>
               <h2 class="section-title">{r.serviceContents.guides}</h2>

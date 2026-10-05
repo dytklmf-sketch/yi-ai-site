@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十三轮（常见问题页，见 `docs/rounds/33-faq-page.md`）；上一轮：第三十二轮业务页详解
+- 当前轮次：第三十四轮（WorkBuddy 版本章节重做、联系面板预填，见 `docs/rounds/34-contact-briefs.md`）；上一轮：第三十三轮常见问题页
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -37,11 +37,13 @@
 - 指南里的链接一律写相对路径（如 `../../../templates/zh/x.txt`），随 base 路径。
 - 只有模型服务页和关于页可以出现「CCG」（`test-browser.mjs`），指南里用通用说法。
 
-## 第三十二轮：业务页详解（2026-10-05）
+## 第三十二 / 三十四轮：WorkBuddy 版本与积分（2026-10-05）
 
-- 业务页第四章 `ServiceExplainer.astro`（数据 `src/data/service-explainers.ts`）：WorkBuddy 版本与积分、模型服务接入与计费
-  （含 `CostEstimator.astro`，不预填价格）、基础设施部署与分工。吸顶目录 4 项。官方规则类内容注明核对日期，
-  官方规则变化时更新数据文件。
+- 第三十二轮给三个业务页加的详解章节，站长决定只保留 WorkBuddy：模型服务、基础设施页恢复 3 个章节。
+- WorkBuddy 页第四章 `WorkBuddyEditions.astro`（数据 `src/data/workbuddy-editions.ts`）：对标 WorkBuddy 官网的
+  黑色圆角面板与绿色强调，个人版 / Enterprise 两张卡、三个规则标签、需求单下载、指南与官方来源。官方规则变化时
+  更新数据文件里的核对日期。
+- 需求单清单 `serviceBriefs` 供询价卡片与联系面板共用；联系面板每个业务方向预填自己的邮件正文。
 - `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
 
 ## 第三十三轮：常见问题页（2026-10-05）

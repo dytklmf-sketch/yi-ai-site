@@ -7,7 +7,7 @@ document.querySelectorAll<HTMLElement>('[data-contact-panel]').forEach((panel) =
     const label = current.dataset.label || '';
     if (email) {
       const subject = `${panel.dataset.subject} | ${label}`;
-      const body = (panel.dataset.body || '').replace('{topic}', label);
+      const body = (current.dataset.body || panel.dataset.body || '').replace('{topic}', label);
       email.href = `mailto:${panel.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
     panel.querySelectorAll<HTMLElement>('[data-topic-preparation]').forEach((item) => {

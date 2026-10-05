@@ -1,6 +1,7 @@
 ---
-import { Copy, ArrowUpRight, Mail, MessageCircle, Check } from '@lucide/astro';
-import { contact, services, type Lang } from '../../data/yi-ai';
+import { Copy, ArrowUpRight, Mail, MessageCircle, Check, Download } from '@lucide/astro';
+import { contact, services, withBase, type Lang, type Service } from '../../data/yi-ai';
+import { serviceBriefs } from '../../data/workbuddy-editions';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 import ServiceIcon from './ServiceIcon.astro';
@@ -18,7 +19,13 @@ const topicLabels = {
   'model-services': t.nav.models,
   infrastructure: t.nav.infrastructure,
 };
-const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.subject} | ${initialLabel}`)}&body=${encodeURIComponent(t.contact.emailBody.replace('{topic}', initialLabel))}`;
+// Round 34: each topic pre-fills the email with its own quote inputs, in place of one generic template.
+const bodyFor = (slug: Service) =>
+  lang === 'zh'
+    ? `您好，易AI：\n\n咨询方向：{topic}\n公司或团队：\n${t.services[slug].preparation.map((item) => `${item}：`).join('\n')}\n期望开始时间：\n\n谢谢！`
+    : `Hello Easy AI,\n\nTopic: {topic}\nCompany or team:\n${t.services[slug].preparation.map((item) => `${item}:`).join('\n')}\nPreferred start date:\n\nThank you.`;
+const brief = (slug: Service) => serviceBriefs[lang][slug];
+const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.subject} | ${initialLabel}`)}&body=${encodeURIComponent(bodyFor('workbuddy').replace('{topic}', initialLabel))}`;
 ---
 
 <div
@@ -34,7 +41,14 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
       {
         services.map((slug, i) => (
           <label>
-            <input type="radio" name="topic" value={slug} checked={i === 0} data-label={t.services[slug].label} />
+            <input
+              type="radio"
+              name="topic"
+              value={slug}
+              checked={i === 0}
+              data-label={t.services[slug].label}
+              data-body={bodyFor(slug)}
+            />
             <span>
               <ServiceIcon service={slug} size={16} class="topic-code" />
               {topicLabels[slug]}
@@ -50,6 +64,10 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
         services.map((slug, i) => (
           <p data-topic-preparation={slug} hidden={i !== 0}>
             {t.services[slug].preparation.join(lang === 'zh' ? '、' : ' · ')}
+            <a class="topic-brief" href={withBase(`/templates/${lang}/${brief(slug).file}`)} download>
+              <Download size={14} />
+              {lang === 'zh' ? `下载${brief(slug).label}` : `Download the ${brief(slug).label.toLowerCase()}`}
+            </a>
           </p>
         ))
       }

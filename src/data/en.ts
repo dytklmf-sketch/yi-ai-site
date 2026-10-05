@@ -93,7 +93,7 @@ export const en: SiteCopy = {
       service: 'model-services',
       question: 'How do we estimate the monthly cost?',
       answer:
-        'Take average input and output tokens from the usage fields in responses and multiply by monthly requests and prices. The model services page has an estimator; prices come from the product page or a formal quote.',
+        'Take average input and output tokens from the usage fields in responses and multiply by monthly requests and prices. The guide on estimating tokens and monthly cost has a worked example; prices come from the product page or a formal quote.',
     },
     {
       service: 'model-services',
