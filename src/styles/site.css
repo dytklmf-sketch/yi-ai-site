@@ -5057,9 +5057,7 @@ body[data-theme='infrastructure'] .contact-fab {
   overflow: hidden;
   grid-column: 3;
   border: 1px solid #c8ecdc;
-  background:
-    linear-gradient(180deg, rgb(1 200 134 / 9%), transparent 10rem),
-    var(--paper);
+  background: linear-gradient(180deg, rgb(1 200 134 / 9%), transparent 10rem), var(--paper);
   box-shadow: 0 2rem 4rem -2.5rem rgb(11 122 85 / 45%);
   transition:
     transform 0.4s var(--ease),
@@ -5123,7 +5121,7 @@ body[data-theme='infrastructure'] .contact-fab {
   font-weight: 700;
   line-height: 1.4;
 }
-.wb-vs-pro li svg {
+.wb-vs-pro li svg.lucide {
   width: 1.5rem;
   height: 1.5rem;
   padding: 0.25rem;
