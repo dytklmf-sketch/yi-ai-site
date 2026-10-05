@@ -35,7 +35,7 @@ Asset exports consume the built `dist/site-manifest.json`; rebuild after generat
 Use two-space indentation, PascalCase components and kebab-case article filenames.
 Run `pnpm format`. Pair complete translations using the same `pairKey`, with
 dated sources and existing service IDs. Preserve `topic` contact parameters.
-Tests cover 28 HTML pages, eight widths, axe, Chromium/WebKit workflows, no-JS
+Tests cover 42 HTML pages, eight widths, axe, Chromium/WebKit workflows, no-JS
 reading and motion. Add focused regressions to the existing suites, not new
 per-round scripts. Round scope and status live in `plan.md`. Preserve the six
 service section IDs, paired article fragments, the shared topic-aware
