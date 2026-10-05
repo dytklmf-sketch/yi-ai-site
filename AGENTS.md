@@ -18,8 +18,12 @@ Do not modify the upstream reference checkout or the production CCG website.
 
 ## Build and Development
 
-Use Node 22.22.3+ and `pnpm-lock.yaml`. Run `pnpm check`, `pnpm build`,
-`pnpm test` and `pnpm test:browser`. Set `BROWSER_EXECUTABLE` when using a locally
+Use Node 22.22.3+ and `pnpm-lock.yaml`. Run `pnpm check`, `pnpm build` and
+`pnpm test` for every change. Browser testing has two tiers (round 38, agreed with the owner):
+small changes to a few pages run `pnpm test:quick <paths>` (about a minute: 390/768/1440,
+overflow, console errors, axe, screenshots in `test-results/quick/`) and may go live after the
+screenshots are reviewed; the full `pnpm test:browser` (about 12 minutes) runs once per batch
+of changes, for shared components (layout, header, footer, contact, global CSS) and before handover. Set `BROWSER_EXECUTABLE` when using a locally
 installed browser; otherwise install Playwright Chromium.
 Install WebKit and FFmpeg with `pnpm exec playwright install webkit ffmpeg`.
 Run `pnpm dev --port 4321` for development or `pnpm preview --port 4322 --background`

@@ -17,6 +17,7 @@
     "test": "node scripts/test-build.mjs",
     "test:production": "SITE_ORIGIN=https://ccg-cli.online SITE_BASE=/yi_ai node scripts/test-build.mjs",
     "test:browser": "node scripts/test-browser.mjs",
+    "test:quick": "node scripts/quick-check.mjs",
     "package:preview": "node scripts/package-preview.mjs",
     "assets:brand": "node --experimental-strip-types scripts/brand-assets.mjs"
   },

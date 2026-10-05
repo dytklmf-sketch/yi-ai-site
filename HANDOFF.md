@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十七轮（试行业务页主题色、价格上移，见 `docs/rounds/37-service-themes.md`）；上一轮：第三十六轮
+- 当前轮次：第三十八轮（价格面板压缩、去掉日期、流程居中、联系卡片合并，见 `docs/rounds/38-compact-and-no-dates.md`）；上一轮：第三十七轮
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -44,7 +44,13 @@
   黑色圆角面板与绿色强调，个人版 / Enterprise 两张卡、三个规则标签、需求单下载、指南与官方来源。官方规则变化时
   更新数据文件里的核对日期。
 - 需求单清单 `serviceBriefs` 供询价卡片与联系面板共用；联系面板每个业务方向预填自己的邮件正文。
-- `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
+- 证书 2026-12-31 到期（站上不显示日期，第三十八轮），到期时证书区与首页徽章一并处理。
+
+## 第三十八轮：站上不出现日期（2026-10-05）
+
+- 站长要求任何页面都不显示日期（核对、更新、有效期）；`test-build.mjs` 会拦截可见文字中的日期。
+- 页面结尾的联系卡片含品牌标语，页脚标语只在联系页与 404 出现。
+- 测试分两档：小改动 `pnpm test:quick <路径>`，一批改动或公共组件跑完整 `pnpm test:browser`（见 AGENTS.md）。
 
 ## 第三十七轮：业务页主题色（试行，2026-10-05）
 
@@ -79,7 +85,8 @@
 export PATH=/root/.local/node/bin:$PATH
 pnpm check && pnpm build && pnpm test
 pnpm preview --port 4322 --background
-PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser   # UI、动效、响应式或交互改动必跑
+PREVIEW_URL=http://127.0.0.1:4322 pnpm test:quick /zh/某页/ /en/某页/   # 小改动：约 1 分钟，看截图后可上线
+PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser   # 一批改动、公共组件或交接前：约 12 分钟
 ```
 
 3. 提交（Git 工作区必须干净才能发布），然后 `scripts/deploy-ccg.sh`；需要时 `scripts/deploy-ccg.sh --rollback`。

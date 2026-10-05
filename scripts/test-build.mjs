@@ -121,7 +121,6 @@ for (const file of html) {
     if (wb)
       assert(
         text.includes('cloud.tencent.com/document/product/1831/134332') &&
-
           (text.match(/class="wb-tier"/g) || []).length === 3 &&
           !/体验版|Trial</.test(text),
         `${file}: official WorkBuddy Enterprise prices with source and date`
