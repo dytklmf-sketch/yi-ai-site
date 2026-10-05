@@ -74,7 +74,19 @@ const mark = {
     <div class="sample-bar">
       <span class="sample-brand mono">
         {mark.logo && <img src={withBase(mark.logo)} alt="" width="18" height="18" />}
-        {mark.name}
+        {
+          service === 'workbuddy' ? (
+            <img
+              class="sample-wordmark"
+              src={withBase('/partners/workbuddy-wordmark-white.svg')}
+              alt="WorkBuddy"
+              width="49"
+              height="21"
+            />
+          ) : (
+            mark.name
+          )
+        }
       </span>
       <span class="sample-status">
         <span class="sample-status-run" aria-hidden="true">
