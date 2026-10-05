@@ -26,30 +26,28 @@ export const workbuddyEditions: Record<Lang, Editions> = {
     title: ['WorkBuddy 企业版', '按人数订阅，部署方式可选'],
     lead: '腾讯出品的全场景 AI 工作台：一句话描述工作，由它规划并交付文档、表格、演示稿。企业版按人数按月或按年订阅，含管理后台与单点登录，以下为官方公开价。',
     tiers: [
-        {
-          name: '旗舰版',
-          price: '198',
-          unit: '元/人/月',
-          lines: ['或 2,376 元/人/年', '1 人起购', '腾讯云共享 VPC', '每人每月 2,000 Credits，团队共享'],
-        },
-        {
-          name: '专享版',
-          price: '316',
-          unit: '元/人/月',
-          lines: ['或 3,792 元/人/年', '100 人起购', '腾讯云专享 VPC', '每人每月 2,000 Credits，团队共享'],
-        },
-        {
-          name: '私有化企业版',
-          price: '售前咨询',
-          unit: '',
-          lines: ['企业私有化部署', '无用量限制'],
-        },
+      {
+        name: '旗舰版',
+        price: '198',
+        unit: '元/人/月',
+        lines: ['或 2,376 元/人/年', '1 人起购', '腾讯云共享 VPC', '每人每月 2,000 Credits，团队共享'],
+      },
+      {
+        name: '专享版',
+        price: '316',
+        unit: '元/人/月',
+        lines: ['或 3,792 元/人/年', '100 人起购', '腾讯云专享 VPC', '每人每月 2,000 Credits，团队共享'],
+      },
+      {
+        name: '私有化企业版',
+        price: '售前咨询',
+        unit: '',
+        lines: ['企业私有化部署', '无用量限制'],
+      },
     ],
     rules: ['Credits 团队内共享、每月刷新', '到期即停用，需提前续费', '按月或按年订阅'],
     note: `以上为官方公开价，核对于 ${workbuddyPricesChecked}；价格以官方页面为准，通过易AI采购以正式报价为准。`,
-    sources: [
-      { label: 'Enterprise 版本说明', url: 'https://cloud.tencent.com/document/product/1831/134332' },
-    ],
+    sources: [{ label: 'Enterprise 版本说明', url: 'https://cloud.tencent.com/document/product/1831/134332' }],
     guides: ['workbuddy-procurement-checklist', 'workbuddy-renewal-and-seats'],
   },
   en: {
@@ -57,34 +55,34 @@ export const workbuddyEditions: Record<Lang, Editions> = {
     title: ['WorkBuddy Enterprise', 'Per seat, deployed your way'],
     lead: 'Tencent’s all-scenario AI workspace: describe the work in a sentence and it plans and delivers documents, spreadsheets and slides. Enterprise is subscribed per seat, monthly or annually, with an admin console and SSO; official list prices below.',
     tiers: [
-        {
-          name: 'Flagship',
-          price: '¥198',
-          unit: '/seat/month',
-          lines: [
-            'or ¥2,376/seat/year',
-            'From 1 seat',
-            'Tencent Cloud shared VPC',
-            '2,000 credits per seat a month, shared',
-          ],
-        },
-        {
-          name: 'Exclusive',
-          price: '¥316',
-          unit: '/seat/month',
-          lines: [
-            'or ¥3,792/seat/year',
-            'From 100 seats',
-            'Tencent Cloud dedicated VPC',
-            '2,000 credits per seat a month, shared',
-          ],
-        },
-        {
-          name: 'Private Enterprise',
-          price: 'By consultation',
-          unit: '',
-          lines: ['On-premises deployment', 'No usage limit'],
-        },
+      {
+        name: 'Flagship',
+        price: '¥198',
+        unit: '/seat/month',
+        lines: [
+          'or ¥2,376/seat/year',
+          'From 1 seat',
+          'Tencent Cloud shared VPC',
+          '2,000 credits per seat a month, shared',
+        ],
+      },
+      {
+        name: 'Exclusive',
+        price: '¥316',
+        unit: '/seat/month',
+        lines: [
+          'or ¥3,792/seat/year',
+          'From 100 seats',
+          'Tencent Cloud dedicated VPC',
+          '2,000 credits per seat a month, shared',
+        ],
+      },
+      {
+        name: 'Private Enterprise',
+        price: 'By consultation',
+        unit: '',
+        lines: ['On-premises deployment', 'No usage limit'],
+      },
     ],
     rules: [
       'Credits don’t roll over',

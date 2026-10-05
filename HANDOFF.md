@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十五轮（WorkBuddy 官方价格，见 `docs/rounds/35-workbuddy-prices.md`）；上一轮：第三十四轮
+- 当前轮次：第三十六轮（只保留企业版价格、浅色面板、指南一行四张，见 `docs/rounds/36-enterprise-light.md`）；上一轮：第三十五轮
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -48,7 +48,7 @@
 
 ## 第三十五轮：WorkBuddy 官方价格（2026-10-05）
 
-- WorkBuddy 页「版本与价格」展示官方公开价（个人版 4 档、Enterprise 3 档），数据与核对日期在
+- WorkBuddy 页「企业版价格」展示 WorkBuddy Enterprise 官方公开价 3 档（第三十六轮去掉个人版、改浅色面板），数据与核对日期在
   `src/data/workbuddy-editions.ts`。官方调价或限时加赠变化时同步更新；新增文案后记得重跑 `prepare-brand.py`。
 
 ## 第三十三轮：常见问题页（2026-10-05）
