@@ -5029,7 +5029,7 @@ body[data-theme='infrastructure'] .contact-fab {
 }
 .wb-vs-personal {
   grid-column: 1;
-  margin-block: 1.5rem;
+  margin-top: 1.5rem;
   border: 1px solid var(--line);
   background: var(--tint);
   color: var(--muted);
@@ -5046,13 +5046,22 @@ body[data-theme='infrastructure'] .contact-fab {
 .wb-vs-pro {
   grid-column: 3;
   border: 2px solid var(--cobalt);
-  background:
-    radial-gradient(70% 40% at 100% 0, rgb(var(--accent-rgb) / 14%), transparent 70%),
-    var(--paper);
+  background: radial-gradient(70% 40% at 100% 0, rgb(var(--accent-rgb) / 14%), transparent 70%), var(--paper);
   box-shadow: 0 2rem 4rem -2.5rem rgb(var(--accent-rgb) / 70%);
 }
 .wb-vs-pro .wb-vs-head {
   padding-top: clamp(1.5rem, 2.8vw, 2rem);
+}
+.wb-vs-head img {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.625rem;
+  border-radius: 0.75rem;
+}
+.wb-vs-personal .wb-vs-head img {
+  filter: grayscale(1);
+  opacity: 0.45;
 }
 .wb-vs-pro .wb-vs-head img {
   display: block;
