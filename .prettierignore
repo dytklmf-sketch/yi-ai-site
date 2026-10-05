@@ -6,3 +6,4 @@ node_modules
 test-results
 pnpm-lock.yaml
 public/fonts/*-OFL.txt
+src/styles/font-guides.css

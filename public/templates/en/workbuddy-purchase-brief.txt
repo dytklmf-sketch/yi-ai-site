@@ -1,0 +1,38 @@
+﻿Easy AI · WorkBuddy purchase brief
+(Attach to an email to yi__ai@126.com. Write "open" where unsure.)
+
+1. Basics
+Company or team:
+Contact and role:
+Preferred start date:
+
+2. Users
+Expected seats:
+Pilot users (if any):
+Teams and roles:
+
+3. Tasks (one to three)
+1. Task:            Input material:            Expected result:
+2. Task:            Input material:            Expected result:
+3. Task:            Input material:            Expected result:
+
+4. Edition and authorization
+Personal plans or Enterprise:
+Edition names you know of (if any):
+Term (monthly / annual):
+Existing accounts (number, ownership):
+
+5. Environment and requirements
+Operating systems:
+Network restrictions:
+Data and approval requirements (sensitive material?):
+
+6. Cost and invoicing
+Budget range (optional):
+Invoice type and title:
+Payment terms:
+
+7. Services to agree separately (tick)
+[ ] Deployment   [ ] Training   [ ] Technical support   [ ] Other:
+
+Do not put passwords, keys or unapproved raw business material in this brief.

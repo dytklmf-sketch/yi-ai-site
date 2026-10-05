@@ -4,50 +4,94 @@ pairKey: infrastructure-requirements
 title: How to describe infrastructure needs
 description: Workload type, model size, duration and data location.
 service: infrastructure
-updatedAt: '2026-09-19'
+updatedAt: '2026-10-05'
 order: 5
 sources:
-  - label: Google Cloud architecture framework on shared responsibilities
+  - label: 'Google Cloud Architecture Framework: shared responsibility'
     url: https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
+  - label: 'Hugging Face: optimizing LLMs for speed and memory'
+    url: https://huggingface.co/docs/transformers/main/en/llm_tutorial_optimization
 ---
 
 ## The short answer
 
-Start with **what will run, which resources it needs, how it connects, how long it will run and who will manage it**. A hardware model is one discussion input, not a substitute for a workload description and operating boundary.
+Start an infrastructure request with **what will run, how much it needs, how it connects, how long it runs and who manages it**. A hardware model is one condition in the discussion; it does not replace a description of the workload and its operating boundaries.
 
-Easy AI owns self-built data-center resources. That does not establish availability of every configuration or a commitment to external rental or hosting. Equipment, capacity, location and cooperation scope require individual confirmation.
+Easy AI owns self-built data-center resources. That does not mean every configuration is in stock or that external rental or hosting is promised. This guide helps you prepare; equipment, capacity, location and scope are confirmed separately.
 
 ## When this applies
 
-Use this checklist for an initial discussion involving technical teams, application owners or infrastructure partners. During an early validation stage, provide ranges, existing measurements and uncertainties rather than inventing a precise purchase quantity.
+For enterprise technical teams, application owners and infrastructure partners at the first conversation. If you are still validating, share ranges, existing measurements and open questions instead of precise-looking purchase quantities.
 
 ## Six groups of requirements
 
-1. **Purpose:** Development, testing or business operation; continuous versus intermittent work and acceptable interruptions.
-2. **Compute:** Required CPU, memory, accelerators and runtime conditions. Separate mandatory requirements from substitutable ones.
-3. **Storage:** Current volume, growth range, access patterns, backup and recovery objectives.
-4. **Network:** Users, connection direction, estimated bandwidth, fixed-address or isolation needs and approval owners.
-5. **Timeline:** Start and end dates, validation window, possible expansion points and migration-out timing.
-6. **Responsibilities:** Owners for equipment, systems, applications, accounts, logs and backups, plus incident contacts.
+1. **Purpose**: development, testing or production; whether it runs continuously and which interruptions are acceptable.
+2. **Compute**: required CPU, memory, accelerators and runtime; separate “must have” from “substitutable”.
+3. **Storage**: current data volume, growth, read/write pattern, backup and recovery targets.
+4. **Network**: who connects, direction, bandwidth estimate, fixed addresses or isolation, and who approves.
+5. **Timing**: start and end dates, validation window, possible scale-up points and exit date.
+6. **Responsibilities**: who owns hardware, systems, applications, accounts, logs and backups, and whom to call on incidents.
 
-For sensitive information and access, describe classification and restrictions first. Do not send real business datasets or administrator passwords with an initial inquiry.
+For sensitive data and access, describe classifications and restrictions first. Do not send real business data or admin passwords in the first inquiry.
 
-## Turn the brief into a discussion
+## A sample workload request
 
-Describe the existing environment and workload. Summarize available monitoring or test results as ranges. Label assumptions where measurements are unavailable; estimates are not guarantees.
+A fictional example showing how much detail each field needs. The project and figures are assumptions, not a customer case. You can also download the [workload brief](../../../templates/en/workload-brief.txt) and fill it in.
 
-Next, confirm resource matching, operating conditions and duration. Discuss pricing, validation and implementation only after availability and responsibilities are clear. The shared-responsibility reference helps frame questions; it does not imply that Easy AI offers those cloud services or holds related certifications.
+| Field                  | Example                                                          |
+| ---------------------- | ---------------------------------------------------------------- |
+| Workload               | Inference service, internal knowledge-base Q&A                   |
+| Model                  | Open-source LLM, about 7B parameters, BF16                       |
+| Concurrency and length | About 20 concurrent requests at peak, ~4,000 input tokens each   |
+| Compute                | At least one accelerator with 24 GB+ memory; model substitutable |
+| Storage                | ~15 GB model files, ~200 GB documents, daily incremental backup  |
+| Network                | Office network access only; fixed egress address needed          |
+| Duration               | About a year; first two weeks for validation                     |
+| Interruptions          | None during weekday office hours; maintenance at night           |
+| Responsibilities       | We own application and data; hardware, network, OS to agree      |
+| Open                   | Whether a second machine is needed for redundancy                |
 
-## Common questions
+“About 7B parameters in BF16” means roughly 14 GB of weights; the method is in [sizing a self-hosted model](../self-hosted-llm-sizing/).
 
-### Can we ask for a specific hardware model?
+## Choosing a deployment form
 
-Yes, but also provide purpose, quantity, runtime and acceptable alternatives. Availability must be checked; it cannot be inferred from ownership of a data center.
+The same workload can run in different forms. Decide which you need before discussing resources.
 
-### What if we do not know exact usage?
+| Form                         | Suits                                             | You are responsible for                |
+| ---------------------------- | ------------------------------------------------- | -------------------------------------- |
+| Whole machine (bare metal)   | Long-running, high performance or isolation needs | OS, drivers, runtime and application   |
+| Virtual machine or container | Moderate needs, flexible sizing                   | Runtime and application                |
+| Managed inference            | Calling an API without managing machines          | Integration, data and checking results |
 
-Provide an estimated range, its basis and growth assumptions. Validation can be discussed, but resources, charges and arrangements require separate agreement.
+Each form draws the responsibility line differently. Whether a form is available depends on actual resources; this table does not mean Easy AI offers all of them.
 
-### Does API access mean the model runs in this facility?
+## Turning the request into a proposal
 
-No. Model access channels and infrastructure are separate matters. Owning a data center does not establish where a third-party model is deployed.
+Describe the current environment and workload, then turn existing monitoring or tests into ranges. Label assumptions where you cannot measure, and do not present estimates as guarantees.
+
+Next, check matching resources, operating conditions and duration. Only once resources and responsibilities are confirmed should pricing, validation and implementation be discussed. The responsibility framework is cited to help frame questions; it does not imply Easy AI has that cloud service or certification.
+
+## Common mistakes
+
+- **Quoting only a hardware model**: the same model supports very different volumes at different concurrency and context lengths; describe the workload too.
+- **Treating peak as normal**: state normal usage and peak separately, and how long peaks last.
+- **Forgetting storage and network**: storing and moving model files, logs and data often becomes the bottleneck before compute does.
+- **No exit plan**: decide up front how data is exported at the end and how long that takes.
+
+## FAQ
+
+### Can I ask directly for a particular hardware model?
+
+Yes, but also describe purpose, quantity, environment and acceptable alternatives. Availability must be confirmed; it cannot be inferred from “self-built data center”.
+
+### What if I do not know exact usage?
+
+Give a range, its basis and growth assumptions. Validation can be discussed, but its resources, cost and schedule are confirmed separately.
+
+### Does using a model API mean the model runs in this data center?
+
+No. Model access channels and infrastructure are separate matters, and the actual location of third-party models cannot be inferred from Easy AI owning a data center.
+
+### Can training and inference go in one request?
+
+Better to separate them. They differ greatly in memory, storage and duration; see [training, fine-tuning and inference](../training-vs-inference/).

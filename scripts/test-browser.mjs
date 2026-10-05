@@ -493,7 +493,7 @@ try {
   assert(await plain.locator('.faq-list details[open]').isVisible());
   await plain.goto(`${base}/zh/contact/`);
   assert((await plain.locator('noscript').innerText()).includes('手动复制'));
-  report.interactions.push('all 26 pages readable without JS; native menu/FAQ work');
+  report.interactions.push(`all ${routes.length} pages readable without JS; native menu/FAQ work`);
   await noJS.close();
 
   const missing = await page.goto(`${base}/intentionally-missing/`, { waitUntil: 'networkidle' });

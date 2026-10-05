@@ -7,11 +7,11 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第二十八轮（UI：版面节奏、授权徽章、差异点与降噪，见 `docs/rounds/28-ui-rhythm-and-trust.md`）；上一轮：第二十七轮工程整理
+- 当前轮次：第三十一轮（指南扩写与新增，见 `docs/rounds/31-guides-depth.md`）；上一轮：第三十轮服务器清理
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
-- 构建页面数：28 个静态 HTML（26 个内容页 + 根入口 + 404）
+- 构建页面数：40 个静态 HTML（每语言 7 个基础页 + 12 篇指南，再加根入口与 404）；数量由 `test-build.mjs` 按指南数推算
 - 站长授权（2026-10-02 起）：每轮测试通过后直接上线
 
 ## 第二十七轮：工程整理（2026-10-05）
@@ -28,6 +28,14 @@
 - 修复偶发失败：动效录屏时 IntersectionObserver 回调滞后，先等全部 reveal 完成再断言「不回退」。
 - CI：`.github/workflows/ci.yml` 在推送和 PR 时跑 check、build、test、生产构建测试和 Chromium/WebKit 浏览器测试。
 - 文档：长篇历史移入 `docs/history/`，本文件与 `plan.md` 只保留现状与待办。
+
+## 第三十一轮：指南与字体（2026-10-05）
+
+- 指南 6 → 12 篇（中英成对），现有 6 篇扩写；可下载需求单在 `public/templates/{zh,en}/`（UTF-8 BOM + CRLF）。
+- 中文字体拆成 `noto-sans-sc-site`（界面 + 指南标题摘要）与 `noto-sans-sc-guides`（只在指南正文出现的字，
+  由生成的 `src/styles/font-guides.css` 以 unicode-range 声明）。新增或修改指南后按 BRAND.md 重跑 `prepare-brand.py`。
+- 指南里的链接一律写相对路径（如 `../../../templates/zh/x.txt`），随 base 路径。
+- 只有模型服务页和关于页可以出现「CCG」（`test-browser.mjs`），指南里用通用说法。
 
 ## 目录与源码指向
 

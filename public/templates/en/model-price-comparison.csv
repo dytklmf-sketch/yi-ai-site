@@ -1,0 +1,3 @@
+﻿Option,Model ID,Quote date,Input price (per 1M tokens),Output price (per 1M tokens),Cache price (per 1M tokens),Avg input tokens,Avg output tokens,Pass rate,Latency P50 (s),Latency P95 (s),Requests/min limit,Tokens/min limit,Concurrency limit,Settlement,Cost per acceptable result,Notes
+A,,,,,,,,,,,,,,,,
+B,,,,,,,,,,,,,,,,

@@ -4,50 +4,90 @@ pairKey: infrastructure-responsibilities
 title: Splitting data-center responsibilities
 description: 'Hardware, access, backups and exit: who owns each.'
 service: infrastructure
-updatedAt: '2026-09-19'
+updatedAt: '2026-10-05'
 order: 6
 sources:
-  - label: Google Cloud shared responsibilities and shared fate
+  - label: 'Google Cloud Architecture Framework: shared responsibility and shared fate'
     url: https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
 ---
 
 ## The short answer
 
-Owning a data center does not automatically mean deployment, operations and backups are included. Before cooperation, identify **who provides, operates, approves and handles incidents** at each layer. Keep unresolved items visibly pending.
+“Owns a data center” does not imply “handles deployment, operations and backups”. Before cooperating, define layer by layer **who provides, who operates, who approves and who handles incidents**, and keep unconfirmed items on an open list.
 
-This is a discussion checklist, not Easy AI's service commitment or contractual terms. The official shared-responsibility reference explains a way to think about ownership; it does not replace a project-specific agreement.
+This is a discussion checklist, not an Easy AI service commitment or contract term. The official shared-responsibility material illustrates how to split duties; it does not replace an agreement for a specific project.
 
 ## When this applies
 
-Use it when discussing infrastructure resources, application environments or related cooperation. Buyers, application owners and technical leads should review it together so a task does not fall between assumed responsibilities.
+For teams preparing to discuss infrastructure resources, runtime environments or related cooperation. Buyers, application owners and technical leads should review it together so nobody assumes another party handles a task.
 
-## Define ownership by layer
+## Confirm responsibility by layer
 
-1. **Physical resources:** Equipment ownership, permitted use, installation or removal arrangements and failed-hardware handling.
-2. **Networks and systems:** Execution and approval of network changes, system installation, patches, access controls and administrative permissions.
-3. **Applications and data:** Releases, dependency updates, data classification, routine operations and verification of results.
-4. **Monitoring and incidents:** Detection, contact paths, evidence collection and escalation. Response times require separate agreement.
-5. **Backup and recovery:** Covered material, frequency, storage location, recovery owner and validation method.
-6. **Exit:** Resource release, data export or deletion, account revocation, outstanding charges and handover records.
+1. **Physical resources**: equipment ownership, permitted use, site access and faulty-hardware handling.
+2. **Network and systems**: who performs and approves network changes, OS installation, patches, access control and admin rights.
+3. **Applications and data**: releases, dependency upgrades, data classification, daily operation and checking results.
+4. **Monitoring and incidents**: who detects, whom they notify, what evidence is collected and when to escalate; response times agreed separately.
+5. **Backup and recovery**: what is backed up, how often, where it is kept, who restores and how restores are verified.
+6. **End of term**: releasing resources, exporting or deleting data, revoking accounts, outstanding fees and hand-over records.
 
-For each item, record an accountable role, operating scope, required permissions, handover evidence and open questions. A single phrase such as “operations included” is not enough to describe every layer.
+For each item record the owner, scope, required permissions, hand-over evidence and open issues. Do not cover every layer with a single “handles operations”.
+
+## A responsibility matrix
+
+Put the six layers in one table with a single letter per cell: **D** (does it), **A** (approves), **I** (is informed). This illustrates how to fill it in; it is not Easy AI’s default split.
+
+| Item                          | Resource provider | User | Note                                |
+| ----------------------------- | ----------------- | ---- | ----------------------------------- |
+| Replace failed hardware       | D                 | I    | Window agreed by both               |
+| Change network policy         | D                 | A    | User requests, provider performs    |
+| OS patching                   | Open              | Open | Depends on deployment form          |
+| Release and roll back the app | I                 | D    |                                     |
+| Classify and mask data        | —                 | D    | Provider does not see business data |
+| Run backups                   | Open              | Open | State what and how often            |
+| Restore drills                | D                 | A    | Authorised and scoped first         |
+| Create and revoke accounts    | D                 | A    | Least privilege                     |
+| Delete data at end of term    | D                 | A    | Keep a deletion record              |
+
+The “Open” cells are exactly what needs negotiating. None should remain open at signing.
 
 ## Changes and acceptance
 
-Agree on verifiable acceptance items, records and approvers before starting. Before changing equipment, networking, access or scope, describe the impact and cost, then obtain confirmation from an authorized person.
+Agree verifiable acceptance items, records and approvers before starting. For changes to equipment, network, permissions or scope, explain impact and cost first, then have an authorised person confirm.
 
-Incident exercises and recovery validation require prior authorization and bounded scope to avoid disrupting real work. Verify any required SLA, certification evidence or location condition separately. Do not infer them from a general website description.
+Incident drills and recovery tests need prior authorization and a limited scope so real business is not affected. SLAs, certifications or location requirements must be verified separately, never assumed from a web page.
 
-## Common questions
+## Exit checklist
 
-### Does having a backup guarantee recovery?
+Ending cooperation causes more trouble than starting it. Attach this list to the agreement:
 
-Do not assume so. Confirm whether it covers the required material, whether recovery conditions are met and who validates it. Recovery objectives are negotiation inputs, not commitments made by this page.
+1. **Notice period**: how many days ahead renewal or exit is confirmed.
+2. **Data export**: format, method, time needed and who checks completeness.
+3. **Data deletion**: scope (including backups and logs), method and proof of deletion.
+4. **Accounts and access**: when every account, key and allow-list entry is revoked.
+5. **Final settlement**: how the last period is billed and whether early termination fees apply.
+6. **Hand-over record**: configuration, documents and open issues, signed off by both sides.
 
-### Can a partner retain administrator access by default?
+## Common mistakes
 
-Access should be explicit. Agree on minimum necessary permissions, an approver, duration and revocation. An initial discussion needs a description, not credentials.
+- **One “handles operations” for everything**: hardware, system and application operations are three different jobs.
+- **Assuming backups exist**: without stating what, how often and how to restore, there is no agreement.
+- **Never revoking admin access**: temporary access needs an expiry date.
+- **Discussing only the start**: exporting and deleting data at exit is where disputes arise.
 
-### Does Easy AI offer every service listed?
+## FAQ
 
-No. Self-built data-center resources are confirmed. External services, equipment capacity, deployment, operations, backups and response arrangements must each be confirmed.
+### Does a backup guarantee recovery?
+
+Do not assume so. Confirm coverage, recovery prerequisites and who verifies restoration. Recovery targets are negotiated conditions, not commitments on this page.
+
+### May a partner keep admin access by default?
+
+No. Define least-necessary permissions, approver, duration and revocation. The first discussion needs a description, not credentials.
+
+### Does Easy AI provide every service listed?
+
+No. Easy AI has confirmed owning self-built data-center resources; external services, capacity, deployment, operations, backup and response arrangements are confirmed case by case.
+
+### Who drafts the matrix?
+
+Either side can, as long as both confirm every cell. A good start is for the user to fill in a version with its own expectations.

@@ -1,0 +1,29 @@
+﻿Easy AI · Model API usage brief
+(Attach to an email to yi__ai@126.com. Write "open" where unsure.)
+
+1. Basics
+Company or team:
+Contact and role:
+You are (developer / enterprise usage / supply partner):
+
+2. Models and interface
+Models and versions needed:
+Current interface (e.g. OpenAI-compatible):
+Features used (streaming / tool calls / structured output / image input / embeddings):
+
+3. Volume
+Expected requests per month:
+Average input tokens / output tokens (measured or estimated):
+Peak concurrency and how long it lasts:
+Latency needs (first token / full output):
+
+4. Settlement
+Prepaid or monthly:
+Invoice type:
+Preferred start date:
+
+5. Testing
+Integration test needed:
+Test samples permitted for use:
+
+Do not put keys or production data in this brief.

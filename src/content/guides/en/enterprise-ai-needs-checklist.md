@@ -4,49 +4,98 @@ pairKey: enterprise-ai-needs-checklist
 title: A one-page enterprise AI brief
 description: The task, the data, acceptance criteria and the owner.
 service: workbuddy
-updatedAt: '2026-09-19'
+updatedAt: '2026-10-05'
 order: 2
 sources:
   - label: Tencent WorkBuddy official product entry
     url: https://www.codebuddy.cn/work/
+  - label: 'Cyberspace Administration of China: Interim Measures for Generative AI Services (Chinese)'
+    url: https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm
 ---
 
 ## The short answer
 
-A useful AI brief defines **a specific task, an acceptable result, permitted inputs and an accountable owner**. It is not a list of model names. Describe one bounded use case before discussing WorkBuddy procurement, model access or infrastructure evaluation.
+A useful AI brief is not a list of model names. It is **one concrete task, an acceptable result, usable material and a clear owner**. Define one bounded scenario first, then decide whether to buy WorkBuddy, integrate a model or assess infrastructure.
 
-This is Easy AI's suggested discovery method, not a product capability guarantee. The official product entry helps verify current descriptions; it does not establish that the product can complete every example task here.
+This is Easy AI’s method for discussing requirements, not a guarantee of any product’s capabilities. The official product entry is for checking current product information; it does not mean every task here can be done with that product.
 
 ## When this applies
 
-Use this approach when a business team is starting with AI or choosing between several ideas. If materials cannot be shared legitimately, results cannot be evaluated, or nobody owns review, resolve those gaps before proceeding.
+For business owners starting with AI and for teams with several ideas that need prioritising. If the material cannot lawfully be provided, results cannot be judged or nobody owns review, fix those conditions first.
 
-## What belongs in the brief
+## What belongs on the page
 
-1. **Business objective:** Name the current problem, such as time spent organizing documents, rather than asking for general automation.
-2. **Workflow:** Identify the requester, inputs, recipient and actions that require approval.
-3. **Data boundary:** Record the source, permitted use, redaction needs and whether external processing is allowed.
-4. **Acceptance criteria:** Define output format, required fields, factual checks and acceptable manual revision.
-5. **Constraints and owners:** Note users, budget range, timeline, existing systems, a business owner and a reviewer.
+1. **Business goal**: the problem in today’s work, such as time spent compiling material, not “full intelligent transformation”.
+2. **Task flow**: who starts the task, what goes in, who receives the output and which steps need approval.
+3. **Data boundary**: where material comes from, permitted use, whether it needs masking and whether external services may process it.
+4. **Result standard**: required format, mandatory fields, fact-checking and acceptable amount of human editing.
+5. **Constraints and owners**: users, budget range, timing, existing systems, internal owner and reviewer.
 
-For example: prepare a weekly one-page summary from approved public material, with a business owner checking facts before use. This defines a task; it does not promise a particular improvement or product capability.
+If it does not fit on one page, the scope is still too broad. Split it into several tasks with one page each.
 
-## How to choose the first task
+## A filled-in example
 
-Compare task frequency, input availability, consequences of errors and review effort. Prefer a clearly bounded task with human review and results that can be compared. Record the existing manual process and time spent as a baseline.
+A fictional example showing how much detail each field needs. The company and figures are assumptions, not a customer case.
 
-Validate on an agreed sample before deciding purchase quantity or expanding the scope. Do not promise a percentage saving without evidence. Record unsuccessful outcomes as well as the strongest example so the decision reflects normal work.
+| Field         | Example                                                                    |
+| ------------- | -------------------------------------------------------------------------- |
+| Task          | Weekly summary of competitors’ public material                             |
+| Today         | Two marketing staff spend about half a day each, every week                |
+| Input         | Listed public web pages and announcement PDFs; no internal material        |
+| Output        | One page: three points per company, each with a source link                |
+| Human review  | The marketing manager checks facts and links before sending                |
+| Data boundary | Public material only; no client lists, contracts or unreleased information |
+| Acceptance    | Four weeks in a row, every point sourced, review edits under a third       |
+| Users         | Two in the pilot, then the eight-person marketing team                     |
+| Owners        | Business: marketing manager; accounts and approval: IT admin               |
+| Timing        | Four-week pilot, review at month end                                       |
 
-## Common questions
+You can send this table with the [request template](../../../templates/en/workbuddy-purchase-brief.txt).
 
-### Should we send every possible use case?
+## Choosing the first task
 
-A complete list is useful, but give each task its own owner, inputs and acceptance criteria. Different tasks may require different products or cooperation models. They need not become one untested, all-encompassing project.
+Compare frequency, availability of material, impact of errors and review cost. Score each candidate from 1 to 3 on four dimensions and start with a high total whose error impact is not 3.
 
-### Should we select the tool first?
+| Dimension    | 1 point                       | 3 points                             |
+| ------------ | ----------------------------- | ------------------------------------ |
+| Frequency    | Once a quarter                | Daily or several times a week        |
+| Material     | Must be collected or approved | Available and lawful to use          |
+| Review       | Hard to judge right or wrong  | Quick for a person to check          |
+| Error impact | Easily corrected              | Affects clients, money or compliance |
 
-Describe the task first. Then compare official product information with actual validation results. Buying a tool does not, by itself, redesign the workflow.
+Record today’s manual results and time as the baseline. Without one, you cannot show whether AI improved anything.
 
-### Can a nontechnical team begin?
+## Designing the pilot
 
-Yes. Start with the business task. Bring authorized people into discussions involving system integration, account access or data processing. An experiment is not a reason to bypass internal approvals.
+1. **Fixed sample**: 10–30 representative, permitted items that stay the same throughout.
+2. **Fixed standard**: score each item against the acceptance criteria and note every human edit.
+3. **Record everything**: failures, timeouts and redos count, not only the best attempt.
+4. **Record usage**: credits for WorkBuddy, tokens for model APIs; cost estimates need them.
+5. **Graded verdict**: roll out, adjust and retry, or not suitable yet — with reasons.
+
+After validating on the agreed sample, discuss purchase quantity and wider rollout. Without real data, do not promise percentage savings, and record problems instead of showing only the best run.
+
+## Common mistakes
+
+- **Picking the tool before the task**: only a defined task tells you whether a tool fits.
+- **Covering a whole department at once**: the wider the scope, the harder the acceptance. Start with one team and one task.
+- **Ignoring the data boundary**: check internal policy and contracts before sending internal material to an external service.
+- **Confusing public services with internal use**: offering generative AI services to the public in China falls under the Interim Measures for Generative AI Services and related rules; internal use still needs its own approval rules.
+
+## FAQ
+
+### Is it better to submit many needs at once?
+
+You can keep a master list, but give each item its own owner, inputs and acceptance criteria. Different tasks may need different products or arrangements and need not be bundled into one unproven project.
+
+### Should we choose a tool or define the task first?
+
+Define the task. Then compare official descriptions and actual validation results. Buying a tool does not mean the workflow has changed.
+
+### Can we start without technical staff?
+
+Yes, by describing the business task. Involve authorised staff when integration, account permissions or data handling arise, and do not bypass internal approval for a trial.
+
+### How long should a pilot run?
+
+It depends on frequency. Observe a weekly task at least four times; a daily task usually gives enough samples in one or two weeks.

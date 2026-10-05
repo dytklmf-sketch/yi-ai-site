@@ -20,11 +20,15 @@ const local = (url) => url.slice(base.length);
 const files = await walk('dist');
 const html = files.filter((file) => file.endsWith('.html'));
 const routes = JSON.parse(await readFile('dist/site-manifest.json', 'utf8'));
-assert.equal(routes.length, 26, '26 bilingual content routes');
-assert.equal(html.length, 28, '26 content pages, the entry and the 404');
-assert.equal(new Set(routes.map((route) => route.path)).size, 26);
-assert.equal(new Set(routes.map((route) => route.title)).size, 26);
-assert.equal(new Set(routes.map((route) => route.image)).size, 26);
+// Seven pages per language (home, three services, contact, guides, about) plus one per guide.
+const guideCount = (await readdir('src/content/guides/zh')).length;
+assert.equal(guideCount, (await readdir('src/content/guides/en')).length, 'every guide is paired');
+const routeCount = 2 * (7 + guideCount);
+assert.equal(routes.length, routeCount, `${routeCount} bilingual content routes`);
+assert.equal(html.length, routeCount + 2, 'content pages, the entry and the 404');
+assert.equal(new Set(routes.map((route) => route.path)).size, routeCount);
+assert.equal(new Set(routes.map((route) => route.title)).size, routeCount);
+assert.equal(new Set(routes.map((route) => route.image)).size, routeCount);
 for (const route of routes) {
   assert(route.path.startsWith(`${base}/`) && route.image.startsWith(`${base}/brand/`), `${route.path}: base path`);
   const text = await readFile(`dist${local(route.path)}index.html`, 'utf8');
@@ -42,7 +46,7 @@ for (const route of routes) {
     assert(text.includes('"@type":"Article"'));
     assert(text.includes('article-sources') && text.includes('article-inquiry'));
     assert(text.includes(`?topic=${route.service}`));
-    assert(text.includes('datetime="2026-09-19"'));
+    assert(/<time class="mono" datetime="\d{4}-\d{2}-\d{2}">/.test(text), `${route.path}: update date`);
   }
 }
 assert.match(await readFile('dist/404.html', 'utf8'), /<title>页面未找到/);
@@ -156,7 +160,7 @@ if (origin) {
     routes.map((route) => new URL(route.path, origin).href).sort(),
     'Sitemap lists every route'
   );
-  assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, 26);
+  assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, routeCount);
   assert.match(await readFile('dist/robots.txt', 'utf8'), new RegExp(`Sitemap: ${origin}${base}/sitemap.xml`));
   assert(!(await readFile('dist/_headers', 'utf8')).includes('X-Robots-Tag'), 'Production headers must allow indexing');
   for (const css of files.filter((file) => file.endsWith('.css')))
@@ -168,11 +172,23 @@ if (origin) {
 }
 assert.equal(files.filter((file) => file.includes('decapcms')).length, 0);
 assert(!files.includes('dist/products/model-catalog.jpg'));
-for (const font of ['manrope-latin', 'noto-sans-sc-site', 'jetbrains-mono-latin']) {
+for (const lang of ['zh', 'en'])
+  for (const name of [
+    'workbuddy-purchase-brief.txt',
+    'model-usage-brief.txt',
+    'workload-brief.txt',
+    'model-price-comparison.csv',
+  ])
+    assert(
+      (await readFile(`dist/templates/${lang}/${name}`)).subarray(0, 3).equals(Buffer.from([0xef, 0xbb, 0xbf])),
+      `${name}: UTF-8 BOM`
+    );
+for (const font of ['manrope-latin', 'noto-sans-sc-site', 'noto-sans-sc-guides', 'jetbrains-mono-latin']) {
   const bytes = await readFile(`dist/fonts/${font}.woff2`);
   assert.equal(bytes.subarray(0, 4).toString(), 'wOF2');
   // The Chinese subset grows with the copy (686 characters in round 9); Latin subsets stay well below.
-  assert(bytes.length < (font === 'noto-sans-sc-site' ? 190000 : 180000), `${font}: ${bytes.length} bytes`);
+  // Guide-only characters live in noto-sans-sc-guides, fetched through unicode-range only where they appear.
+  assert(bytes.length < (font.startsWith('noto-sans-sc') ? 190000 : 180000), `${font}: ${bytes.length} bytes`);
 }
 for (const lang of ['zh', 'en']) {
   for (const variant of ['', '-mono', '-inverse']) {
@@ -231,7 +247,7 @@ assert(
   'Raw concepts stay outside public output'
 );
 const brandImages = files.filter((file) => /^dist\/brand\/(hero-field|share-[\w-]+)\.png$/.test(file));
-assert.equal(brandImages.length, 27, 'Hero and 26 distinct sharing images');
+assert.equal(brandImages.length, routeCount + 1, 'Hero and one distinct sharing image per route');
 for (const asset of brandImages) {
   const bytes = await readFile(asset);
   assert.equal(bytes.subarray(1, 4).toString(), 'PNG');

@@ -1,0 +1,35 @@
+﻿Easy AI · Workload brief
+(Attach to an email to yi__ai@126.com. Write "open" where unsure.)
+
+1. Basics
+Company or team:
+Contact and role:
+
+2. Workload
+Type (inference / parameter-efficient fine-tuning / full training):
+Purpose:
+Model, size and precision:
+Concurrency and context length (inference):
+Dataset size and checkpoints to keep (training):
+
+3. Resources
+Compute (must have / substitutable):
+Storage (volume, growth, backup needs):
+Network (who connects, bandwidth, isolation, fixed addresses):
+
+4. Timing
+Start date:
+Duration:
+Interruptible periods and maintenance windows:
+Exit date:
+
+5. Responsibilities
+We handle:
+We would like you to handle:
+To agree:
+
+6. Data and compliance
+Data classification and sensitivity:
+May data be stored in a partner data center:
+
+Do not put admin passwords or real business data in this brief.

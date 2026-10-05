@@ -17,13 +17,13 @@ const [build, browser, enhanced, routes] = await Promise.all([
   json('test-results/enhancement-report.json'),
   json('dist/site-manifest.json'),
 ]);
-assert.equal(build.htmlPages, 28);
+assert.equal(build.htmlPages, routes.length + 2);
 assert.equal(browser.checks.length, routes.length * 8);
 for (const width of [320, 360, 390, 768, 1024, 1200, 1440, 1920]) {
   assert.equal(browser.checks.filter((check) => check.width === width).length, routes.length);
 }
 assert(browser.checks.every((check) => check.passed));
-assert.equal(browser.accessibilityScans, 52);
+assert.equal(browser.accessibilityScans, routes.length * 2);
 assert.deepEqual(browser.errors, []);
 assert.deepEqual(browser.externalRequests, []);
 assert.deepEqual(
@@ -147,7 +147,7 @@ const report = `# 易AI 官网第七轮视觉重设计交付
 | 内部链接 | ${browser.links.length} 个含业务参数的唯一入口均返回 200 |
 | 控制台与外部请求 | 无脚本错误；页面未主动请求外部资源 |
 | 每页可执行 JS | 最高 ${maxJS} 字节，低于 20KB 预算 |
-| 无 JS | 全部 26 个内容页面可读，入场与滚动呈现不隐藏内容；菜单、FAQ、文章目录可用 |
+| 无 JS | 全部 ${routes.length} 个内容页面可读，入场与滚动呈现不隐藏内容；菜单、FAQ、文章目录可用 |
 | 双浏览器 | ${enhanced.engines.map((engine) => `${engine.engine} ${engine.version}`).join('；')} |
 | 交互 | 语言对应与章节配对、返回、菜单、Escape、Tab、FAQ 与筛选、三层插图联动、复制回退、主题邮件、TOC、阅读进度、404 |
 | 动效 | 首屏入场一次、插图光束有限次数、滚动呈现不回退、减少动态效果时无动画与位移 |

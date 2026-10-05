@@ -76,7 +76,9 @@ export async function testEnhancements(base, routes) {
           );
         }
       }
-      result.flows.push('26 language round-trips; 12 article TOCs, section pairing, reading progress and topic CTAs');
+      result.flows.push(
+        `${routes.length} language round-trips; ${routes.filter((r) => r.kind === 'article').length} article TOCs, section pairing, reading progress and topic CTAs`
+      );
 
       for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
         await page.goto(`${base}/zh/${service}/`, { waitUntil: 'networkidle' });
@@ -274,7 +276,7 @@ export async function testEnhancements(base, routes) {
       }
       await zoomPage.screenshot({ path: `test-results/${engine}-200-percent-reflow.png`, fullPage: true });
       await zoom.close();
-      result.flows.push('All 26 routes: 200% equivalent reflow (1440 physical / 720 CSS px, DPR 2)');
+      result.flows.push(`All ${routes.length} routes: 200% equivalent reflow (1440 physical / 720 CSS px, DPR 2)`);
 
       const calm = await browser.newContext({ viewport: { width: 1440, height: 960 }, reducedMotion: 'reduce' });
       const calmPage = await calm.newPage();
