@@ -73,6 +73,11 @@ for (const file of html) {
     assert(text.includes('name="description"'), `${file}: description missing`);
     assert(text.includes(`${base}/brand/favicon.svg?v=whale-a`), `${file}: use the current optical favicon`);
   }
+  // Round 41: no small two-digit mono numbering (01, 02…) anywhere.
+  assert(
+    !/class="[^"]*\bmono\b[^"]*">0\d</.test(text) && !/faq-number/.test(text),
+    `${file}: small 01-style numbering`
+  );
   // Round 38: the owner wants no dates on the site (checked-on, updated-on, valid-until).
   const visible = text
     .replace(/<script[\s\S]*?<\/script>/g, '')
@@ -115,7 +120,8 @@ for (const file of html) {
     // Round 34: only WorkBuddy keeps the fourth chapter (editions); the other services drop their explainers.
     const wb = file.includes('/workbuddy/');
     assert.equal(
-      (text.match(/<a href="#[a-z]+"><span class="mono">/g) || []).length,
+      // Round 41: subnav items carry no numbers.
+      ((text.match(/<nav class="subnav"[\s\S]*?<\/nav>/) || [''])[0].match(/<a href="#[a-z]+">/g) || []).length,
       wb ? 5 : 3,
       `${file}: chapters in the subnav`
     );
@@ -142,7 +148,7 @@ for (const file of html) {
   if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file))
     assert(/class="guide-list"[^]*?(<li>[^]*?){4}<\/ul>/.test(text), `${file}: related guides as a compact list`);
   if (file.endsWith('/faq/index.html')) {
-    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 18, `${file}: six questions per service`);
+    assert.equal((text.match(/<details data-service=/g) || []).length, 18, `${file}: six questions per service`);
     assert(text.includes('data-faq-filter'), `${file}: filter by service`);
     assert(!text.includes('CCG'), `${file}: product stays off the FAQ`);
   }
@@ -160,7 +166,7 @@ for (const file of html) {
     assert(!text.includes('id="process"'), `${file}: the process lives in the inquiry chapter`);
     assert.equal((text.match(/class="guide-card"/g) || []).length, 3, `${file}: one featured guide per service`);
     // Round 33: one question per service on the home page; the rest live on the FAQ page.
-    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 3, `${file}: one FAQ per service`);
+    assert.equal((text.match(/<details data-service=/g) || []).length, 3, `${file}: one FAQ per service`);
     assert(/href="[^"]*\/faq\/"/.test(text), `${file}: link to the FAQ page`);
     assert(!text.includes('data-faq-filter'), `${file}: no filter for three questions`);
     assert.equal((text.match(/class="check-grid"/g) || []).length, 3, `${file}: scenarios on each service card`);

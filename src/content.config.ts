@@ -12,6 +12,8 @@ const guides = defineCollection({
     service: z.enum(['workbuddy', 'model-services', 'infrastructure']),
     updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     order: z.number().int(),
+    /** Round 41: two or three conclusions shown in a box under the title. */
+    keyPoints: z.array(z.string()).min(1).max(4).optional(),
     sources: z.array(z.object({ label: z.string(), url: z.url({ protocol: /^https$/ }) })).min(1),
   }),
 });

@@ -59,10 +59,9 @@ const items = full ? grouped : services.map((service) => grouped.find((item) => 
     </div>
     <div class="faq-list" data-reveal>
       {
-        items.map((item, i) => (
+        items.map((item) => (
           <details data-service={item.service}>
             <summary>
-              <span class="faq-number mono">{String(i + 1).padStart(2, '0')}</span>
               <span class="faq-question">
                 <small>{serviceLabels[item.service]}</small>
                 {item.question}

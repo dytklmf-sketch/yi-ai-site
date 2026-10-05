@@ -116,11 +116,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
 
         <nav class="subnav" data-section-nav aria-label={zhUI ? '本页目录' : 'On this page'}>
           <div class="container subnav-row">
-            {chapters.map(([id, label], i) => (
-              <a href={`#${id}`}>
-                <span class="mono">{String(i + 1).padStart(2, '0')}</span>
-                {label}
-              </a>
+            {chapters.map(([id, label]) => (
+              <a href={`#${id}`}>{label}</a>
             ))}
           </div>
         </nav>
@@ -194,7 +191,7 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
               <ol class="step-cards">
                 {detail.steps.map((step, i) => (
                   <li data-reveal style={`--d:${i}`}>
-                    <span class="step-card-index mono">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="step-card-index">{i + 1}</span>
                     <h3>{step.title}</h3>
                     <p>{step.text}</p>
                   </li>
@@ -280,7 +277,7 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                 <ol>
                   {t.steps.map((step, i) => (
                     <li>
-                      <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+                      <span class="contact-step-index">{i + 1}</span>
                       <span>
                         <strong>{step.title}</strong>
                         {step.text}

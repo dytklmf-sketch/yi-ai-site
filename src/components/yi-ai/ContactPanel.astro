@@ -36,7 +36,7 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
   data-body={t.contact.emailBody}
 >
   <fieldset class="topic-field">
-    <legend><span class="step-tag mono">01</span>{t.contact.topic}</legend>
+    <legend><span class="step-tag">1</span>{t.contact.topic}</legend>
     <div class="topic-options">
       {
         services.map((slug, i) => (
@@ -74,7 +74,7 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
     </div>
   </fieldset>
   <p class="contact-step">
-    <span class="step-tag mono">02</span>{lang === 'zh' ? '选择联系方式' : 'Choose how to reach us'}
+    <span class="step-tag">2</span>{lang === 'zh' ? '选择联系方式' : 'Choose how to reach us'}
   </p>
   <div class="contact-options">
     <section class="contact-option">

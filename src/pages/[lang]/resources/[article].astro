@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import { ArrowUpRight, ArrowRight, ChevronDown } from '@lucide/astro';
 import YiAiLayout from '../../../layouts/YiAiLayout.astro';
-import GuideCards from '../../../components/yi-ai/GuideCards.astro';
+import GuideList from '../../../components/yi-ai/GuideList.astro';
 import { getGuides } from '../../../data/routes';
 import { editorial } from '../../../data/editorial';
 import { articlePath, brandName, inquiryPath, pathFor, shareImage } from '../../../data/yi-ai';
@@ -115,6 +115,18 @@ const schema = {
       </details>
     </aside>
     <article class="article-body prose">
+      {
+        data.keyPoints && (
+          <aside class="key-points" aria-label={lang === 'zh' ? '要点' : 'Key points'}>
+            <p class="key-points-label">{lang === 'zh' ? '要点' : 'Key points'}</p>
+            <ul>
+              {data.keyPoints.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
       <Content />
       <section class="article-sources" aria-labelledby="sources">
         <h2 id="sources">{e.sources}</h2>
@@ -150,7 +162,7 @@ const schema = {
         <h2 class="section-title">{e.related}</h2>
         <a class="text-link" href={pathFor(lang, 'resources')}>{e.allGuides}<ArrowRight size={16} /></a>
       </div>
-      <GuideCards lang={lang} guides={related} />
+      <GuideList lang={lang} guides={related} />
     </div>
   </section>
 </YiAiLayout>

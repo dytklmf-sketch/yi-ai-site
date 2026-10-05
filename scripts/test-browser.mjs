@@ -112,13 +112,14 @@ try {
         assert.equal(info.lang, lang === 'zh' ? 'zh-CN' : 'en');
         assert.equal(info.accent, '#245bdb');
         assert(info.bodyFont.includes('Manrope') && info.bodyFont.includes('Noto Sans SC'));
-        // Round 37: service pages take their own theme colour; every other page keeps brand blue.
+        // Rounds 37 and 41: service pages and their guides take the service colour; other pages keep brand blue.
         const theme = {
-          'workbuddy/': 'rgb(9, 122, 100)',
-          'model-services/': 'rgb(91, 63, 214)',
-          'infrastructure/': 'rgb(10, 118, 181)',
+          workbuddy: 'rgb(9, 122, 100)',
+          'model-services': 'rgb(91, 63, 214)',
+          infrastructure: 'rgb(10, 118, 181)',
         };
-        if (info.primaryButton) assert.equal(info.primaryButton, theme[suffix] || 'rgb(36, 91, 219)');
+        const owner = routes.find((route) => route.lang === 'zh' && route.path.slice(4) === suffix)?.service;
+        if (info.primaryButton) assert.equal(info.primaryButton, theme[owner] || 'rgb(36, 91, 219)');
         if (!suffix) {
           // Both hero actions sit on the first screen at every width with a usable tap size.
           const actions = await page.evaluate(() =>
