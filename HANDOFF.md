@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十四轮（WorkBuddy 版本章节重做、联系面板预填，见 `docs/rounds/34-contact-briefs.md`）；上一轮：第三十三轮常见问题页
+- 当前轮次：第三十五轮（WorkBuddy 官方价格，见 `docs/rounds/35-workbuddy-prices.md`）；上一轮：第三十四轮
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -45,6 +45,11 @@
   更新数据文件里的核对日期。
 - 需求单清单 `serviceBriefs` 供询价卡片与联系面板共用；联系面板每个业务方向预填自己的邮件正文。
 - `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
+
+## 第三十五轮：WorkBuddy 官方价格（2026-10-05）
+
+- WorkBuddy 页「版本与价格」展示官方公开价（个人版 4 档、Enterprise 3 档），数据与核对日期在
+  `src/data/workbuddy-editions.ts`。官方调价或限时加赠变化时同步更新；新增文案后记得重跑 `prepare-brand.py`。
 
 ## 第三十三轮：常见问题页（2026-10-05）
 
