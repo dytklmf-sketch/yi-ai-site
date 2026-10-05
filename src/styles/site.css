@@ -4324,6 +4324,10 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .guide-grid-featured .guide-desc {
     display: none;
   }
+  /* The service cards keep title, summary and links; their four scenarios are on the service page one tap away. */
+  .service-column .check-grid {
+    display: none;
+  }
   .partners-strip {
     --plate-h: 3.5rem;
   }
