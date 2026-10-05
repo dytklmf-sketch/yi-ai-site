@@ -6,6 +6,10 @@ description: 采购 WorkBuddy 企业版前要确认的事项：选哪一档、�
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 1
+keyPoints:
+  - '大多数团队选旗舰版；100 人以上且需要网络隔离选专享版；数据必须留在自有环境选私有化企业版。'
+  - '报价前准备六项信息：使用对象、实际任务、意向版本、现有账号、期限与票据、额外服务。'
+  - '企业版到期后无法继续使用，续费审批至少提前一个月启动。'
 sources:
   - label: 腾讯云：WorkBuddy Enterprise 版本说明
     url: https://cloud.tencent.com/document/product/1831/134332

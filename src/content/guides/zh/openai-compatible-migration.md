@@ -6,6 +6,10 @@ description: 把应用切换到另一个 OpenAI 兼容接口时要改什么、�
 service: model-services
 updatedAt: '2026-10-05'
 order: 7
+keyPoints:
+  - '「兼容」指请求和响应格式相同，参数、功能和错误行为仍要逐项核对。'
+  - '代码改三处：接口地址、密钥、模型名；地址和密钥放在配置里。'
+  - '上线用影子测试和小比例切流，并保留回退开关。'
 sources:
   - label: Google Gemini API：OpenAI 兼容说明
     url: https://ai.google.dev/gemini-api/docs/openai
@@ -15,15 +19,7 @@ sources:
     url: https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html
 ---
 
-## 先给结论
-
-「OpenAI 兼容」通常指**请求和响应的格式相同**，不等于所有参数、功能和错误行为都相同。迁移时代码只需要改三处：接口地址、密钥和模型名；但上线前要把流式输出、函数调用、结构化输出、错误码和用量字段逐项测一遍。
-
-Google、Anthropic 和 vLLM 的官方文档都提供了 OpenAI 兼容方式，同时也都列出了不支持或行为不同的地方。这说明兼容是有范围的，需要按实际使用的功能核对。
-
-## 适用条件
-
-适合已经用 OpenAI 官方 SDK 或兼容格式写好应用、准备换用另一个接口的开发者，也适合需要同时接多个模型来源的团队。如果应用依赖某家厂商的专有功能（比如特定的文件接口或助手接口），需要单独评估，不在本文范围内。
+适合已经用 OpenAI 官方 SDK 或兼容格式写好应用、准备换用另一个接口的开发者，也适合需要同时接多个模型来源的团队。如果应用依赖某家厂商的专有功能（比如特定的文件接口或助手接口），需要单独评估。
 
 ## 代码里要改的三处
 
@@ -34,16 +30,16 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.example.com/v1",  # 换成新接口的地址
-    api_key=os.environ["MODEL_API_KEY"],    # 密钥从环境变量读取
+ base_url="https://api.example.com/v1", # 换成新接口的地址
+ api_key=os.environ["MODEL_API_KEY"], # 密钥从环境变量读取
 )
 
 resp = client.chat.completions.create(
-    model="<模型名>",                        # 换成新接口里的模型标识
-    messages=[{"role": "user", "content": "你好"}],
+ model="<模型名>", # 换成新接口里的模型标识
+ messages=[{"role": "user", "content": "你好"}],
 )
 print(resp.choices[0].message.content)
-print(resp.usage)                           # 记录用量，用于对账
+print(resp.usage) # 记录用量，用于对账
 ```
 
 上面的地址只是示例，接口地址和模型名以接口方提供的为准。三条原则：
@@ -88,7 +84,7 @@ print(resp.usage)                           # 记录用量，用于对账
 4. **逐步扩大**：每次扩大前确认前一阶段的指标正常。
 5. **对账**：切换后第一个结算周期，核对自己记录的用量与账单。
 
-## 常见误区
+## 迁移时常见的四个疏忽
 
 - **只测一条请求就上线**：正常请求通过不代表流式、函数调用和异常都正常。
 - **模型名直接写在业务代码里**：每次换模型都要改代码、重新发布。

@@ -6,6 +6,10 @@ description: The task, the data, acceptance criteria and the owner.
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 2
+keyPoints:
+  - 'A useful brief names four things: the task, an acceptable result, usable material and an owner.'
+  - 'Start with one bounded task a person can check quickly, and record today’s process as the baseline.'
+  - 'Decide quantities and wider rollout only after validating on a fixed sample.'
 sources:
   - label: Tencent WorkBuddy official product entry
     url: https://www.codebuddy.cn/work/
@@ -13,15 +17,7 @@ sources:
     url: https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm
 ---
 
-## The short answer
-
-A useful AI brief is not a list of model names. It is **one concrete task, an acceptable result, usable material and a clear owner**. Define one bounded scenario first, then decide whether to buy WorkBuddy, integrate a model or assess infrastructure.
-
-This is Easy AI’s method for discussing requirements, not a guarantee of any product’s capabilities. The official product entry is for checking current product information; it does not mean every task here can be done with that product.
-
-## When this applies
-
-For business owners starting with AI and for teams with several ideas that need prioritising. If the material cannot lawfully be provided, results cannot be judged or nobody owns review, fix those conditions first.
+For business owners starting with AI and for teams with several ideas that need prioritising. Where the material cannot lawfully be provided, results cannot be judged or nobody owns review, those conditions come before anything else.
 
 ## What belongs on the page
 
@@ -35,7 +31,7 @@ If it does not fit on one page, the scope is still too broad. Split it into seve
 
 ## A filled-in example
 
-A fictional example showing how much detail each field needs. The company and figures are assumptions, not a customer case.
+A fictional example; the company and figures are assumptions.
 
 | Field         | Example                                                                    |
 | ------------- | -------------------------------------------------------------------------- |
@@ -73,9 +69,9 @@ Record today’s manual results and time as the baseline. Without one, you canno
 4. **Record usage**: credits for WorkBuddy, tokens for model APIs; cost estimates need them.
 5. **Graded verdict**: roll out, adjust and retry, or not suitable yet — with reasons.
 
-After validating on the agreed sample, discuss purchase quantity and wider rollout. Without real data, do not promise percentage savings, and record problems instead of showing only the best run.
+Purchase quantity and wider rollout come after validation on the fixed sample. Without real data, promise no percentage savings.
 
-## Common mistakes
+## Four ways briefs go wrong
 
 - **Picking the tool before the task**: only a defined task tells you whether a tool fits.
 - **Covering a whole department at once**: the wider the scope, the harder the acceptance. Start with one team and one task.
@@ -88,9 +84,9 @@ After validating on the agreed sample, discuss purchase quantity and wider rollo
 
 You can keep a master list, but give each item its own owner, inputs and acceptance criteria. Different tasks may need different products or arrangements and need not be bundled into one unproven project.
 
-### Should we choose a tool or define the task first?
+### Should we start from the tool or the task?
 
-Define the task. Then compare official descriptions and actual validation results. Buying a tool does not mean the workflow has changed.
+From the task. Once it is written down, official descriptions and validation results show whether a product fits; buying a tool does not change the workflow by itself.
 
 ### Can we start without technical staff?
 

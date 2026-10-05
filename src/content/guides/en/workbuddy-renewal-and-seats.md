@@ -6,6 +6,10 @@ description: What to do around WorkBuddy Enterprise expiry — the pre-renewal r
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 12
+keyPoints:
+  - 'A month before expiry, review usage, seats, edition, term, budget and invoicing details.'
+  - 'Enterprise stops working entirely at expiry; export what you need beforehand.'
+  - 'Reclaim seats promptly when people leave or move, and reassign them.'
 sources:
   - label: 'Tencent Cloud: WorkBuddy Enterprise editions (Chinese)'
     url: https://cloud.tencent.com/document/product/1831/134332
@@ -53,7 +57,7 @@ Enterprise invoices are issued in the enterprise backend of the Tencent Cloud co
 
 - **Acting on the expiry date**: approval runs late and the team is cut off.
 - **Not reclaiming seats**: departed staff hold seats while new colleagues go without.
-- **Renewing by headcount alone**: look at how usage spreads before adding seats or reallocating.
+- **Renewing by headcount alone**: how usage spreads decides whether to add seats or reallocate.
 
 ## FAQ
 

@@ -6,6 +6,10 @@ description: Which Enterprise edition, what to prepare, how far the credits go a
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 1
+keyPoints:
+  - 'Most teams choose Flagship; 100+ seats with network isolation suit Exclusive; data that must stay in-house suits Private Enterprise.'
+  - 'Prepare six things for a quote: users, tasks, edition, existing accounts, term and invoicing, extra services.'
+  - 'Enterprise stops working at expiry, so start renewal approval at least a month ahead.'
 sources:
   - label: 'Tencent Cloud: WorkBuddy Enterprise editions (Chinese)'
     url: https://cloud.tencent.com/document/product/1831/134332

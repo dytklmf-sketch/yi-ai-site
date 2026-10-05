@@ -6,6 +6,10 @@ description: Billing method, input/output mix, limits and settlement.
 service: model-services
 updatedAt: '2026-10-05'
 order: 3
+keyPoints:
+  - 'Compare on the same model version, sample and metering basis.'
+  - 'Cost each acceptable result; the lower unit price is not always cheaper.'
+  - 'Judge latency at P95, and confirm limits, concurrency and quota separately.'
 sources:
   - label: 'Google Gemini API: tokens'
     url: https://ai.google.dev/gemini-api/docs/tokens
@@ -14,14 +18,6 @@ sources:
   - label: 'OpenAI: prompt caching'
     url: https://platform.openai.com/docs/guides/prompt-caching
 ---
-
-## The short answer
-
-Compare model APIs on **the same model version, the same task sample and the same metering basis**. A lower unit price does not mean a lower cost per completed business task. Also confirm output usability, waiting time, call limits and error handling.
-
-Official Google and OpenAI material explains tokens, rate limits and prompt caching. This guide uses those concepts to frame questions; it does not apply one vendor’s rules to every model or imply that Easy AI uses the same quotas or billing.
-
-## When this applies
 
 For developers preparing an integration, enterprise teams with existing usage, and anyone reviewing a current purchase. If the task is not defined, prepare representative inputs, expected outputs and required features before asking about models.
 
@@ -75,13 +71,13 @@ Also include:
 
 ## Running a small comparison
 
-Agree test scope, cost and rate limits with the provider first. Use representative, permitted samples; fix parameters and output criteria; record request IDs, times and usage. Count timeouts and errors instead of only successful samples.
+Agree test scope, cost and rate limits with the provider. Use representative, permitted samples; fix parameters and output criteria; record request IDs, times and usage. Count timeouts and errors instead of only successful samples.
 
 A reasonable size: 50–200 samples per option, called alternately in the same time window so time-of-day does not skew latency.
 
 Estimate cost from the actual usage needed to complete one acceptable task and list what was not validated. Do not infer production stability from a single benchmark, and do not load-test without permission.
 
-## Common mistakes
+## Four common pricing mistakes
 
 - **Looking only at input price**: output tokens usually cost more, so output length moves the total a lot.
 - **Using mean latency for user experience**: users feel the slow requests; check P95.

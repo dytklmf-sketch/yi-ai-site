@@ -6,20 +6,16 @@ description: Workload type, model size, duration and data location.
 service: infrastructure
 updatedAt: '2026-10-05'
 order: 5
+keyPoints:
+  - 'A request states five things: what runs, what it needs, how it connects, how long it runs and who manages it.'
+  - 'A hardware model is one condition; describe it together with the workload.'
+  - 'Easy AI owns a self-built data center; equipment, capacity, location and scope are confirmed per request.'
 sources:
   - label: 'Google Cloud Architecture Framework: shared responsibility'
     url: https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
   - label: 'Hugging Face: optimizing LLMs for speed and memory'
     url: https://huggingface.co/docs/transformers/main/en/llm_tutorial_optimization
 ---
-
-## The short answer
-
-Start an infrastructure request with **what will run, how much it needs, how it connects, how long it runs and who manages it**. A hardware model is one condition in the discussion; it does not replace a description of the workload and its operating boundaries.
-
-Easy AI owns self-built data-center resources. That does not mean every configuration is in stock or that external rental or hosting is promised. This guide helps you prepare; equipment, capacity, location and scope are confirmed separately.
-
-## When this applies
 
 For enterprise technical teams, application owners and infrastructure partners at the first conversation. If you are still validating, share ranges, existing measurements and open questions instead of precise-looking purchase quantities.
 
@@ -36,7 +32,7 @@ For sensitive data and access, describe classifications and restrictions first. 
 
 ## A sample workload request
 
-A fictional example showing how much detail each field needs. The project and figures are assumptions, not a customer case. You can also download the [workload brief](../../../templates/en/workload-brief.txt) and fill it in.
+A fictional example; the project and figures are assumptions. You can also download the [workload brief](../../../templates/en/workload-brief.txt) and fill it in.
 
 | Field                  | Example                                                          |
 | ---------------------- | ---------------------------------------------------------------- |
@@ -55,7 +51,7 @@ A fictional example showing how much detail each field needs. The project and fi
 
 ## Choosing a deployment form
 
-The same workload can run in different forms. Decide which you need before discussing resources.
+The same workload can run in different forms. Once the form is settled, resources can be checked.
 
 | Form                         | Suits                                             | You are responsible for                |
 | ---------------------------- | ------------------------------------------------- | -------------------------------------- |
@@ -63,15 +59,15 @@ The same workload can run in different forms. Decide which you need before discu
 | Virtual machine or container | Moderate needs, flexible sizing                   | Runtime and application                |
 | Managed inference            | Calling an API without managing machines          | Integration, data and checking results |
 
-Each form draws the responsibility line differently. Whether a form is available depends on actual resources; this table does not mean Easy AI offers all of them.
+Each form draws the responsibility line differently. Whether a form is available depends on actual resources.
 
 ## Turning the request into a proposal
 
 Describe the current environment and workload, then turn existing monitoring or tests into ranges. Label assumptions where you cannot measure, and do not present estimates as guarantees.
 
-Next, check matching resources, operating conditions and duration. Only once resources and responsibilities are confirmed should pricing, validation and implementation be discussed. The responsibility framework is cited to help frame questions; it does not imply Easy AI has that cloud service or certification.
+Next, check matching resources, operating conditions and duration. Only once resources and responsibilities are confirmed should pricing, validation and implementation be discussed.
 
-## Common mistakes
+## Four things requests leave out
 
 - **Quoting only a hardware model**: the same model supports very different volumes at different concurrency and context lengths; describe the workload too.
 - **Treating peak as normal**: state normal usage and peak separately, and how long peaks last.

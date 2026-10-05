@@ -6,18 +6,14 @@ description: 'Hardware, access, backups and exit: who owns each.'
 service: infrastructure
 updatedAt: '2026-10-05'
 order: 6
+keyPoints:
+  - 'Owning a data center does not mean the provider deploys, operates and backs up everything; name who provides, operates and approves at each layer.'
+  - 'Confirm every cell of a responsibility matrix; none stays open at signing.'
+  - 'Agree data export and deletion at exit before cooperation starts.'
 sources:
   - label: 'Google Cloud Architecture Framework: shared responsibility and shared fate'
     url: https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
 ---
-
-## The short answer
-
-“Owns a data center” does not imply “handles deployment, operations and backups”. Before cooperating, define layer by layer **who provides, who operates, who approves and who handles incidents**, and keep unconfirmed items on an open list.
-
-This is a discussion checklist, not an Easy AI service commitment or contract term. The official shared-responsibility material illustrates how to split duties; it does not replace an agreement for a specific project.
-
-## When this applies
 
 For teams preparing to discuss infrastructure resources, runtime environments or related cooperation. Buyers, application owners and technical leads should review it together so nobody assumes another party handles a task.
 
@@ -52,7 +48,7 @@ The “Open” cells are exactly what needs negotiating. None should remain open
 
 ## Changes and acceptance
 
-Agree verifiable acceptance items, records and approvers before starting. For changes to equipment, network, permissions or scope, explain impact and cost first, then have an authorised person confirm.
+Agree verifiable acceptance items, records and approvers before starting. Changes to equipment, network, permissions or scope state their impact and cost and go ahead once an authorised person confirms.
 
 Incident drills and recovery tests need prior authorization and a limited scope so real business is not affected. SLAs, certifications or location requirements must be verified separately, never assumed from a web page.
 
@@ -67,7 +63,7 @@ Ending cooperation causes more trouble than starting it. Attach this list to the
 5. **Final settlement**: how the last period is billed and whether early termination fees apply.
 6. **Hand-over record**: configuration, documents and open issues, signed off by both sides.
 
-## Common mistakes
+## Four places the split goes wrong
 
 - **One “handles operations” for everything**: hardware, system and application operations are three different jobs.
 - **Assuming backups exist**: without stating what, how often and how to restore, there is no agreement.

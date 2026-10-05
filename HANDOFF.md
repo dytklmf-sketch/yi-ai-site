@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第四十一轮（全站编号与标题层级、指南文章页排版，见 `docs/rounds/41-numbering-and-articles.md`）；规划见站长审阅的《易AI 官网整体优化规划》
+- 当前轮次：第四十二轮（指南与页面文案去模板化，见 `docs/rounds/42-copy-rewrite.md`）；规划见站长审阅的《易AI 官网整体优化规划》
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）

@@ -6,6 +6,10 @@ description: How the three workloads differ in memory, storage, network and dura
 service: infrastructure
 updatedAt: '2026-10-05'
 order: 10
+keyPoints:
+  - 'Inference runs long-term and serves users; full training concentrates heavy memory and storage use; parameter-efficient fine-tuning sits between.'
+  - 'Mixed-precision training needs about 18 bytes per parameter, plus activations.'
+  - 'Describe training and inference separately so each can be checked against resources.'
 sources:
   - label: 'Hugging Face: GPU memory usage in training'
     url: https://huggingface.co/docs/transformers/main/en/model_memory_anatomy
@@ -14,14 +18,6 @@ sources:
   - label: 'Hugging Face: optimizing LLMs for speed and memory'
     url: https://huggingface.co/docs/transformers/main/en/llm_tutorial_optimization
 ---
-
-## The short answer
-
-Training, fine-tuning and inference are different workloads. **Inference** runs long-term and serves users; **full training or fine-tuning** concentrates heavy memory and storage use over a period; **parameter-efficient fine-tuning** (such as LoRA) sits in between. Memory estimates, storage, network and duration all differ, so describe them separately in a request.
-
-This is a method for preparing requirements. It does not mean Easy AI’s data center has resources for all three; that is confirmed separately.
-
-## When this applies
 
 For technical teams customising open-source models who need resources for both training and serving. Teams that only serve a model can go straight to [sizing a self-hosted model](../self-hosted-llm-sizing/).
 
@@ -78,7 +74,7 @@ Parameter-efficient fine-tuning **freezes the original model and trains a small 
 
 Submit both together if you like, but describe them separately so each can be checked against resources.
 
-## Common mistakes
+## Four common planning mistakes
 
 - **Sizing training with inference numbers**: full training needs several times the memory.
 - **Forgetting checkpoint storage**: a full disk halfway through is a common cause of failed runs.
@@ -87,9 +83,9 @@ Submit both together if you like, but describe them separately so each can be ch
 
 ## FAQ
 
-### Must we train before going live?
+### Is training needed before going live?
 
-No. Many cases are met by an existing model with prompt design and retrieval. Validate with inference first and fine-tune only if needed.
+No. Many cases are met by an existing model with prompt design and retrieval. Validate with inference and fine-tune only if needed.
 
 ### How is a LoRA-tuned model deployed?
 

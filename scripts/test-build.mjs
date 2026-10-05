@@ -44,6 +44,7 @@ for (const route of routes) {
   if (route.kind === 'article') {
     assert(!/<li>\s*\*\*/.test(text), `Unparsed Markdown emphasis: ${route.path}`);
     assert(text.includes('"@type":"Article"'));
+    assert(text.includes('class="key-points"'), `${route.path}: key points under the title`);
     assert(text.includes('article-sources') && text.includes('article-inquiry'));
     assert(text.includes(`?topic=${route.service}`));
     // Round 38: no dates on the page; dateModified stays in the structured data only.
@@ -93,8 +94,9 @@ for (const file of html) {
       !/[。，,.\n]/.test(heading.trim()) && heading.trim().length <= 32,
       `${file}: heading "${heading}" reads as a slogan`
     );
+  // Round 42: the copy rules cover the guides too, plus the template headings and self-referring sentences.
   assert(
-    !/先[^<]{0,12}再|写不全|逐条/.test(text.replace(/<article[\s\S]*<\/article>/, '')),
+    !/先[^<。]{0,12}再|写不全|逐条|先给结论|适用条件|The short answer|When this applies|本文帮助|下文是/.test(text),
     `${file}: AI-style copy pattern`
   );
   if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file)) {

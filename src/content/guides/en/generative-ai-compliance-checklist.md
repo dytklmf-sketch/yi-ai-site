@@ -6,6 +6,10 @@ description: What to check before adopting generative AI in China — which rule
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 11
+keyPoints:
+  - 'Compliance centres on three things: internal use or a public service, which personal information is processed, and how generated content is published.'
+  - 'Send no personal information unless you must; when you must, mask it and ask whether the raw data is still needed.'
+  - 'This checklist is not legal advice; your legal counsel decides.'
 sources:
   - label: 'Cyberspace Administration of China: Interim Measures for Generative AI Services (Chinese)'
     url: https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm
@@ -14,14 +18,6 @@ sources:
   - label: 'Cyberspace Administration of China: Measures for Labeling AI-Generated Content (Chinese)'
     url: https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm
 ---
-
-## The short answer
-
-For an enterprise adopting generative AI in China, compliance questions centre on three things: **where it is used (internally or as a public service), what data it processes (especially personal information) and how generated content is published**. Answer those first, then decide which approvals you need and what to agree with suppliers.
-
-This checklist is compiled from the official texts to help organise the questions. **It is not legal advice.** Whether a project complies is for your legal counsel or the regulator to decide.
-
-## When this applies
 
 For business owners, legal teams and IT administrators preparing to buy AI applications, integrate model APIs or deploy models. Healthcare, finance, minors and similar sectors or groups may have additional rules to check.
 

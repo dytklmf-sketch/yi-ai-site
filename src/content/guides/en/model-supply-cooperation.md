@@ -6,20 +6,17 @@ description: Resource scope, supply rights, interfaces and settlement.
 service: model-services
 updatedAt: '2026-10-05'
 order: 4
+keyPoints:
+  - 'Bring a verifiable resource description and responsibility list, not just a price.'
+  - 'Test with separate credentials and approved samples; never pass production keys in chats or documents.'
+  - 'Agree reconciliation, billing of failed requests and exit before starting.'
+  - 'Easy AI works with direct supply channels, not supply straight from model vendors.'
 sources:
   - label: 'Google Gemini API: rate limits'
     url: https://ai.google.dev/gemini-api/docs/rate-limits
   - label: 'Google Gemini API: tokens'
     url: https://ai.google.dev/gemini-api/docs/tokens
 ---
-
-## The short answer
-
-The most useful thing in a first supply conversation is **a verifiable resource description and responsibility list**, not just a price. Say what you can provide, on what basis, under which limits, and who handles usage, incidents and settlement.
-
-Easy AI works with model services and direct supply channels; a direct channel is not the same as supply straight from the model vendor. This guide does not accept or encourage handing over accounts or keys of unclear origin, or bypassing platform limits.
-
-## When this applies
 
 For supply partners entitled to provide the resources and able to explain the scope, and for buyers building a verification process. If supply rights, permissions or data responsibilities are unclear, verify them first; a small paid test is not a substitute for authorization.
 
@@ -74,7 +71,7 @@ Most supply disputes are about metering. Keep records this way from day one:
 
 Run one reconciliation during the test to make sure both sides’ numbers match before formal cooperation.
 
-## Common mistakes
+## Four common problems in supply deals
 
 - **Quoting one total quota**: monthly totals, per-minute limits and concurrency are separate constraints.
 - **Supplying through personal accounts or keys of unknown origin**: resources without a verifiable basis do not suit long-term cooperation, however cheap.

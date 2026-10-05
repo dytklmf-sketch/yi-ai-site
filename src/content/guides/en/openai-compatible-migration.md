@@ -6,6 +6,10 @@ description: What to change and what to test — base URL, key, model name, stre
 service: model-services
 updatedAt: '2026-10-05'
 order: 7
+keyPoints:
+  - '“Compatible” means the request and response formats match; parameters, features and errors still need checking one by one.'
+  - 'The code changes in three places — base URL, key, model name — with URL and key kept in configuration.'
+  - 'Go live through a shadow test and a small traffic share, with a rollback switch.'
 sources:
   - label: 'Google Gemini API: OpenAI compatibility'
     url: https://ai.google.dev/gemini-api/docs/openai
@@ -15,15 +19,7 @@ sources:
     url: https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html
 ---
 
-## The short answer
-
-“OpenAI-compatible” usually means **the request and response formats match**, not that every parameter, feature and error behaves the same. The code change is three lines — base URL, key and model name — but before going live, test streaming, tool calls, structured output, error codes and usage fields one by one.
-
-Google, Anthropic and vLLM all document an OpenAI-compatible mode, and all list unsupported or different behaviour. Compatibility has a scope; check it against the features you actually use.
-
-## When this applies
-
-For developers whose application already uses the official OpenAI SDK or the compatible format and who are switching to another API, and for teams connecting several model sources. Applications depending on vendor-specific features (such as particular file or assistant endpoints) need a separate assessment outside this guide.
+For developers whose application already uses the official OpenAI SDK or the compatible format and who are switching to another API, and for teams connecting several model sources. Applications depending on vendor-specific features (such as particular file or assistant endpoints) need a separate assessment.
 
 ## The three changes in code
 
@@ -88,7 +84,7 @@ After migration, problems appear on the error paths rather than normal requests:
 4. **Expand step by step**: confirm the previous stage’s metrics before each increase.
 5. **Reconcile**: in the first billing cycle after the switch, compare your logged usage with the bill.
 
-## Common mistakes
+## Four common migration slips
 
 - **Going live after one request**: a normal request passing says nothing about streaming, tool calls or errors.
 - **Model names hard-coded in business logic**: every model change means a code change and release.

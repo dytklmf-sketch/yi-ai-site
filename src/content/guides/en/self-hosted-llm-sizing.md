@@ -6,6 +6,10 @@ description: Estimate memory for weights, KV cache and headroom, weigh quantizat
 service: infrastructure
 updatedAt: '2026-10-05'
 order: 9
+keyPoints:
+  - 'Inference memory = weights + KV cache + headroom.'
+  - 'Weights are parameters × bytes per parameter; with high concurrency and long contexts the KV cache can exceed them.'
+  - 'The estimate is a starting point; the configuration is settled by measuring on the target hardware.'
 sources:
   - label: 'Hugging Face: optimizing LLMs for speed and memory'
     url: https://huggingface.co/docs/transformers/main/en/llm_tutorial_optimization
@@ -14,14 +18,6 @@ sources:
   - label: 'NVIDIA: GPU performance background'
     url: https://docs.nvidia.com/deeplearning/performance/dl-performance-gpu-background/index.html
 ---
-
-## The short answer
-
-Inference memory has three main parts: **model weights, KV cache and runtime headroom**. Weights are parameters × bytes per parameter. The KV cache grows with concurrency and context length and, under heavy load with long contexts, can exceed the weights. Estimates narrow the range; the final configuration must be measured with the real serving framework and real requests.
-
-This is an estimation method. It does not mean Easy AI’s data center has the corresponding equipment or capacity; resources are confirmed separately.
-
-## When this applies
 
 For technical teams planning to run an open-source model in their own or a partner’s data center and needing to state resource requirements. Training and fine-tuning differ; see [training, fine-tuning and inference](../training-vs-inference/).
 
@@ -90,7 +86,7 @@ The estimate is a starting point. Before going live, measure on the target hardw
 
 Load-test only in an authorised environment that does not affect other workloads.
 
-## Common mistakes
+## Four common sizing mistakes
 
 - **Counting weights only**: with high concurrency and long contexts, the KV cache can exceed the weights.
 - **Sizing every request at maximum context**: grossly overestimates; size from the real distribution and leave room for long requests.

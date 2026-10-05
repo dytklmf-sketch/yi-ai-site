@@ -6,6 +6,10 @@ description: What a request's tokens are made of, how to measure them, how to pr
 service: model-services
 updatedAt: '2026-10-05'
 order: 8
+keyPoints:
+  - 'Monthly cost = requests × (avg input tokens × input price + avg output tokens × output price).'
+  - 'System prompts, history and retrieved material usually dominate the input.'
+  - 'Measure with the usage fields in responses; never convert characters at a fixed ratio.'
 sources:
   - label: 'Google Gemini API: tokens'
     url: https://ai.google.dev/gemini-api/docs/tokens
@@ -14,14 +18,6 @@ sources:
   - label: 'OpenAI: prompt caching'
     url: https://platform.openai.com/docs/guides/prompt-caching
 ---
-
-## The short answer
-
-To estimate model API cost, first establish **how many tokens each request actually sends and generates**, then multiply by request volume and price. Estimates usually go wrong in two places: underestimating the input taken up by system prompts, conversation history and retrieved material, and converting characters to tokens by feel.
-
-All figures here are examples to show the method, not real prices for any model.
-
-## When this applies
 
 For product and technical owners budgeting an AI feature, and for teams whose bill came in higher than expected. Without a working prototype, measure a few typical requests and project from them with this method.
 
@@ -77,7 +73,7 @@ The user’s message is only 100 tokens; retrieved material and history dominate
 5. **Match models to tasks**: smaller models for simple classification or extraction, larger ones for complex work.
 6. **Track usage by feature**: tag each request with its feature and optimise the heaviest first.
 
-## Common mistakes
+## Four common estimating mistakes
 
 - **Counting only the user’s message**: system prompt, history and retrieval are often over 90% of input.
 - **Fixed character-to-token ratios**: tokenizers differ; measure.
