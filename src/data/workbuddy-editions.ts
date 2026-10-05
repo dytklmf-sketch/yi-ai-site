@@ -121,7 +121,12 @@ export const workbuddyCompare: Record<
     title: '企业版 vs 个人版',
     lead: '同一个 WorkBuddy，企业版多了团队管理、统一身份和更多部署方式。',
     personal: { name: '个人版', tiers: '标准版 · 高级版 · 旗舰版' },
-    enterprise: { name: '企业版', tiers: '旗舰版 · 专享版 · 私有化企业版', badge: '易AI 提供', price: '198 元/人/月起' },
+    enterprise: {
+      name: '企业版',
+      tiers: '旗舰版 · 专享版 · 私有化企业版',
+      badge: '易AI 提供',
+      price: '198 元/人/月起',
+    },
     rows: [
       ['每人各自按账号订阅', '公司按人数统一订阅'],
       ['无管理后台', '授权管理、成员统计、研效看板'],
@@ -138,7 +143,12 @@ export const workbuddyCompare: Record<
     title: 'Enterprise vs Personal',
     lead: 'The same WorkBuddy, with team administration, central sign-in and more deployment choices.',
     personal: { name: 'Personal', tiers: 'Standard · Premium · Flagship' },
-    enterprise: { name: 'Enterprise', tiers: 'Flagship · Exclusive · Private', badge: 'From Easy AI', price: 'From ¥198/seat/month' },
+    enterprise: {
+      name: 'Enterprise',
+      tiers: 'Flagship · Exclusive · Private',
+      badge: 'From Easy AI',
+      price: 'From ¥198/seat/month',
+    },
     rows: [
       ['Each person subscribes on their own account', 'The company subscribes per seat'],
       ['No admin console', 'Authorization, member statistics, productivity dashboard'],

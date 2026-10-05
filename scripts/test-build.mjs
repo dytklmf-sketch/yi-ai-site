@@ -137,8 +137,8 @@ for (const file of html) {
           // Round 39: the certificate sits under the price cards; the comparison follows.
           /class="wb-tiers"[\s\S]*class="wb-cert"[\s\S]*id="compare"/.test(text) &&
           // Round 43: two aligned cards, eight rows each, no label column.
-          (text.match(/<li><svg[^>]*lucide-minus/g) || []).length === 8 &&
-          (text.match(/<li><svg[^>]*lucide-check/g) || []).length >= 8,
+          (text.match(/<li data-row="\d"[^>]*><svg[^>]*lucide-minus/g) || []).length === 8 &&
+          (text.match(/<li data-row="\d"[^>]*><svg[^>]*lucide-check/g) || []).length === 8,
         `${file}: official WorkBuddy Enterprise prices with source and date`
       );
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);

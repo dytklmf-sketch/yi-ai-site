@@ -5054,8 +5054,7 @@ body[data-theme='infrastructure'] .contact-fab {
   border: 2px solid var(--cobalt);
   background:
     linear-gradient(180deg, rgb(var(--accent-rgb) / 10%), transparent 9rem),
-    radial-gradient(70% 40% at 100% 0, rgb(var(--accent-rgb) / 14%), transparent 70%),
-    var(--paper);
+    radial-gradient(70% 40% at 100% 0, rgb(var(--accent-rgb) / 14%), transparent 70%), var(--paper);
   box-shadow:
     0 0 0 6px rgb(var(--accent-rgb) / 7%),
     0 2rem 4rem -2.5rem rgb(var(--accent-rgb) / 70%);
