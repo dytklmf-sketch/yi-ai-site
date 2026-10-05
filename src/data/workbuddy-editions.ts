@@ -108,44 +108,47 @@ export const serviceBriefs: Record<Lang, Record<Service, { label: string; file: 
 };
 
 /**
- * Personal plans against Enterprise, row by row (round 39, at the owner's request): Easy AI sells Enterprise only,
- * and this shows what a team gets over individual accounts. Every cell comes from the official pricing page or Tencent
- * Cloud's editions page; the Enterprise column describes Flagship unless it names another edition.
+ * Enterprise against personal plans, shown like an online shop's model comparison (rounds 39 and 43): two cards side by
+ * side, each row aligned, the Enterprise card larger. Without a label column every cell must read on its own. Every
+ * cell comes from the official pricing page or Tencent Cloud's editions page; Enterprise describes Flagship.
  */
+type Model = { name: string; tiers: string; badge?: string };
 export const workbuddyCompare: Record<
   Lang,
-  { title: string; lead: string; heads: [string, string, string]; rows: [string, string, string][]; note: string }
+  { title: string; lead: string; personal: Model; enterprise: Model; rows: [string, string][]; note: string }
 > = {
   zh: {
-    title: '企业版比个人版多什么',
+    title: '企业版 vs 个人版',
     lead: '同一个 WorkBuddy，企业版多了团队管理、统一身份和更多部署方式。',
-    heads: ['对比项', '个人版', '企业版'],
+    personal: { name: '个人版', tiers: '标准版 · 高级版 · 旗舰版' },
+    enterprise: { name: '企业版', tiers: '旗舰版 · 专享版 · 私有化企业版', badge: '易AI 提供' },
     rows: [
-      ['购买方式', '每人各自按账号订阅', '公司按人数统一订阅'],
-      ['管理后台', '无', '授权管理、成员统计、研效看板'],
-      ['登录方式', '个人账号登录', '企业单点登录（SSO）'],
-      ['用量额度', '按账号发放，当月有效、不结转', '每人每月 2,000 Credits，团队共享'],
-      ['部署位置', '官方公有云', '共享 VPC、专享 VPC 或企业本地'],
-      ['模型与智能体', '使用平台提供的模型', '可配置企业模型与智能体'],
-      ['协作工具', '—', '内置腾讯文档、乐享知识库、腾讯网盘（每席 50G）'],
-      ['开票', '个人中心申请', '腾讯云控制台按企业开票'],
+      ['每人各自按账号订阅', '公司按人数统一订阅'],
+      ['无管理后台', '授权管理、成员统计、研效看板'],
+      ['个人账号登录', '企业单点登录（SSO）'],
+      ['积分按账号发放，当月有效', '每人每月 2,000 Credits，团队共享'],
+      ['仅官方公有云', '共享 VPC、专享 VPC 或企业本地'],
+      ['使用平台提供的模型', '可配置企业模型与智能体'],
+      ['不含协作套件', '内置腾讯文档、乐享知识库、腾讯网盘'],
+      ['个人中心开票', '腾讯云控制台按企业开票'],
     ],
-    note: '个人版指标准版、高级版、旗舰版；企业版一栏以旗舰版为准，专享版另有专属网络访问与企业插件。内容来自 WorkBuddy 官方定价页与腾讯云版本说明。',
+    note: '企业版一栏以旗舰版为准，专享版另有专属网络访问与企业插件。内容来自 WorkBuddy 官方定价页与腾讯云版本说明。',
   },
   en: {
-    title: 'What Enterprise adds',
+    title: 'Enterprise vs Personal',
     lead: 'The same WorkBuddy, with team administration, central sign-in and more deployment choices.',
-    heads: ['', 'Personal plans', 'Enterprise'],
+    personal: { name: 'Personal', tiers: 'Standard · Premium · Flagship' },
+    enterprise: { name: 'Enterprise', tiers: 'Flagship · Exclusive · Private', badge: 'From Easy AI' },
     rows: [
-      ['Buying', 'Each person subscribes on their own account', 'The company subscribes per seat'],
-      ['Admin console', 'None', 'Authorization, member statistics, productivity dashboard'],
-      ['Sign-in', 'Personal accounts', 'Enterprise single sign-on (SSO)'],
-      ['Usage allowance', 'Per account, valid for the month, no roll-over', '2,000 credits per seat a month, shared'],
-      ['Where it runs', 'Official public cloud', 'Shared VPC, dedicated VPC or on-premises'],
-      ['Models and agents', 'The platform’s models', 'Configurable enterprise models and agents'],
-      ['Collaboration', '—', 'Tencent Docs, Lexiang knowledge base and Tencent Drive (50 GB a seat) included'],
-      ['Invoicing', 'Personal center', 'Company invoices in the Tencent Cloud console'],
+      ['Each person subscribes on their own account', 'The company subscribes per seat'],
+      ['No admin console', 'Authorization, member statistics, productivity dashboard'],
+      ['Personal account sign-in', 'Enterprise single sign-on (SSO)'],
+      ['Credits per account, valid for the month', '2,000 credits per seat a month, shared'],
+      ['Official public cloud only', 'Shared VPC, dedicated VPC or on-premises'],
+      ['The platform’s models', 'Configurable enterprise models and agents'],
+      ['No collaboration suite', 'Tencent Docs, Lexiang and Tencent Drive included'],
+      ['Invoices from the personal center', 'Company invoices in the Tencent Cloud console'],
     ],
-    note: 'Personal plans are Standard, Premium and Flagship; the Enterprise column describes Flagship, and Exclusive adds dedicated network access and enterprise plugins. From the WorkBuddy pricing page and Tencent Cloud’s editions page.',
+    note: 'The Enterprise card describes Flagship; Exclusive adds dedicated network access and enterprise plugins. From the WorkBuddy pricing page and Tencent Cloud’s editions page.',
   },
 };

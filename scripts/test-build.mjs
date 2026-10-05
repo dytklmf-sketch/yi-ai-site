@@ -136,7 +136,9 @@ for (const file of html) {
           !/体验版|Trial</.test(text) &&
           // Round 39: the certificate sits under the price cards; the comparison follows.
           /class="wb-tiers"[\s\S]*class="wb-cert"[\s\S]*id="compare"/.test(text) &&
-          (text.match(/class="wb-compare-row"/g) || []).length === 8,
+          // Round 43: two aligned cards, eight rows each, no label column.
+          (text.match(/<li><svg[^>]*lucide-minus/g) || []).length === 8 &&
+          (text.match(/<li><svg[^>]*lucide-check/g) || []).length >= 8,
         `${file}: official WorkBuddy Enterprise prices with source and date`
       );
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
@@ -166,7 +168,8 @@ for (const file of html) {
     assert.equal((text.match(/data-service-column=/g) || []).length, 3, `${file}: one column per service`);
     assert(!text.includes('role="tab"'), `${file}: services are side-by-side columns, not tabs`);
     assert(!text.includes('id="process"'), `${file}: the process lives in the inquiry chapter`);
-    assert.equal((text.match(/class="guide-card"/g) || []).length, 3, `${file}: one featured guide per service`);
+    // Round 43: home lists four guides in the compact list, like the service pages.
+    assert(/class="guide-list"[^]*?(<li>[^]*?){4}<\/ul>/.test(text), `${file}: guides as a compact list`);
     // Round 33: one question per service on the home page; the rest live on the FAQ page.
     assert.equal((text.match(/<details data-service=/g) || []).length, 3, `${file}: one FAQ per service`);
     assert(/href="[^"]*\/faq\/"/.test(text), `${file}: link to the FAQ page`);
