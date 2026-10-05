@@ -2,104 +2,75 @@
 lang: en
 pairKey: workbuddy-procurement-checklist
 title: What to confirm before buying WorkBuddy
-description: Seats, edition, authorization period and services outside the product.
+description: Which Enterprise edition, what to prepare, how far the credits go and what the subscription leaves out.
 service: workbuddy
 updatedAt: '2026-10-05'
 order: 1
 sources:
-  - label: Tencent WorkBuddy official product entry
-    url: https://www.codebuddy.cn/work/
-  - label: 'WorkBuddy docs: pricing (Chinese)'
-    url: https://www.codebuddy.cn/docs/workbuddy/Pricing
-  - label: 'WorkBuddy docs: credits (Chinese)'
-    url: https://www.codebuddy.cn/docs/workbuddy/Credits
   - label: 'Tencent Cloud: WorkBuddy Enterprise editions (Chinese)'
     url: https://cloud.tencent.com/document/product/1831/134332
+  - label: 'WorkBuddy docs: credits (Chinese)'
+    url: https://www.codebuddy.cn/docs/workbuddy/Credits
+  - label: Tencent WorkBuddy official product entry
+    url: https://www.codebuddy.cn/work/
 ---
 
-## The short answer
+## Choosing among the three Enterprise editions
 
-Before purchasing WorkBuddy, specify **who will use it, for which tasks, which kind of edition you need, for how long, and who owns follow-up responsibilities**. Compare proposals against the same brief instead of asking only for a discount. Easy AI offers reseller procurement consulting. This is an inquiry checklist, not a statement of product entitlements or a quotation.
+WorkBuddy Enterprise has three editions. Much of the functionality is shared; deployment and minimum seats are what differ.
 
-## Personal plans or Enterprise
+| | Flagship | Exclusive | Private Enterprise |
+| --- | --- | --- | --- |
+| Where it runs | Tencent Cloud shared VPC | Tencent Cloud dedicated VPC | On-premises |
+| Minimum seats | 1 | 100 | By consultation |
+| List price | ¥198/seat/month or ¥2,376/seat/year | ¥316/seat/month or ¥3,792/seat/year | By consultation |
+| Usage | 2,000 credits per seat a month, shared | As Flagship | No usage limit |
+| Also | Admin console, SSO | All of Flagship plus dedicated network access and enterprise plugins | All administration features |
 
-The official material splits WorkBuddy purchases into two tracks. Decide which one applies first; every later question depends on it.
+Most teams start with Flagship. Network isolation and 100 or more seats point to Exclusive; data that must stay in your own environment points to Private Enterprise. Purchases through Easy AI follow the formal quote.
 
-|                        | Personal plans                                    | WorkBuddy Enterprise                                                        |
-| ---------------------- | ------------------------------------------------- | --------------------------------------------------------------------------- |
-| Where it is documented | WorkBuddy docs, “Pricing”                         | Tencent Cloud docs, “Editions”                                              |
-| Editions               | Trial, Standard, Premium, Flagship                | Flagship, Exclusive, Private Enterprise                                     |
-| Billing                | Per account, monthly or continuous monthly/annual | Per seat (per person per month or year); Private Enterprise by consultation |
-| Usage unit             | Credits granted monthly                           | Credits per seat on Flagship and Exclusive, shared in the team              |
-| Administration         | Each account manages itself                       | Admin console: authorization, SSO, member statistics and more               |
-| Where it runs          | Official cloud service                            | Shared VPC, dedicated VPC or on-premises                                    |
+## Six things to prepare for a quote
 
-Compiled from the official pages. Names, prices and minimum seats can change, so check the official pages and a formal quote before ordering.
+1. **Users**: which teams, how many people and who pilots it.
+2. **Tasks**: what material it handles, what it delivers and which steps stay human-reviewed.
+3. **Edition**: Flagship, Exclusive, Private Enterprise or undecided.
+4. **Existing accounts**: whether staff use personal accounts and who owns them.
+5. **Term and invoicing**: monthly or annual, invoice type and title.
+6. **Extra services**: whether deployment, training or support is needed, and from whom.
 
-Two common mix-ups: the personal “Flagship” plan and the Enterprise “Flagship” edition are different products, and the official page lists a 100-seat minimum for the Enterprise “Exclusive” edition.
+Mark each item confirmed, open or not needed. You can download the [purchase brief](../../../templates/en/workbuddy-purchase-brief.txt) and fill it in.
 
-## When this applies
+## How far the credits go
 
-Use this guide for a first team purchase, additional purchasing for existing accounts, or a comparison of procurement options. Individual trial experience does not establish team authorization rights. For existing accounts, explain ownership and current usage.
+Flagship and Exclusive give 2,000 credits per seat a month, shared across the team and refreshed monthly. Every conversation request consumes credits; how many depends on the model and the task. Long-document analysis, multi-turn conversations and knowledge-base retrieval use more.
 
-If the product is not chosen yet, list two or three real tasks and assess fit. Do not assume deployment, administration or integration features exist before confirming them.
+The team total is seats × 2,000. When use concentrates on a few people, the total usually suffices; when most people work it hard every day, estimate ahead. A reliable way is to let three to five typical users work for one or two weeks and record what they use.
 
-## A procurement checklist to take with you
+## From inquiry to go-live
 
-1. **Users**: roles, expected seats and whether pilot users match the eventual users.
-2. **Tasks**: source materials, expected outputs and which steps remain human-reviewed.
-3. **Product and authorization**: exact edition name, term, account ownership, seat count and permitted use.
-4. **Environment**: operating systems, network restrictions, existing accounts and internal approvals for sensitive material.
-5. **Pricing basis**: quantity and term behind the quote, tax treatment, renewal conditions and possible extra costs.
-6. **Delivery and responsibilities**: start date, delivery evidence, issue contact and ownership of services outside the purchase.
+1. **Send the need**: seats, tasks, start date and existing accounts.
+2. **Check terms**: edition, quantity, term and price; confirm deployment and administrators.
+3. **Trial**: if you need one, confirm availability, allowance and cost.
+4. **Confirm the order**: contents, invoicing details and delivery.
+5. **Hand-over**: assign seats, name administrators and agree who sends renewal reminders.
 
-Mark each item “confirmed / open / not needed”, with the date and source. Keep asking about anything unclear instead of relying on vague sales wording.
+## Four things buyers miss
 
-You can download the [purchase brief](../../../templates/en/workbuddy-purchase-brief.txt), fill it in and attach it to your email.
-
-## Estimating credits
-
-Every WorkBuddy conversation request consumes credits. According to the official description, consumption depends on the model tier and on task complexity: long document analysis, multi-turn conversations and knowledge-base retrieval consume more than short questions.
-
-Rules that matter for purchasing (from the official “Credits” page):
-
-- Personal-plan credits are granted monthly, valid for that month and **do not roll over**.
-- Credits expiring soonest are used first; on the same date, base credits go before bonus credits.
-- Add-on packs are available when credits run out, and they expire too.
-
-So “one tier up is always better value” does not hold. Let three to five typical users work for one or two weeks, record weekly credit use per person, then choose the edition. A quote based on that data is closer to reality than one based on seat count alone.
-
-## How to proceed
-
-1. **Send the need**: team size, tasks, start date and existing accounts.
-2. **Check terms**: edition, quantity, term and pricing; for Enterprise, also the deployment form and administrators.
-3. **Trial**: if you need one, confirm availability, allowance and cost first; do not assume it is free.
-4. **Confirm the order**: check order contents, invoicing details and delivery item by item.
-5. **Hand-over**: agree seat assignment, administrators, expiry date and who sends renewal reminders.
-
-List deployment, training, technical support and after-sales separately. Procurement consulting does not mean these services are included, and Easy AI does not promise any particular authorization level.
-
-## Common mistakes
-
-- **Treating a personal account as the team plan**: administration and billing differ between personal plans and Enterprise; re-check trial findings against the edition you plan to buy.
-- **Comparing unit prices only**: for the same seat count, credit allowance, admin console and deployment form all change the real cost.
-- **Ignoring expiry and renewal**: continuous personal plans renew automatically by default; an Enterprise authorization stops working at expiry, so plan renewals or seat changes ahead.
-- **Assuming training and support are included**: the subscription and implementation services are separate and need their own agreement.
+- **Pricing by seats alone**: the same seat count costs differently on a shared VPC, a dedicated VPC or on-premises.
+- **Assuming training and support are included**: the subscription and implementation are separate and need their own agreement.
+- **Carrying personal accounts over as they are**: personal accounts and Enterprise seats are managed separately; agree how material moves before switching.
+- **Renewing on the expiry date**: Enterprise stops working at expiry, so start renewal approval at least a month ahead.
 
 ## FAQ
 
-### Can seats alone determine a fixed price?
+### Can seats alone set a fixed price?
 
-Seats are only one input. Edition, term, order arrangements and separately agreed services all affect the proposal. Do not treat estimates as a final quote before the scope is confirmed.
+Seats are one input. Edition, term and separately agreed services all change the quote; estimates made before the scope is confirmed are not a final price.
 
-### Are all features in product material included?
+### How is Private Enterprise priced?
 
-Check against the official description for the edition being purchased and the confirmed scope. Save the version and date of the description, and clarify inconsistencies before buying.
+By consultation, quoted separately for the deployment environment, scale and requirements.
 
-### Can a personal plan be upgraded or refunded?
+### Can we ask before the requirements are complete?
 
-The official plan-management page says personal plans can be upgraded but not downgraded, with the remaining value credited on upgrade; refunds have a time window and conditions such as unused credits. Follow the official rules in force when you order.
-
-### Can I ask before the requirements are complete?
-
-Yes. Provide one representative task, a seat range and an expected start date. Do not send passwords, keys or unapproved raw business material in the first inquiry.
+Yes. One representative task, a seat range and an expected start date are enough. Do not send passwords, keys or unapproved business material in a first inquiry.

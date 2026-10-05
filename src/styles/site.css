@@ -4854,6 +4854,50 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   margin-top: 0.1875rem;
   color: var(--wb-ink);
 }
+/* Round 39: the authorization sits under the price cards, where buyers weigh the offer. */
+.wb-cert {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.875rem;
+  padding: 0.625rem 1rem 0.625rem 0.625rem;
+  border: 1px solid #d5efe3;
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 92%);
+  color: var(--ink);
+}
+.wb-cert img {
+  flex: none;
+  width: 5.5rem;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+.wb-cert-copy {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 0.125rem;
+  min-width: 0;
+}
+.wb-cert-copy strong {
+  font-size: 0.9375rem;
+}
+.wb-cert-copy span {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.wb-cert-view {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--wb-ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.wb-cert:hover .wb-cert-view {
+  text-decoration: underline;
+}
 .wb-editions-foot {
   display: flex;
   flex-wrap: wrap;
@@ -4961,4 +5005,83 @@ body[data-theme='infrastructure'] main {
   --pale: #e0f2fc;
   --pale-2: #f0f9fe;
   --accent-rgb: 10 118 181;
+}
+
+/* Round 39: personal plans against Enterprise as a spec sheet — the Enterprise column is the large one. */
+.wb-compare-section {
+  padding-top: clamp(1rem, 3vw, 2rem);
+}
+.wb-compare-lead {
+  margin: 0.75rem 0 0;
+  color: var(--body);
+  font-size: 1.0625rem;
+}
+.wb-compare {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--paper);
+}
+.wb-compare-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1.35fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 2.5vw, 1.75rem);
+  border-top: 1px solid var(--line);
+}
+.wb-compare-row:first-child {
+  border-top: 0;
+}
+.wb-compare-row > :first-child {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.wb-compare-row > :nth-child(2) {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+.wb-compare-row > .wb-compare-pro {
+  color: var(--cobalt);
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.wb-compare-head {
+  background: var(--pale-2);
+}
+.wb-compare-head > span {
+  color: var(--ink) !important;
+  font-size: 0.9375rem !important;
+  font-weight: 700;
+}
+.wb-compare-head > .wb-compare-pro {
+  color: var(--cobalt) !important;
+  font-size: 1.0625rem !important;
+}
+.wb-compare-row:not(.wb-compare-head) > .wb-compare-pro {
+  position: relative;
+}
+.wb-compare-note {
+  margin-top: 0.875rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+@media (max-width: 720px) {
+  .wb-cert-copy span {
+    display: none;
+  }
+  .wb-compare-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.25rem 0.75rem;
+  }
+  .wb-compare-row > :first-child {
+    grid-column: 1 / -1;
+  }
+  .wb-compare-head > :first-child {
+    display: none;
+  }
 }

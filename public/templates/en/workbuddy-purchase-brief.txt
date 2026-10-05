@@ -17,8 +17,8 @@ Teams and roles:
 3. Task:            Input material:            Expected result:
 
 4. Edition and authorization
-Personal plans or Enterprise:
-Edition names you know of (if any):
+Preferred edition (Flagship / Exclusive / Private Enterprise / undecided):
+Deployment (shared VPC / dedicated VPC / on-premises / undecided):
 Term (monthly / annual):
 Existing accounts (number, ownership):
 

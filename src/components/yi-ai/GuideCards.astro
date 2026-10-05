@@ -13,11 +13,11 @@ interface Props {
 }
 const { lang, guides, featured = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
-// Every guide opens with 先给结论 and 适用条件 and closes with 常见问题, so those headings say nothing about this
-// particular guide. The middle sections are what actually differ, and the two languages carry the same ones in the
-// same order, so the card can list them without the pairing drifting apart. The update date stays on the
-// article; on cards it repeated the same day for every guide.
-const bodySections = (body: string) => [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).slice(2, -1);
+// The card lists what a guide actually covers: its section headings, minus the generic ones (summary, scope, FAQ)
+// that older guides share. The update date stays off the page (round 38).
+const generic = new Set(['先给结论', '适用条件', '常见误区', '常见问题', 'The short answer', 'When this applies', 'Common mistakes', 'FAQ']);
+const bodySections = (body: string) =>
+  [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).filter((heading) => !generic.has(heading));
 ---
 
 <div class:list={['guide-grid', { 'guide-grid-featured': featured }]}>

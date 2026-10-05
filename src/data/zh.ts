@@ -52,15 +52,14 @@ export const zh: SiteCopy = {
     },
     {
       service: 'workbuddy',
-      question: '个人版和企业版有什么区别？',
+      question: '旗舰版和专享版怎么选？',
       answer:
-        '个人版按账号订阅、每月发放积分；企业版按人数订阅，有管理后台，可选共享 VPC、独享 VPC 或本地部署。企业版官方价格见 WorkBuddy 页的「企业版价格」。',
+        '两者功能相同，区别在部署与起购人数：旗舰版运行在腾讯云共享 VPC，1 人起购；专享版运行在腾讯云专享 VPC，另有专属网络访问与企业插件，100 人起购。',
     },
     {
       service: 'workbuddy',
-      question: '积分用不完可以留到下个月吗？',
-      answer:
-        '据官方积分说明，个人版积分按月发放、当月有效，不结转到下个月。选版本前建议统计几位典型用户一到两周的实际用量。',
+      question: '私有化企业版适合谁？',
+      answer: '需要把服务部署在企业自有环境、对数据和网络有严格要求的企业。私有化企业版无用量限制，价格需售前咨询。',
     },
     {
       service: 'workbuddy',
@@ -71,7 +70,7 @@ export const zh: SiteCopy = {
       service: 'workbuddy',
       question: '可以开发票吗？',
       answer:
-        '官方渠道中，个人用户在 WorkBuddy 个人中心申请，企业用户通过腾讯云控制台处理。通过易AI采购时，发票的开具方与方式以订单约定为准。',
+        '企业版通过腾讯云控制台开票。通过易AI采购时，发票的开具方与方式以订单约定为准。',
     },
     {
       service: 'model-services',
@@ -131,7 +130,7 @@ export const zh: SiteCopy = {
       summary: '团队统一采购 WorkBuddy，按人数和期限报价。',
       scenarios: [
         { title: '首次采购', text: '部门统一采购，尚未确定版本' },
-        { title: '个人转团队', text: '成员在用个人账号，改由公司统一购买' },
+        { title: '个人账号转企业版', text: '成员在用个人账号，改由公司统一采购企业版' },
         { title: '内部审批', text: '人数与预算已定，需要正式报价' },
         { title: '续费调整', text: '授权到期，续费并调整人数' },
       ],

@@ -51,7 +51,7 @@ const guides = (await getGuides(lang)).filter(({ data }) => featuredGuides[data.
           <a class="btn btn-primary btn-lg" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={18} /></a>
           <a class="btn btn-ghost-light btn-lg" href="#services">{t.secondary}<ArrowDown size={18} /></a>
         </div>
-        <a class="hero-credential" href={`${pathFor(lang, 'workbuddy')}#process`} data-enter style="--d:4">
+        <a class="hero-credential" href={`${pathFor(lang, 'workbuddy')}#editions`} data-enter style="--d:4">
           <BadgeCheck size={16} />
           {workbuddyCredential.partner[lang]}
           <ArrowRight size={14} />

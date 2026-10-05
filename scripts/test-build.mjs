@@ -79,6 +79,9 @@ for (const file of html) {
     .replace(/<[^>]+>/g, ' ')
     .replace(/&[a-z]+;/g, ' ');
   assert(!/\d{4}-\d{2}-\d{2}|核对于|更新于|有效期至/.test(visible), `${file}: a date is visible`);
+  // Round 39: no sample usage figures in the service pages' hero cards and quote notes.
+  if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file))
+    assert(!/2000 万|20M tokens|约 20 人|About 20\b|约一年|About a year/.test(visible), `${file}: sample usage figure`);
   // Round 12: chapter titles are short labels, not slogans.
   for (const [, heading] of text.matchAll(/<h2[^>]*class="(?:section-title|cta-title)"[^>]*>([^<]*)</g))
     assert(
@@ -113,7 +116,7 @@ for (const file of html) {
     const wb = file.includes('/workbuddy/');
     assert.equal(
       (text.match(/<a href="#[a-z]+"><span class="mono">/g) || []).length,
-      wb ? 4 : 3,
+      wb ? 5 : 3,
       `${file}: chapters in the subnav`
     );
     assert.equal(text.includes('id="editions"'), wb, `${file}: WorkBuddy editions only on its page`);
@@ -122,7 +125,10 @@ for (const file of html) {
       assert(
         text.includes('cloud.tencent.com/document/product/1831/134332') &&
           (text.match(/class="wb-tier"/g) || []).length === 3 &&
-          !/体验版|Trial</.test(text),
+          !/体验版|Trial</.test(text) &&
+          // Round 39: the certificate sits under the price cards; the comparison follows.
+          /class="wb-tiers"[\s\S]*class="wb-cert"[\s\S]*id="compare"/.test(text) &&
+          (text.match(/class="wb-compare-row"/g) || []).length === 8,
         `${file}: official WorkBuddy Enterprise prices with source and date`
       );
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
@@ -173,7 +179,7 @@ for (const file of html) {
       4,
       `${file}: every reason has a proof link`
     );
-    assert(/class="hero-credential" href="[^"]*\/workbuddy\/#process"/.test(text), `${file}: hero authorization badge`);
+    assert(/class="hero-credential" href="[^"]*\/workbuddy\/#editions"/.test(text), `${file}: hero authorization badge`);
     for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
       assert(text.includes(`/contact/?topic=${service}`), `${file}: service-specific inquiry is missing`);
       assert(text.includes(`data-topic-preparation="${service}"`), `${file}: preparation copy is missing`);

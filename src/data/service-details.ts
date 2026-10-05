@@ -6,8 +6,8 @@ type Details = {
   brief: string[];
   /** A filled-in request shown in the page hero. The company and figures are placeholders, not a customer. */
   sample?: { title: string; fields: [string, string][] };
-  /** One-line quote example beside the checklist, for pages whose hero shows something else. Placeholder figures. */
-  briefExample?: string;
+  /** One line under the quote inputs, for pages whose hero shows something else. No figures (round 39). */
+  briefNote?: string;
   discuss: string[];
   confirm: string[];
 };
@@ -25,13 +25,13 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
         title: '采购需求',
         fields: [
           ['部门', '×× 公司市场部'],
-          ['使用人数', '约 20 人'],
+          ['使用人数', '×× 人'],
           ['希望开通', '下月初'],
-          ['现有账号', '5 人在用个人账号'],
-          ['咨询内容', '可选版本与报价'],
+          ['现有账号', '部分成员在用个人账号'],
+          ['咨询内容', '企业版版本与报价'],
         ],
       },
-      discuss: ['版本差别与适合的团队规模', '按人数和期限的报价', '个人账号转为团队采购', '续费与人数调整'],
+      discuss: ['企业版三档怎么选', '按人数和期限的报价', '个人账号转为企业版', '续费与人数调整'],
       confirm: ['具体版本权益与授权条款', '折扣与付款方式', '企业部署、培训和技术支持', '交付时间与售后责任'],
     },
     'model-services': {
@@ -41,7 +41,7 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
         { title: '约定结算', text: '结算周期、异常联络人与模型变更通知。' },
       ],
       brief: ['模型与版本', '月调用量', '输入输出比例', '并发与延迟', '结算方式'],
-      briefExample: '客服应用，OpenAI 兼容接口，每月约 2000 万 token，输入约占七成，希望洽谈企业用量价格与月结。',
+      briefNote: '用量和价格因业务而异，请带上所需模型和大致场景单独咨询。',
       discuss: ['接口兼容与迁移', '企业用量价格与结算', '测试与效果验证', '供应渠道合作'],
       confirm: ['具体可用模型与接口差异', '限额、稳定性与响应约定', '数据处理方式', '计费异常与退出安排'],
     },
@@ -58,7 +58,7 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
           ['工作负载', '推理服务'],
           ['用途', '内部知识库问答'],
           ['模型', '开源大模型，私有化部署'],
-          ['使用周期', '约一年'],
+          ['使用周期', '按项目确定'],
           ['希望上线', '下季度'],
           ['咨询内容', '机房资源能否匹配'],
         ],
@@ -79,16 +79,16 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
         title: 'Purchase request',
         fields: [
           ['Team', 'Marketing, [Company]'],
-          ['Users', 'About 20'],
+          ['Users', '[n]'],
           ['Start', 'Early next month'],
-          ['Accounts', '5 on personal accounts'],
-          ['Asking for', 'Editions and a quote'],
+          ['Accounts', 'Some on personal accounts'],
+          ['Asking for', 'Enterprise editions and a quote'],
         ],
       },
       discuss: [
-        'Edition differences and team fit',
+        'Choosing among the three Enterprise editions',
         'Pricing by seats and period',
-        'Personal accounts to a team purchase',
+        'Personal accounts to Enterprise',
         'Renewals and seat changes',
       ],
       confirm: [
@@ -105,7 +105,7 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
         { title: 'Agree settlement', text: 'Billing cycle, anomaly contacts, model-change notices.' },
       ],
       brief: ['Models and versions', 'Monthly volume', 'Input/output ratio', 'Concurrency and latency', 'Settlement'],
-      briefExample: 'Support app, OpenAI-compatible API, ~20M tokens a month, 70% input, wants monthly billing.',
+      briefNote: 'Volume and pricing differ by business; bring the models and rough use case and ask us directly.',
       discuss: [
         'Interface compatibility and migration',
         'Enterprise pricing and settlement',
@@ -132,7 +132,7 @@ export const serviceDetails: Record<Lang, Record<Service, Details>> = {
           ['Workload', 'Inference service'],
           ['Use', 'Internal knowledge-base Q&A'],
           ['Model', 'Open-source LLM, self-hosted'],
-          ['Duration', 'About a year'],
+          ['Duration', 'Per project'],
           ['Start', 'Next quarter'],
           ['Asking', 'Whether your resources fit'],
         ],

@@ -61,15 +61,15 @@ export const en: SiteCopy = {
     },
     {
       service: 'workbuddy',
-      question: 'How do personal plans and Enterprise differ?',
+      question: 'Flagship or Exclusive?',
       answer:
-        'Personal plans are per account with monthly credits; Enterprise is per seat with an admin console and a choice of shared VPC, dedicated VPC or on-premises. Enterprise list prices are under “Enterprise pricing” on the WorkBuddy page.',
+        'The features are the same; deployment and minimum seats differ. Flagship runs in a Tencent Cloud shared VPC from 1 seat; Exclusive runs in a dedicated VPC with dedicated network access and enterprise plugins, from 100 seats.',
     },
     {
       service: 'workbuddy',
-      question: 'Do unused credits carry over?',
+      question: 'Who is Private Enterprise for?',
       answer:
-        'According to the official credits page, personal-plan credits are granted monthly, valid that month and do not roll over. Before choosing an edition, measure a few typical users for one or two weeks.',
+        'Companies that need the service inside their own environment with strict data and network requirements. Private Enterprise has no usage limit and is priced by consultation.',
     },
     {
       service: 'workbuddy',
@@ -81,7 +81,7 @@ export const en: SiteCopy = {
       service: 'workbuddy',
       question: 'Can we get an invoice?',
       answer:
-        'Through official channels, individuals request invoices in the WorkBuddy personal center and enterprises use the Tencent Cloud console. When buying through Easy AI, who issues the invoice and how follows the order agreement.',
+        'Enterprise invoices are issued through the Tencent Cloud console. When buying through Easy AI, who issues the invoice and how follows the order agreement.',
     },
     {
       service: 'model-services',
@@ -146,7 +146,7 @@ export const en: SiteCopy = {
       summary: 'Team purchases of WorkBuddy, priced by seats and period.',
       scenarios: [
         { title: 'First purchase', text: 'A department is unsure which edition fits' },
-        { title: 'Personal to team', text: 'Staff use personal accounts; the company wants to buy centrally' },
+        { title: 'Personal to Enterprise', text: 'Staff use personal accounts; the company moves them to Enterprise' },
         { title: 'Internal approval', text: 'Seats and budget are set; a formal quote is needed' },
         { title: 'Renewal', text: 'Authorization is expiring; renew and change seats' },
       ],

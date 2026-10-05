@@ -9,11 +9,12 @@ import GuideCards from '../../components/yi-ai/GuideCards.astro';
 import ServiceSample from '../../components/yi-ai/ServiceSample.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
 import WorkBuddyEditions from '../../components/yi-ai/WorkBuddyEditions.astro';
+import WorkBuddyCompare from '../../components/yi-ai/WorkBuddyCompare.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
-import { serviceBriefs, workbuddyEditions } from '../../data/workbuddy-editions';
+import { serviceBriefs, workbuddyCompare, workbuddyEditions } from '../../data/workbuddy-editions';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -23,7 +24,6 @@ import {
   modelProduct,
   brandName,
   withBase,
-  workbuddyCredential,
   type Lang,
   type PageSlug,
 } from '../../data/yi-ai';
@@ -46,21 +46,20 @@ const r = refinement[lang];
 const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
-const { certificate } = workbuddyCredential;
-// Page order: (WorkBuddy only) Enterprise pricing first, then use cases, process, guides.
+// Page order: (WorkBuddy only) Enterprise pricing and the personal/Enterprise comparison first, then use cases,
+// process, guides.
 const chapters: [string, string][] = [
-  ...(service === 'workbuddy' ? [['editions', workbuddyEditions[lang].label] as [string, string]] : []),
+  ...(service === 'workbuddy'
+    ? ([
+        ['editions', workbuddyEditions[lang].label],
+        ['compare', workbuddyCompare[lang].title],
+      ] as [string, string][])
+    : []),
   ['fit', r.serviceContents.fit],
   ['process', r.serviceContents.process],
   ['guides', r.serviceContents.guides],
 ];
 const briefFile = service ? serviceBriefs[lang][service] : undefined;
-const credentials = {
-  partner: workbuddyCredential.partner[lang],
-  note: zhUI
-    ? '易AI 通过该授权渠道开展 WorkBuddy 采购咨询，产品功能与版本权益以官方说明为准。'
-    : 'Easy AI handles WorkBuddy procurement through this authorized channel. Product features and licence terms follow the official documentation.',
-};
 ---
 
 <YiAiLayout
@@ -129,6 +128,7 @@ const credentials = {
         </nav>
 
         {service === 'workbuddy' && <WorkBuddyEditions lang={lang} />}
+        {service === 'workbuddy' && <WorkBuddyCompare lang={lang} />}
 
         {detail && (
           <section id="fit" class="section">
@@ -213,12 +213,7 @@ const credentials = {
                       </li>
                     ))}
                   </ul>
-                  {detail.briefExample && (
-                    <p class="brief-example">
-                      <span class="micro-label">{zhUI ? '例如' : 'For example'}</span>
-                      {detail.briefExample}
-                    </p>
-                  )}
+                  {detail.briefNote && <p class="brief-example">{detail.briefNote}</p>}
                 </div>
                 <div class="brief-actions">
                   <a class="btn btn-light" href={inquiryPath(lang, service)}>
@@ -234,46 +229,6 @@ const credentials = {
                 </div>
               </div>
 
-              {service === 'workbuddy' && (
-                <div class="credential-block" data-reveal>
-                  <a class="credential-thumb" href={withBase(certificate)} target="_blank" rel="noopener noreferrer">
-                    <img
-                      src={withBase(certificate)}
-                      alt={
-                        zhUI
-                          ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书'
-                          : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'
-                      }
-                      width="1200"
-                      height="848"
-                      decoding="async"
-                    />
-                  </a>
-                  <div class="credential-body">
-                    <div class="credential-head">
-                      <span class="micro-label">{zhUI ? '合作资质' : 'Credentials'}</span>
-                      <p class="credential-lockup" aria-hidden="true">
-                        <span class="credential-lockup-part">
-                          <img src={withBase('/brand/logo-symbol.svg')} alt="" width="22" height="22" />
-                          <span class="mono">{brandName(lang)}</span>
-                        </span>
-                        <span class="credential-lockup-x">×</span>
-                        <span class="credential-lockup-part">
-                          <img src={withBase('/partners/workbuddy.svg')} alt="" width="22" height="22" />
-                          <span class="mono">WorkBuddy</span>
-                        </span>
-                      </p>
-                    </div>
-                    <p class="credential-title">{credentials.partner}</p>
-                    <p class="credential-note">{credentials.note}</p>
-                    <a class="text-link" href={withBase(certificate)} target="_blank" rel="noopener noreferrer">
-                      {zhUI ? '查看证书' : 'View the certificate'}
-                      <ArrowUpRight size={16} />
-                      <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
-                    </a>
-                  </div>
-                </div>
-              )}
             </div>
           </section>
         )}
