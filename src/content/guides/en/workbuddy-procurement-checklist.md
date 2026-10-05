@@ -34,7 +34,7 @@ The official material splits WorkBuddy purchases into two tracks. Decide which o
 | Administration         | Each account manages itself                       | Admin console: authorization, SSO, member statistics and more               |
 | Where it runs          | Official cloud service                            | Shared VPC, dedicated VPC or on-premises                                    |
 
-Compiled from the official pages on 2026-10-05; the Tencent Cloud editions page shows an update time of 2026-09-16. Names, prices and minimum seats can change, so check the official pages and a formal quote before ordering.
+Compiled from the official pages. Names, prices and minimum seats can change, so check the official pages and a formal quote before ordering.
 
 Two common mix-ups: the personal “Flagship” plan and the Enterprise “Flagship” edition are different products, and the official page lists a 100-seat minimum for the Enterprise “Exclusive” edition.
 

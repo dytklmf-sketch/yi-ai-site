@@ -46,7 +46,7 @@ const r = refinement[lang];
 const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
-const { certificate, validUntil } = workbuddyCredential;
+const { certificate } = workbuddyCredential;
 // Page order: (WorkBuddy only) Enterprise pricing first, then use cases, process, guides.
 const chapters: [string, string][] = [
   ...(service === 'workbuddy' ? [['editions', workbuddyEditions[lang].label] as [string, string]] : []),
@@ -266,12 +266,6 @@ const credentials = {
                     </div>
                     <p class="credential-title">{credentials.partner}</p>
                     <p class="credential-note">{credentials.note}</p>
-                    <p class="credential-valid">
-                      {zhUI ? '证书有效期至 ' : 'Certificate valid until '}
-                      <time class="mono" datetime={validUntil}>
-                        {validUntil}
-                      </time>
-                    </p>
                     <a class="text-link" href={withBase(certificate)} target="_blank" rel="noopener noreferrer">
                       {zhUI ? '查看证书' : 'View the certificate'}
                       <ArrowUpRight size={16} />

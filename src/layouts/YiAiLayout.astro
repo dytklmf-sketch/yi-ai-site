@@ -205,29 +205,23 @@ const zhUI = lang === 'zh';
 
     <footer class="site-footer">
       <div class="container">
-        <div class="footer-lead">
-          <p class="footer-promise">
-            {
-              zhUI ? (
-                <>
-                  让 AI <em>易懂</em>、<em>易用</em>、<em>易落地</em>。
-                </>
-              ) : (
-                <>
-                  Make AI <em>easy</em> to understand, use and put to work.
-                </>
-              )
-            }
-          </p>
-          {
-            slug !== 'contact' && (
-              <a class="btn btn-light" href={inquiryPath(lang, service)}>
-                {t.primary}
-                <ArrowUpRight size={18} />
-              </a>
-            )
-          }
-        </div>
+        {
+          (slug === 'contact' || Astro.props.notFound) && (
+            <div class="footer-lead">
+              <p class="footer-promise">
+                {zhUI ? (
+                  <>
+                    让 AI <em>易懂</em>、<em>易用</em>、<em>易落地</em>。
+                  </>
+                ) : (
+                  <>
+                    Make AI <em>easy</em> to understand, use and put to work.
+                  </>
+                )}
+              </p>
+            </div>
+          )
+        }
         <div class="footer-grid">
           <div class="footer-brand">
             <img src={withBase(`/brand/logo-${lang}-inverse.svg`)} alt={brand} width={logoWidth} height="72" />

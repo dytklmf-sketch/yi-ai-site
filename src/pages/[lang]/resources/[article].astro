@@ -78,8 +78,6 @@ const schema = {
       <p class="article-meta" data-enter style="--d:3">
         <span>{brandName(lang)}</span>
         <span aria-hidden="true">·</span>
-        <span>{e.updated} <time class="mono" datetime={data.updatedAt}>{data.updatedAt}</time></span>
-        <span aria-hidden="true">·</span>
         <span>{lang === 'zh' ? `约 ${minutes} 分钟阅读` : `${minutes} min read`}</span>
       </p>
     </div>

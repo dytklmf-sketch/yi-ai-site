@@ -2,7 +2,6 @@
 import { ArrowUpRight } from '@lucide/astro';
 import { inquiryPath, type Lang, type Service } from '../../data/yi-ai';
 import ContactPanel from './ContactPanel.astro';
-import StackVisual from './StackVisual.astro';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 interface Props {
@@ -13,33 +12,62 @@ interface Props {
 }
 const { lang, service, inline = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
+const zhUI = lang === 'zh';
 ---
 
-<section id={inline ? 'inquiry' : undefined} class:list={['cta-band', { 'cta-inline': inline }]}>
-  <div class="cta-bg" aria-hidden="true"><span class="hero-grid-lines"></span></div>
-  <div class="container cta-layout">
-    <div class="cta-copy" data-reveal>
-      <h2 class="cta-title">{t.ctaTitle}</h2>
-      <p class="cta-body">{t.ctaBody}</p>
-      {
-        !inline && (
+{/* Round 38: the inquiry and the brand promise share one block; the footer no longer repeats the promise. */}
+{
+  inline ? (
+    <section id="inquiry" class="cta-band cta-inline">
+      <div class="cta-bg" aria-hidden="true">
+        <span class="hero-grid-lines" />
+      </div>
+      <div class="container cta-layout">
+        <div class="cta-copy" data-reveal>
+          <h2 class="cta-title">{t.ctaTitle}</h2>
+          <p class="footer-promise cta-promise">
+            {zhUI ? (
+              <>
+                让 AI <em>易懂</em>、<em>易用</em>、<em>易落地</em>。
+              </>
+            ) : (
+              <>
+                Make AI <em>easy</em> to understand, use and put to work.
+              </>
+            )}
+          </p>
+          <p class="cta-body">{t.ctaBody}</p>
+        </div>
+        <div data-reveal>
+          <ContactPanel lang={lang} compact />
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="cta-strip">
+      <div class="container">
+        <div class="cta-card" data-reveal>
+          <div class="cta-card-copy">
+            <h2 class="cta-title">{t.ctaTitle}</h2>
+            <p class="footer-promise cta-promise">
+              {zhUI ? (
+                <>
+                  让 AI <em>易懂</em>、<em>易用</em>、<em>易落地</em>。
+                </>
+              ) : (
+                <>
+                  Make AI <em>easy</em> to understand, use and put to work.
+                </>
+              )}
+            </p>
+            <p class="cta-body">{t.ctaBody}</p>
+          </div>
           <a class="btn btn-light btn-lg" href={inquiryPath(lang, service)}>
             {t.primary}
             <ArrowUpRight size={18} />
           </a>
-        )
-      }
-    </div>
-    {
-      inline ? (
-        <div data-reveal>
-          <ContactPanel lang={lang} compact />
         </div>
-      ) : (
-        <div class="cta-visual">
-          <StackVisual lang={lang} id={`cta-${service ?? 'all'}`} labels={false} active={service} />
-        </div>
-      )
-    }
-  </div>
-</section>
+      </div>
+    </section>
+  )
+}

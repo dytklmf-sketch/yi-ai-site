@@ -21,7 +21,7 @@ sources:
 
 Renewal is more than paying again. A month before expiry, **pull usage, check seat counts and confirm the edition still fits**, then decide whether to renew, adjust or stop. An Enterprise authorization stops working at expiry, so plan ahead to avoid interrupting the team.
 
-Compiled from the WorkBuddy and Tencent Cloud official documentation, checked on 2026-10-05. Rules can change; follow the official pages when you act.
+Compiled from the WorkBuddy and Tencent Cloud official documentation. Rules can change; follow the official pages when you act.
 
 ## When this applies
 

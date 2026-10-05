@@ -1,8 +1,7 @@
 ---
-import { ArrowRight, ArrowUpRight, Check, Download } from '@lucide/astro';
-import { getGuides } from '../../data/routes';
+import { ArrowUpRight, Check, Download } from '@lucide/astro';
 import { serviceBriefs, workbuddyEditions } from '../../data/workbuddy-editions';
-import { articlePath, withBase, type Lang } from '../../data/yi-ai';
+import { withBase, type Lang } from '../../data/yi-ai';
 
 interface Props {
   lang: Lang;
@@ -11,8 +10,6 @@ const { lang } = Astro.props;
 const x = workbuddyEditions[lang];
 const zhUI = lang === 'zh';
 const brief = serviceBriefs[lang].workbuddy;
-const all = await getGuides(lang);
-const guides = x.guides.map((key) => all.find((guide) => guide.data.pairKey === key)!);
 ---
 
 <section id="editions" class="section wb-editions-section" aria-labelledby="editions-title">
@@ -50,24 +47,14 @@ const guides = x.guides.map((key) => all.find((guide) => guide.data.pairKey === 
           ))
         }
       </ul>
-      <ul class="wb-rules" aria-label={zhUI ? '采购前要知道的规则' : 'Rules to know before buying'}>
-        {x.rules.map((rule) => <li>{rule}</li>)}
-      </ul>
       <footer class="wb-editions-foot">
+        <ul class="wb-rules" aria-label={zhUI ? '采购前要知道的规则' : 'Rules to know before buying'}>
+          {x.rules.map((rule) => <li>{rule}</li>)}
+        </ul>
         <a class="btn btn-wb" href={withBase(`/templates/${lang}/${brief.file}`)} download>
           <Download size={17} />
           {zhUI ? `下载${brief.label}` : `Download the ${brief.label.toLowerCase()}`}
         </a>
-        <nav class="wb-editions-links" aria-label={zhUI ? '深入阅读' : 'Read more'}>
-          {
-            guides.map((guide) => (
-              <a href={articlePath(lang, guide.data.pairKey)}>
-                {guide.data.title}
-                <ArrowRight size={15} />
-              </a>
-            ))
-          }
-        </nav>
         <p class="wb-editions-note">
           {x.note}
           {

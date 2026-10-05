@@ -46,7 +46,8 @@ for (const route of routes) {
     assert(text.includes('"@type":"Article"'));
     assert(text.includes('article-sources') && text.includes('article-inquiry'));
     assert(text.includes(`?topic=${route.service}`));
-    assert(/<time class="mono" datetime="\d{4}-\d{2}-\d{2}">/.test(text), `${route.path}: update date`);
+    // Round 38: no dates on the page; dateModified stays in the structured data only.
+    assert(!/<time\b/.test(text), `${route.path}: no visible update date`);
   }
 }
 assert.match(await readFile('dist/404.html', 'utf8'), /<title>页面未找到/);
@@ -72,6 +73,12 @@ for (const file of html) {
     assert(text.includes('name="description"'), `${file}: description missing`);
     assert(text.includes(`${base}/brand/favicon.svg?v=whale-a`), `${file}: use the current optical favicon`);
   }
+  // Round 38: the owner wants no dates on the site (checked-on, updated-on, valid-until).
+  const visible = text
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;/g, ' ');
+  assert(!/\d{4}-\d{2}-\d{2}|核对于|更新于|有效期至/.test(visible), `${file}: a date is visible`);
   // Round 12: chapter titles are short labels, not slogans.
   for (const [, heading] of text.matchAll(/<h2[^>]*class="(?:section-title|cta-title)"[^>]*>([^<]*)</g))
     assert(
@@ -114,14 +121,13 @@ for (const file of html) {
     if (wb)
       assert(
         text.includes('cloud.tencent.com/document/product/1831/134332') &&
-          /(?:核对于|checked) \d{4}-\d{2}-\d{2}/.test(text) &&
+
           (text.match(/class="wb-tier"/g) || []).length === 3 &&
           !/体验版|Trial</.test(text),
         `${file}: official WorkBuddy Enterprise prices with source and date`
       );
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
     assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
-    if (file.includes('/workbuddy/')) assert(text.includes('datetime="2026-12-31"'), `${file}: certificate validity`);
   }
   if (file.endsWith('/faq/index.html')) {
     assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 18, `${file}: six questions per service`);
