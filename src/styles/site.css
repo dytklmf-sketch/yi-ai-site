@@ -5610,3 +5610,32 @@ html:has(.mobile-menu[open]) .contact-fab {
     margin-left: 0;
   }
 }
+
+/* Round 47: no lead line under the title; the space goes to roomier rows, and Enterprise rows use a medium weight
+   with more line height instead of heavy bold. */
+.wb-compare-section .wb-vs {
+  margin-top: 1.5rem;
+}
+.wb-vs-card li {
+  gap: 0.875rem;
+  padding-block: 0.8125rem;
+}
+.wb-vs-pro li {
+  color: var(--ink);
+  font-size: 1.03125rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+.wb-vs-personal li {
+  line-height: 1.6;
+}
+@media (max-width: 720px) {
+  .wb-vs-card li {
+    gap: 0.5rem;
+    padding-block: 0.6875rem;
+  }
+  .wb-vs-pro li {
+    font-size: 0.875rem;
+  }
+}

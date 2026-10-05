@@ -115,11 +115,10 @@ export const serviceBriefs: Record<Lang, Record<Service, { label: string; file: 
 type Model = { name: string; tiers: string; price?: string };
 export const workbuddyCompare: Record<
   Lang,
-  { title: string; lead: string; personal: Model; enterprise: Model; rows: [string, string][]; note: string }
+  { title: string; personal: Model; enterprise: Model; rows: [string, string][]; note: string }
 > = {
   zh: {
     title: '企业版 vs 个人版',
-    lead: '同一个 WorkBuddy，企业版多了团队管理、统一身份和更多部署方式。',
     personal: { name: '个人版', tiers: '标准版 · 高级版 · 旗舰版' },
     enterprise: {
       name: '企业版',
@@ -140,7 +139,6 @@ export const workbuddyCompare: Record<
   },
   en: {
     title: 'Enterprise vs Personal',
-    lead: 'The same WorkBuddy, with team administration, central sign-in and more deployment choices.',
     personal: { name: 'Personal', tiers: 'Standard · Premium · Flagship' },
     enterprise: {
       name: 'Enterprise',
