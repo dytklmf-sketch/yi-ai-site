@@ -33,6 +33,7 @@
   --line: #e4e8ef;
   --line-strong: #cfd6e2;
   --cobalt: #245bdb;
+  --accent-rgb: 36 91 219;
   --cobalt-600: #1c4ac0;
   --cobalt-300: #7ea2f5;
   --cobalt-200: #b9cdf8;
@@ -367,7 +368,7 @@ main:focus {
   background: var(--cobalt-600);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 16%),
-    0 0.75rem 1.75rem -0.75rem rgb(36 91 219 / 70%);
+    0 0.75rem 1.75rem -0.75rem rgb(var(--accent-rgb) / 70%);
 }
 .btn-outline {
   border-color: var(--line-strong);
@@ -693,8 +694,8 @@ main:focus {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(40% 50% at 72% 42%, rgb(36 91 219 / 32%), transparent 70%),
-    radial-gradient(30% 30% at 10% 0%, rgb(36 91 219 / 16%), transparent 70%),
+    radial-gradient(40% 50% at 72% 42%, rgb(var(--accent-rgb) / 32%), transparent 70%),
+    radial-gradient(30% 30% at 10% 0%, rgb(var(--accent-rgb) / 16%), transparent 70%),
     linear-gradient(180deg, transparent 60%, rgb(12 20 40 / 90%));
 }
 .hero-layout {
@@ -904,7 +905,7 @@ main:focus {
 .service-tile {
   --tile-a: #245bdb;
   --tile-b: #5a8cf6;
-  --tile-glow: rgb(36 91 219 / 45%);
+  --tile-glow: rgb(var(--accent-rgb) / 45%);
   display: inline-grid;
   flex: none;
   width: 3rem;
@@ -990,8 +991,8 @@ main:focus {
   width: 65%;
   height: 9rem;
   background-image:
-    linear-gradient(rgb(36 91 219 / 13%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(36 91 219 / 13%) 1px, transparent 1px);
+    linear-gradient(rgb(var(--accent-rgb) / 13%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 13%) 1px, transparent 1px);
   background-size: 1.375rem 1.375rem;
   mask-image: radial-gradient(100% 100% at 100% 0, #000, transparent 72%);
   -webkit-mask-image: radial-gradient(100% 100% at 100% 0, #000, transparent 72%);
@@ -999,11 +1000,11 @@ main:focus {
   transition: transform 0.8s var(--ease);
 }
 [data-service='model-services'] > .service-art {
-  background-image: radial-gradient(circle, rgb(36 91 219 / 34%) 1.2px, transparent 1.7px);
+  background-image: radial-gradient(circle, rgb(var(--accent-rgb) / 34%) 1.2px, transparent 1.7px);
   background-size: 0.875rem 0.875rem;
 }
 [data-service='infrastructure'] > .service-art {
-  background-image: repeating-linear-gradient(180deg, rgb(36 91 219 / 11%) 0 0.375rem, transparent 0.375rem 0.75rem);
+  background-image: repeating-linear-gradient(180deg, rgb(var(--accent-rgb) / 11%) 0 0.375rem, transparent 0.375rem 0.75rem);
   background-size: auto;
 }
 .service-column:hover > .service-art,
@@ -1104,8 +1105,8 @@ main:focus {
 .why-band {
   overflow: hidden;
   background:
-    radial-gradient(40% 55% at 92% 0, rgb(36 91 219 / 9%), transparent 70%),
-    radial-gradient(35% 45% at 0 100%, rgb(36 91 219 / 5%), transparent 70%), var(--paper);
+    radial-gradient(40% 55% at 92% 0, rgb(var(--accent-rgb) / 9%), transparent 70%),
+    radial-gradient(35% 45% at 0 100%, rgb(var(--accent-rgb) / 5%), transparent 70%), var(--paper);
   isolation: isolate;
 }
 .why-bg {
@@ -1115,8 +1116,8 @@ main:focus {
 }
 .why-bg .hero-grid-lines {
   background-image:
-    linear-gradient(rgb(36 91 219 / 6%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(36 91 219 / 6%) 1px, transparent 1px);
+    linear-gradient(rgb(var(--accent-rgb) / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 6%) 1px, transparent 1px);
   mask-image: radial-gradient(ellipse 60% 55% at 85% 10%, #000 15%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 60% 55% at 85% 10%, #000 15%, transparent 70%);
 }
@@ -1254,7 +1255,7 @@ main:focus {
   gap: 0.625rem;
   height: var(--plate-h);
   padding: 0 1.625rem;
-  border: 1px solid rgb(36 91 219 / 12%);
+  border: 1px solid rgb(var(--accent-rgb) / 12%);
   border-radius: 0.375rem 1.125rem 0.375rem 1.125rem;
   background: linear-gradient(135deg, rgb(47 107 255 / 6%), rgb(255 255 255 / 94%) 48%), var(--paper);
   box-shadow:
@@ -1280,7 +1281,7 @@ main:focus {
 }
 .partner-plate:hover {
   transform: translateY(-3px);
-  border-color: rgb(36 91 219 / 34%);
+  border-color: rgb(var(--accent-rgb) / 34%);
   box-shadow:
     0 1px 0 rgb(255 255 255 / 90%) inset,
     0 1.25rem 2.25rem -1.25rem rgb(24 44 92 / 45%);
@@ -1656,7 +1657,7 @@ main:focus {
   isolation: isolate;
 }
 .cta-bg {
-  background: radial-gradient(50% 70% at 15% 100%, rgb(36 91 219 / 30%), transparent 70%);
+  background: radial-gradient(50% 70% at 15% 100%, rgb(var(--accent-rgb) / 30%), transparent 70%);
 }
 .cta-bg .hero-grid-lines {
   mask-image: radial-gradient(ellipse 60% 70% at 20% 90%, #000 10%, transparent 70%);
@@ -1865,7 +1866,7 @@ main:focus {
   border-radius: 0.6875rem;
   background: linear-gradient(150deg, var(--cobalt), #6f9bff);
   box-shadow:
-    0 0.625rem 1.25rem -0.5rem rgb(36 91 219 / 55%),
+    0 0.625rem 1.25rem -0.5rem rgb(var(--accent-rgb) / 55%),
     inset 0 1px 0 rgb(255 255 255 / 30%);
   color: #fff;
 }
@@ -1935,8 +1936,8 @@ main:focus {
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(rgb(36 91 219 / 6%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(36 91 219 / 6%) 1px, transparent 1px);
+    linear-gradient(rgb(var(--accent-rgb) / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 6%) 1px, transparent 1px);
   background-size: 3.5rem 3.5rem;
   mask-image: radial-gradient(ellipse 60% 80% at 85% 20%, #000 10%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 60% 80% at 85% 20%, #000 10%, transparent 70%);
@@ -2259,7 +2260,7 @@ main > section:first-child + section {
   border-color: var(--cobalt);
   background: var(--cobalt);
   color: #fff;
-  box-shadow: 0 0 0 0.375rem rgb(36 91 219 / 12%);
+  box-shadow: 0 0 0 0.375rem rgb(var(--accent-rgb) / 12%);
 }
 .step-cards h3 {
   margin-top: 1.25rem;
@@ -2357,7 +2358,7 @@ main > section:first-child + section {
   padding: 1.75rem 2.25rem;
   border-radius: 1.5rem;
   background:
-    radial-gradient(55% 160% at 100% 0, rgb(36 91 219 / 42%), transparent 70%),
+    radial-gradient(55% 160% at 100% 0, rgb(var(--accent-rgb) / 42%), transparent 70%),
     linear-gradient(135deg, var(--night-2), #11204a);
   box-shadow: 0 1.5rem 3rem -2rem rgb(13 24 52 / 65%);
   color: #fff;
@@ -2454,7 +2455,7 @@ main > section:first-child + section {
   inset: calc(var(--pt) + 0.75em) calc(var(--pr) - 0.75em) calc(var(--pb) - 0.75em) calc(var(--pl) + 0.75em);
   border: 1px solid rgb(var(--hi) / 30%);
   border-radius: 1.5em;
-  background: linear-gradient(150deg, rgb(var(--acc) / 45%), rgb(36 91 219 / 35%) 55%, rgb(15 26 56 / 80%));
+  background: linear-gradient(150deg, rgb(var(--acc) / 45%), rgb(var(--accent-rgb) / 35%) 55%, rgb(15 26 56 / 80%));
 }
 .sample-plate-far {
   z-index: -2;
@@ -2527,7 +2528,7 @@ main > section:first-child + section {
   border-radius: 1.375em;
   background:
     radial-gradient(70% 55% at 100% 0, rgb(var(--acc) / 36%), transparent 70%),
-    radial-gradient(50% 40% at 0 100%, rgb(36 91 219 / 18%), transparent 70%),
+    radial-gradient(50% 40% at 0 100%, rgb(var(--accent-rgb) / 18%), transparent 70%),
     linear-gradient(160deg, #0f1a38 0%, var(--night) 100%);
   box-shadow:
     0 2.5em 5em -2em rgb(13 24 52 / 75%),
@@ -2798,8 +2799,8 @@ main > section:first-child + section {
 .about-bg {
   overflow: hidden;
   background:
-    radial-gradient(45% 40% at 50% 42%, rgb(36 91 219 / 26%), transparent 70%),
-    radial-gradient(60% 30% at 50% 100%, rgb(36 91 219 / 22%), transparent 70%);
+    radial-gradient(45% 40% at 50% 42%, rgb(var(--accent-rgb) / 26%), transparent 70%),
+    radial-gradient(60% 30% at 50% 100%, rgb(var(--accent-rgb) / 22%), transparent 70%);
 }
 .about-bg .hero-grid-lines {
   mask-image: radial-gradient(ellipse 60% 55% at 50% 40%, #000 10%, transparent 70%);
@@ -3023,7 +3024,7 @@ main > section:first-child + section {
   border: 1px solid rgb(126 162 245 / 32%);
   border-radius: 62.4375rem;
   background: rgb(12 20 40 / 72%);
-  box-shadow: inset 0 0 1.25rem rgb(36 91 219 / 18%);
+  box-shadow: inset 0 0 1.25rem rgb(var(--accent-rgb) / 18%);
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -3034,10 +3035,10 @@ main > section:first-child + section {
 }
 .about-chips a:hover {
   border-color: var(--cobalt-300);
-  background: rgb(36 91 219 / 28%);
+  background: rgb(var(--accent-rgb) / 28%);
   box-shadow:
-    inset 0 0 1.25rem rgb(36 91 219 / 30%),
-    0 0 1.5rem rgb(36 91 219 / 35%);
+    inset 0 0 1.25rem rgb(var(--accent-rgb) / 30%),
+    0 0 1.5rem rgb(var(--accent-rgb) / 35%);
 }
 .about-chips .service-tile {
   width: 2rem;
@@ -3070,7 +3071,7 @@ main > section:first-child + section {
   background: linear-gradient(140deg, #245bdb, #5a8cf6);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 22%),
-    0 0.625rem 1.25rem -0.625rem rgb(36 91 219 / 45%);
+    0 0.625rem 1.25rem -0.625rem rgb(var(--accent-rgb) / 45%);
   color: #fff;
   transition: transform 0.45s var(--ease);
 }
@@ -3133,7 +3134,7 @@ main > section:first-child + section {
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(50% 70% at 50% 50%, rgb(36 91 219 / 30%), transparent 75%),
+    radial-gradient(50% 70% at 50% 50%, rgb(var(--accent-rgb) / 30%), transparent 75%),
     linear-gradient(rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
     linear-gradient(90deg, rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
     var(--night);
@@ -3166,7 +3167,7 @@ main > section:first-child + section {
   border-radius: 50%;
   box-shadow:
     0 0 0 1.75rem rgb(126 162 245 / 5%),
-    inset 0 0 2rem rgb(36 91 219 / 25%);
+    inset 0 0 2rem rgb(var(--accent-rgb) / 25%);
   transition: transform 0.8s var(--ease);
 }
 .brand-ring::before {
@@ -3533,7 +3534,7 @@ main > section:first-child + section {
   padding: clamp(1.75rem, 4vw, 2.5rem);
   border-radius: 1.5rem;
   background:
-    radial-gradient(70% 120% at 100% 0%, rgb(36 91 219 / 50%), transparent 60%),
+    radial-gradient(70% 120% at 100% 0%, rgb(var(--accent-rgb) / 50%), transparent 60%),
     linear-gradient(135deg, var(--night), var(--night-2));
   color: var(--night-ink);
   line-height: 1.7;
@@ -4592,7 +4593,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .mobile-inquiry .btn {
     width: 100%;
     min-height: 3.25rem;
-    box-shadow: 0 0.75rem 1.75rem -0.75rem rgb(36 91 219 / 60%);
+    box-shadow: 0 0.75rem 1.75rem -0.75rem rgb(var(--accent-rgb) / 60%);
   }
   .mobile-inquiry[data-hidden] {
     opacity: 0;
@@ -4865,4 +4866,35 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   font-size: 0.875rem;
   font-weight: 600;
   white-space: nowrap;
+}
+
+/* Round 37 (trial): each service page takes its own colour from the hero sample cards — WorkBuddy green,
+   CCG API purple, data-center blue. Only the page content changes; header and footer stay brand blue.
+   Text colours keep 4.5:1 on white. */
+body[data-theme='workbuddy'] main {
+  --cobalt: #097a64;
+  --cobalt-600: #06614f;
+  --cobalt-300: #66e0c4;
+  --cobalt-200: #b4eedf;
+  --pale: #dcf6ef;
+  --pale-2: #effbf7;
+  --accent-rgb: 9 122 100;
+}
+body[data-theme='model-services'] main {
+  --cobalt: #5b3fd6;
+  --cobalt-600: #4a2fc0;
+  --cobalt-300: #b7aaff;
+  --cobalt-200: #d6cffd;
+  --pale: #ece8ff;
+  --pale-2: #f5f3ff;
+  --accent-rgb: 91 63 214;
+}
+body[data-theme='infrastructure'] main {
+  --cobalt: #0a76b5;
+  --cobalt-600: #08639a;
+  --cobalt-300: #7dcffa;
+  --cobalt-200: #bfe6fb;
+  --pale: #e0f2fc;
+  --pale-2: #f0f9fe;
+  --accent-rgb: 10 118 181;
 }

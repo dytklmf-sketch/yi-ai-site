@@ -47,11 +47,11 @@ const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
 const { certificate, validUntil } = workbuddyCredential;
-// Page order: use cases, process, (WorkBuddy only) editions, guides.
+// Page order: (WorkBuddy only) Enterprise pricing first, then use cases, process, guides.
 const chapters: [string, string][] = [
+  ...(service === 'workbuddy' ? [['editions', workbuddyEditions[lang].label] as [string, string]] : []),
   ['fit', r.serviceContents.fit],
   ['process', r.serviceContents.process],
-  ...(service === 'workbuddy' ? [['editions', workbuddyEditions[lang].label] as [string, string]] : []),
   ['guides', r.serviceContents.guides],
 ];
 const briefFile = service ? serviceBriefs[lang][service] : undefined;
@@ -127,6 +127,8 @@ const credentials = {
             ))}
           </div>
         </nav>
+
+        {service === 'workbuddy' && <WorkBuddyEditions lang={lang} />}
 
         {detail && (
           <section id="fit" class="section">
@@ -281,8 +283,6 @@ const credentials = {
             </div>
           </section>
         )}
-
-        {service === 'workbuddy' && <WorkBuddyEditions lang={lang} />}
 
         <section id="guides" class="section">
           <div class="container">

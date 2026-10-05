@@ -128,7 +128,10 @@ const zhUI = lang === 'zh';
       document.documentElement.classList.add('js');
     </script>
   </head>
-  <body class:list={{ 'has-dark-hero': darkHero, 'has-mobile-inquiry': slug !== 'contact' }}>
+  <body
+    class:list={{ 'has-dark-hero': darkHero, 'has-mobile-inquiry': slug !== 'contact' }}
+    data-theme={!article && services.includes(slug as Service) ? slug : undefined}
+  >
     <a class="skip-link" href="#main">{zhUI ? '跳转到正文' : 'Skip to content'}</a>
     <header class="site-header" data-header>
       <div class="container header-row">
