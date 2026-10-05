@@ -128,13 +128,20 @@ for (const file of html) {
     assert(text.includes('id="why"'), `${file}: why-Easy-AI chapter missing`);
     assert.equal((text.match(/class="why-card"/g) || []).length, 4, `${file}: four reasons`);
     assert(/id="why"[\s\S]*id="guides"/.test(text), `${file}: the why chapter (with its partners) precedes the guides`);
-    assert.equal((text.match(/class="partner-plate"/g) || []).length, 32, `${file}: 8 partners × 4 copies`);
+    // Round 28: the partners sit still in one grid (BRAND.md: no looping motion), each listed once.
+    assert.equal((text.match(/class="partner-plate"/g) || []).length, 8, `${file}: 8 partners, listed once`);
     const named = [...text.matchAll(/<img src="[^"]*\/partners\/[^"]+" alt="([^"]+)"/g)].map((m) => m[1]);
     assert.equal(named.length, 8, `${file}: each partner announced once`);
     assert(named.includes(file.includes('/en/') ? 'China Mobile' : '中国移动'), `${file}: partner names`);
     assert(named.includes(file.includes('/en/') ? 'DAYUSEA' : '大鱼出海'), `${file}: the eighth partner`);
-    assert.equal((text.match(/class="partner-set"/g) || []).length, 4, `${file}: four copies loop the lane`);
-    assert(text.includes('class="partner-toggle"'), `${file}: pause control for the lane`);
+    assert(!/partner-(?:set|lane|toggle)/.test(text), `${file}: no travelling partner lane`);
+    // Round 28: each reason links to its evidence; the authorization is on the first screen.
+    assert.equal(
+      (text.match(/class="text-link why-proof"/g) || []).length,
+      4,
+      `${file}: every reason has a proof link`
+    );
+    assert(/class="hero-credential" href="[^"]*\/workbuddy\/#process"/.test(text), `${file}: hero authorization badge`);
     for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
       assert(text.includes(`/contact/?topic=${service}`), `${file}: service-specific inquiry is missing`);
       assert(text.includes(`data-topic-preparation="${service}"`), `${file}: preparation copy is missing`);

@@ -1,5 +1,5 @@
 ---
-import { ArrowDown, ArrowUpRight, ArrowRight } from '@lucide/astro';
+import { ArrowDown, ArrowUpRight, ArrowRight, BadgeCheck } from '@lucide/astro';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
 import StackVisual from '../../components/yi-ai/StackVisual.astro';
 import ServiceColumns from '../../components/yi-ai/ServiceColumns.astro';
@@ -11,7 +11,7 @@ import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { featuredGuides } from '../../data/refinement';
 import { home } from '../../data/home';
-import { inquiryPath, pathFor, type Lang } from '../../data/yi-ai';
+import { inquiryPath, pathFor, workbuddyCredential, type Lang } from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 
@@ -51,6 +51,11 @@ const guides = (await getGuides(lang)).filter(({ data }) => featuredGuides[data.
           <a class="btn btn-primary btn-lg" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={18} /></a>
           <a class="btn btn-ghost-light btn-lg" href="#services">{t.secondary}<ArrowDown size={18} /></a>
         </div>
+        <a class="hero-credential" href={`${pathFor(lang, 'workbuddy')}#process`} data-enter style="--d:4">
+          <BadgeCheck size={16} />
+          {workbuddyCredential.partner[lang]}
+          <ArrowRight size={14} />
+        </a>
       </div>
       <figure class="hero-visual">
         <span class="hud-corner" aria-hidden="true"></span>

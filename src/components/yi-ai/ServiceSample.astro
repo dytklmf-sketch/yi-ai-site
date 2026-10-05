@@ -25,7 +25,9 @@ const request = [
 ];
 
 // One-time typing schedule (ms). Each line or field starts when the previous one ends; CSS plays it once on load.
-const start = 700;
+// The whole card is complete within about 1.2s, so a slow device or a share preview never shows it half empty.
+// Per-character speeds must match `--char` and `.sample-check` in site.css.
+const start = 300;
 const schedule = (lengths: number[], perChar: number, gap: number) => {
   let at = start;
   return lengths.map((n) => {
@@ -36,18 +38,18 @@ const schedule = (lengths: number[], perChar: number, gap: number) => {
 };
 const codeTimes = schedule(
   request.map((line) => line.length),
-  9,
-  60
+  3,
+  20
 );
 const fieldTimes = sample
   ? schedule(
       sample.fields.map(([, value]) => [...value].length),
-      55,
-      140
+      22,
+      50
     )
   : [];
 const end = (service === 'model-services' ? codeTimes : fieldTimes).at(-1);
-const doneAt = end ? end.at + end.n * (service === 'model-services' ? 9 : 55) + 200 : start;
+const doneAt = end ? end.at + end.n * (service === 'model-services' ? 3 : 22) + 150 : start;
 const mark = {
   workbuddy: { logo: '/partners/workbuddy.svg', name: 'WorkBuddy' },
   'model-services': { logo: '/partners/ccg-api.svg', name: modelProduct.name },

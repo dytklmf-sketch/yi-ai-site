@@ -112,7 +112,8 @@ export async function testEnhancements(base, routes) {
       await settle(page, 200);
       assert.equal(await header.evaluate((el) => el.classList.contains('is-solid')), true);
       assert.equal(await page.locator('.service-column:visible').count(), 3, 'All three services visible at once');
-      // Chapters: at desktop sizes every home section fills one screen and the three columns share one row.
+      // Round 28: only the hero fills the first screen; every other section takes its content height, so none of
+      // them carries more than 0.4 of a screen in padding, and the three service columns share one row.
       for (const [width, height] of [
         [1440, 789],
         [1920, 945],
@@ -121,18 +122,18 @@ export async function testEnhancements(base, routes) {
         await page.setViewportSize({ width, height });
         await settle(page, 150);
         const fit = await page.evaluate(() => {
-          const sections = [...document.querySelectorAll('main.chapters > section')];
+          const [hero, ...rest] = document.querySelectorAll('main.chapters > section');
           const tops = [...document.querySelectorAll('.service-column')].map((el) => el.offsetTop);
           return {
-            over: sections.filter((s) => s.offsetHeight > innerHeight + 1).map((s) => s.id || s.className),
-            short: sections.filter((s) => s.offsetHeight < innerHeight - 1).map((s) => s.id || s.className),
+            hero: hero.offsetHeight >= innerHeight - 1,
+            blank: rest
+              .filter((s) => s.offsetHeight - s.querySelector('.container').offsetHeight > innerHeight * 0.4)
+              .map((s) => s.id || s.className),
             row: Math.max(...tops) - Math.min(...tops) < 1,
           };
         });
-        // One screen per chapter is a layout target, not a gate: a taller chapter grows and scrolls naturally,
-        // so it is reported for review instead of failing the run.
-        if (fit.over.length) (result.chapterOverflow ??= []).push({ viewport: `${width}×${height}`, over: fit.over });
-        assert.deepEqual(fit.short, [], `Chapters shorter than one screen at ${width}×${height}`);
+        assert(fit.hero, `The hero fills the first screen at ${width}×${height}`);
+        assert.deepEqual(fit.blank, [], `Sections padded beyond 0.4 screen at ${width}×${height}`);
         assert(fit.row, `Service columns share one row at ${width}×${height}`);
       }
       await page.setViewportSize({ width: 1440, height: 960 });
@@ -153,7 +154,7 @@ export async function testEnhancements(base, routes) {
       await page.locator('[data-faq-filter] button[data-filter="all"]').click();
       assert.equal(await page.locator('.faq-list details:visible').count(), 6);
       result.flows.push(
-        'Header surface change, three service columns in one row, chapters at least one screen at 3 desktop sizes, FAQ filter'
+        'Header surface change, three service columns in one row, hero-only first screen and compact chapters at 3 desktop sizes, FAQ filter'
       );
 
       for (const width of [390, 768, 1024, 1199, 1200]) {

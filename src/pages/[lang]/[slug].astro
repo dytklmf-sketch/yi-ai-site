@@ -21,6 +21,7 @@ import {
   modelProduct,
   brandName,
   withBase,
+  workbuddyCredential,
   type Lang,
   type PageSlug,
 } from '../../data/yi-ai';
@@ -43,13 +44,9 @@ const r = refinement[lang];
 const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
-const certificate = '/credentials/tencent-cloud-workbuddy-authorization.jpg';
-// As written on the certificate itself, which is the official designation; the site states the relationship, not a
-// licensing tier of its own.
+const { certificate } = workbuddyCredential;
 const credentials = {
-  partner: zhUI
-    ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴'
-    : 'Tencent Cloud WorkBuddy / CodeBuddy authorized partner',
+  partner: workbuddyCredential.partner[lang],
   note: zhUI
     ? '易AI 通过该授权渠道开展 WorkBuddy 采购咨询，产品功能与版本权益以官方说明为准。'
     : 'Easy AI handles WorkBuddy procurement through this authorized channel. Product features and licence terms follow the official documentation.',

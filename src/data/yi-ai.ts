@@ -9,6 +9,15 @@ export const contact: { wechat: string; email: string; wechatQr?: string } = {
   wechat: 'Li___CaB6',
   email: 'yi__ai@126.com',
 };
+// The WorkBuddy authorization, worded as on the certificate itself (the official designation). Shown on the WorkBuddy
+// page and as the home hero badge; the certificate is valid until 2026-12-31 (see plan.md).
+export const workbuddyCredential = {
+  certificate: '/credentials/tencent-cloud-workbuddy-authorization.jpg',
+  partner: {
+    zh: '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴',
+    en: 'Tencent Cloud WorkBuddy / CodeBuddy authorized partner',
+  } satisfies Record<Lang, string>,
+};
 export const modelProduct = {
   name: 'CCG API',
   url: 'https://ccg-cli.online/models/',

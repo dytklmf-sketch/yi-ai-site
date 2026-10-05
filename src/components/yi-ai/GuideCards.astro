@@ -15,7 +15,8 @@ const { lang, guides, featured = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
 // Every guide opens with 先给结论 and 适用条件 and closes with 常见问题, so those headings say nothing about this
 // particular guide. The middle sections are what actually differ, and the two languages carry the same ones in the
-// same order, so the card can list them without the pairing drifting apart.
+// same order, so the card can list them without the pairing drifting apart. The update date stays on the
+// article; on cards it repeated the same day for every guide.
 const bodySections = (body: string) => [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).slice(2, -1);
 ---
 
@@ -49,12 +50,6 @@ const bodySections = (body: string) => [...body.matchAll(/^##\s+(.+)$/gm)].map((
               <span class="guide-arrow">
                 <ArrowUpRight size={16} />
               </span>
-            </span>
-            <span class="guide-meta">
-              {editorial[lang].updated}{' '}
-              <time class="mono" datetime={data.updatedAt}>
-                {data.updatedAt}
-              </time>
             </span>
           </span>
         </a>

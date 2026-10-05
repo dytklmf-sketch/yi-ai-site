@@ -46,10 +46,9 @@ try {
         const info = await page.evaluate(() => {
           const overflow = [...document.querySelectorAll('main *,header *,footer *')]
             .filter((el) => {
-              // Horizontally scrolling rows (section tabs, the focusable API code block, the partner lanes) may clip
+              // Horizontally scrolling rows (section tabs, the focusable API code block) may clip
               // their own children.
-              if (el.closest('.subnav, .topic-tabs') || el.parentElement?.closest('.api-code, .partner-lane'))
-                return false;
+              if (el.closest('.subnav, .topic-tabs') || el.parentElement?.closest('.api-code')) return false;
               const box = el.getBoundingClientRect();
               return (
                 el.checkVisibility() &&

@@ -19,11 +19,6 @@ const h = home[lang];
 const zhUI = lang === 'zh';
 // The positioning line with every 易 / "easy" picked out, as in the brand film's end card.
 const slogan = h.heroSlogan.split(/(易|easy)/);
-const serviceTags = {
-  workbuddy: 'ENTERPRISE AI APPS',
-  'model-services': 'MODEL SERVICES',
-  infrastructure: 'INFRASTRUCTURE',
-};
 const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
 ---
 
@@ -82,9 +77,8 @@ const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
 
   <section id="capabilities" class="section">
     <div class="container">
-      <div class="section-head section-head-split" data-reveal>
+      <div class="section-head" data-reveal>
         <h2 class="section-title">{e.servicesTitle}</h2>
-        <span class="hub-count mono" aria-hidden="true">03 SERVICES</span>
       </div>
       <div class="hub" data-reveal>
         <div class="capability-grid">
@@ -94,13 +88,7 @@ const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
                 <span class="hub-node" aria-hidden="true">
                   <ServiceIcon service={service} size={24} />
                 </span>
-                <span class="capability-index mono" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
                 <span class="capability-meta">
-                  <span class="capability-tag mono" aria-hidden="true">
-                    {serviceTags[service]}
-                  </span>
                   <span class="service-card-layer">{h.layers[service].name}</span>
                 </span>
                 <h3>{t.services[service].label}</h3>

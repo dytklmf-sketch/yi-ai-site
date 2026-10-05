@@ -645,6 +645,32 @@ main:focus {
   color: #fff;
   isolation: isolate;
 }
+/* The WorkBuddy authorization, the one credential that can be checked, kept on the first screen. */
+.hero-credential {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin-top: clamp(1.25rem, 3vh, 1.75rem);
+  padding: 0.4375rem 0.875rem;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 62.4375rem;
+  background: rgb(255 255 255 / 6%);
+  color: rgb(255 255 255 / 86%);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.hero-credential svg:first-child {
+  flex: none;
+  color: rgb(72 207 176);
+}
+.hero-credential:hover {
+  border-color: rgb(72 207 176 / 55%);
+  background: rgb(255 255 255 / 10%);
+}
 .hero-bg,
 .cta-bg {
   position: absolute;
@@ -1094,9 +1120,6 @@ main:focus {
   mask-image: radial-gradient(ellipse 60% 55% at 85% 10%, #000 15%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 60% 55% at 85% 10%, #000 15%, transparent 70%);
 }
-.why-band .hub-count {
-  color: var(--cobalt);
-}
 .why-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1154,11 +1177,6 @@ main:focus {
   background: linear-gradient(90deg, rgb(var(--c)), rgb(var(--c-hi)) 60%, transparent);
   transform-origin: 0 50%;
 }
-.why-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
 .why-icon {
   display: grid;
   place-items: center;
@@ -1171,21 +1189,8 @@ main:focus {
     inset 0 1px 0 rgb(255 255 255 / 30%);
   color: #fff;
 }
-.why-index {
-  color: transparent;
-  font-size: clamp(2.5rem, 4vw, 3.75rem);
-  font-weight: 700;
-  line-height: 0.9;
-  -webkit-text-stroke: 1px rgb(var(--c) / 40%);
-}
-.why-tag {
-  margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
-  color: var(--c-ink);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-}
 .why-card h3 {
-  margin-top: 0.625rem;
+  margin-top: clamp(1.25rem, 3vh, 1.75rem);
   font-size: clamp(1.125rem, 1.5vw, 1.375rem);
   line-height: 1.35;
 }
@@ -1195,13 +1200,20 @@ main:focus {
   font-size: 0.9375rem;
   line-height: 1.7;
 }
+.why-proof {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  color: var(--c-ink);
+}
 /* ---------- Partners strip (inside the why chapter) ---------- */
 
-/* One lane of eight partner plates travels the full width of the band. The lane is masked at both edges, and the
-   static fallback (no JS, or reduced motion) is a centred, wrapping grid of the same eight. */
+/* The eight partners in one still grid below the reasons (BRAND.md: no looping motion). Logos stay greyscale until
+   hovered, so eight brand palettes do not compete with the page. */
 .partners-strip {
   --plate-h: 5rem;
-  margin-top: clamp(0.875rem, 2.5vh, 1.75rem);
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+  padding-top: clamp(2rem, 5vh, 3.25rem);
+  border-top: 1px solid var(--line);
 }
 /* The section title above the logo lane: set large and in the display face, because the owner found the small
    uppercase kicker too quiet for a heading. */
@@ -1225,33 +1237,21 @@ main:focus {
   border-radius: 62.4375rem;
   background: linear-gradient(90deg, var(--cobalt-300), var(--cobalt));
 }
-.partner-lane {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-}
-.partner-run {
-  display: flex;
-  width: max-content;
-}
-.partner-set {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: clamp(1rem, 1.8vw, 1.5rem);
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
   margin: 0;
-  padding: 0 clamp(0.5rem, 0.9vw, 0.75rem);
+  padding: 0;
   list-style: none;
 }
 /* One plate: a white pane with a hairline, an angled corner, and a sheen that crosses it on hover. */
 .partner-plate {
   position: relative;
   display: flex;
-  flex: none;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
-  min-width: 11rem;
   height: var(--plate-h);
   padding: 0 1.625rem;
   border: 1px solid rgb(36 91 219 / 12%);
@@ -1313,87 +1313,27 @@ main:focus {
   background-clip: text;
   color: transparent;
 }
-.partner-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(1.25rem, 3.5vh, 2rem);
-}
-.partner-toggle {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--paper);
-  color: var(--muted);
-  cursor: pointer;
+.partner-plate img,
+.partner-wordmark {
+  filter: grayscale(1);
+  opacity: 0.72;
   transition:
-    color 0.25s,
-    border-color 0.25s;
+    filter 0.3s,
+    opacity 0.3s;
 }
-.partner-toggle:hover {
-  border-color: var(--cobalt-200);
-  color: var(--cobalt);
-}
-/* Two bars that become a triangle when paused: drawn in CSS so no glyphs reach the font subset. */
-.partner-toggle-icon {
-  width: 0.5rem;
-  height: 0.625rem;
-  border-left: 2px solid currentcolor;
-  border-right: 2px solid currentcolor;
-}
-.partners-strip.is-paused .partner-toggle-icon {
-  width: 0;
-  height: 0;
-  border: 0.3125rem solid transparent;
-  border-left: 0.5rem solid currentcolor;
-}
-.partner-toggle[hidden] {
-  display: none;
-}
-
-/* Motion on: the lane travels a quarter of its width, which is one full list, so the loop is seamless. */
-.partners-strip.is-motion .partner-run {
-  /* Slower than a marquee: the lane should read as a considered wall, not a ticker. */
-  animation: partner-travel 56s linear infinite;
-}
-.partners-strip.is-motion .partner-lane:hover .partner-run,
-.partners-strip.is-motion.is-paused .partner-run {
-  animation-play-state: paused;
-}
-@keyframes partner-travel {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-25%);
-  }
-}
-/* Motion off: no travel, no mask — the eight settle into a centred wrapping row. */
-.partners-strip:not(.is-motion) .partner-lane {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-.partners-strip:not(.is-motion) .partner-run {
-  width: 100%;
-  justify-content: center;
-}
-.partners-strip:not(.is-motion) .partner-set:not(:first-child) {
-  display: none;
-}
-.partners-strip:not(.is-motion) .partner-set {
-  flex-wrap: wrap;
-  justify-content: center;
-  row-gap: clamp(0.875rem, 2vw, 1.25rem);
+.partner-plate:hover img,
+.partner-plate:hover .partner-wordmark {
+  filter: none;
+  opacity: 1;
 }
 @media (max-width: 720px) {
   .partners-strip {
     --plate-h: 4.25rem;
   }
+  .partner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .partner-plate {
-    min-width: 8.5rem;
     padding: 0 1.0625rem;
   }
   .partner-plate img {
@@ -1576,6 +1516,17 @@ main:focus {
   margin-top: 1.75rem;
 }
 .faq-filter[hidden] {
+  display: none;
+}
+.faq-filter button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.guide-filter {
+  margin: 0 0 1.75rem;
+}
+.guide-card[hidden] {
   display: none;
 }
 .faq-filter button {
@@ -2100,6 +2051,11 @@ main:focus {
 .subnav a[aria-current='location'] span {
   color: var(--cobalt);
 }
+/* The section right after the first screen lands flush under the header (cancelling the root's extra 1.5rem), so
+   no strip of a dark hero is left showing and the header turns solid on arrival. */
+main > section:first-child + section {
+  scroll-margin-top: -1.5rem;
+}
 .subnav ~ .section {
   /* Adds to the root scroll-padding (header + 1.5rem) to clear the sticky subnav. */
   scroll-margin-top: 3.5rem;
@@ -2308,14 +2264,13 @@ main:focus {
   color: var(--muted);
   font-size: 0.9688rem;
 }
-/* WorkBuddy credential: the scan of the authorization, paired with the relationship it stands for.
-   Height is still governed by what #process has left on one screen, so the vertical spacing follows the viewport. */
+/* WorkBuddy credential: the scan of the authorization, paired with the relationship it stands for. */
 .credential-block {
   display: flex;
   align-items: center;
   gap: 1.5rem 2rem;
-  margin-top: clamp(0.5rem, 1.4vh, 1.25rem);
-  padding: clamp(0.5rem, 1.4vh, 0.875rem) 1.5rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
   border: 1px solid var(--line);
   border-radius: 1.25rem;
   background: var(--paper);
@@ -2338,14 +2293,12 @@ main:focus {
 .credential-body {
   min-width: 0;
 }
-/* Label and marks share a row. This block is the last thing in a chapter capped at one screen, so the line it saves
-   is what keeps the chapter inside that screen. */
+/* Label above the marks, both aligned to the text column. */
 .credential-head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem 1.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 /* The two marks, held together by a multiplication sign so they read as one statement rather than two logos. */
 .credential-lockup {
@@ -3086,11 +3039,6 @@ main:focus {
 }
 
 /* Services: three hexagon nodes on one connecting line, as in the film's hub shot. */
-.hub-count {
-  color: var(--faint);
-  font-size: 0.75rem;
-  letter-spacing: 0.24em;
-}
 .hub {
   position: relative;
 }
@@ -3128,20 +3076,6 @@ main:focus {
 .capability-card:hover .hub-node {
   transform: scale(1.08);
 }
-.capability-index {
-  position: absolute;
-  right: clamp(1.5rem, 2.5vw, 2rem);
-  bottom: clamp(1.25rem, 2vw, 1.5rem);
-  color: transparent;
-  font-size: 3.25rem;
-  font-weight: 300;
-  line-height: 1;
-  -webkit-text-stroke: 1px var(--cobalt-200);
-  transition: -webkit-text-stroke-color 0.3s;
-}
-.capability-card:hover .capability-index {
-  -webkit-text-stroke-color: var(--cobalt);
-}
 .capability-meta {
   display: flex;
   width: 100%;
@@ -3149,11 +3083,6 @@ main:focus {
   justify-content: space-between;
   gap: 0.75rem;
   margin-top: 1.5rem;
-}
-.capability-tag {
-  color: var(--cobalt);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
 }
 .capability-card h3 {
   margin-top: 0.5rem;
@@ -3968,19 +3897,19 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
     animation: sample-sheen 1.6s 0.5s ease-out both;
   }
   .js .sample-window .type-line {
-    animation: type-in calc(var(--n) * var(--char, 55ms)) var(--t) steps(var(--n), end) both;
+    animation: type-in calc(var(--n) * var(--char, 22ms)) var(--t) steps(var(--n), end) both;
   }
   .js .api-card {
-    --char: 9ms;
+    --char: 3ms;
   }
   .js .request-sheet dl > div {
     animation: row-in 0.45s calc(var(--t) - 0.2s) var(--ease) both;
   }
   .js .sample-check {
-    animation: check-pop 0.45s calc(var(--t) + var(--n) * 55ms) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation: check-pop 0.45s calc(var(--t) + var(--n) * 22ms) cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
   .js .sample-progress span {
-    animation: progress-fill calc(var(--done) - 0.7s) 0.7s linear both;
+    animation: progress-fill calc(var(--done) - 0.3s) 0.3s linear both;
   }
   .js .sample-status-run {
     animation: status-run var(--done) step-end both;
@@ -4049,40 +3978,30 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 
 /* ---------- Chapters (desktop) ---------- */
 
-/* On pages marked as chapters, each section fills exactly one screen below the fixed bars, content centred, so
-   any screen shows one chapter at a time. Sections link to their own top edge because their padding already
-   clears the header (and the service subnav). Long-form pages (articles, contact) keep a normal flow. */
+/* Desktop rhythm for the home, service, about and resources pages. Only the first screen is sized to the
+   viewport (the home hero fills it; a service hero leaves room for the section nav to peek in). Every other
+   section takes its natural height with spacing that follows the screen height, so short chapters no longer
+   leave half a screen of blank space. Anchors use the root scroll-padding like every other page. */
 @media (min-width: 1081px) and (min-height: 560px) {
-  html:has(main.chapters) {
-    scroll-padding-top: 0;
-  }
-  .chapters > section {
-    display: flex;
-    min-height: 100vh;
-    min-height: 100svh;
-    flex-direction: column;
-    justify-content: center;
-  }
   .chapters {
-    /* Vertical rhythm follows the screen height, so short laptop screens and tall monitors both fit a chapter. */
-    --chapter-pad: clamp(1.25rem, 4.5vh, 3.5rem);
-    --chapter-gap: clamp(1.25rem, 4.5vh, 3.5rem);
-    --chapter-top: var(--header-h);
+    --chapter-pad: clamp(3.5rem, 9vh, 6.5rem);
+    --chapter-gap: clamp(1.5rem, 4.5vh, 3rem);
   }
   .chapters:has(> .subnav) {
     --subnav-h: 3.5625rem;
-    --chapter-top: calc(var(--header-h) + var(--subnav-h));
   }
   .chapters > section:not(.hero, .page-hero) {
-    padding-block: calc(var(--chapter-top) + var(--chapter-pad)) var(--chapter-pad);
-    scroll-margin-top: 0;
+    padding-block: var(--chapter-pad);
   }
   .chapters > .page-hero {
-    padding-block: calc(var(--header-h) + var(--chapter-pad)) var(--chapter-pad);
+    padding-block: calc(var(--header-h) + clamp(2rem, 6vh, 4rem)) clamp(2rem, 6vh, 4rem);
   }
   .chapters > .page-hero:has(+ .subnav) {
     /* The section nav peeks in at the bottom of the first screen, then sticks under the header. */
+    display: flex;
     min-height: calc(100svh - var(--subnav-h));
+    flex-direction: column;
+    justify-content: center;
   }
   .chapters .breadcrumb {
     margin-bottom: clamp(1.25rem, 4vh, 2.25rem);
@@ -4143,12 +4062,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
   .chapters .guide-desc {
     line-height: 1.6;
-  }
-  /* The guides chapter is pinned to one screen here, so the contents line may not add a second line. */
-  .chapters .guide-contents {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   /* Guides */
@@ -4404,8 +4317,39 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .why-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+  /* Phones: tighter section rhythm, and the home page drops what repeats on the next tap (featured guide summaries). */
+  :root {
+    --section-y: 3.5rem;
+  }
+  .guide-grid-featured .guide-desc {
+    display: none;
+  }
+  .partners-strip {
+    --plate-h: 3.5rem;
+  }
+  /* Phones: icon beside the text, so the four reasons read as a compact list instead of four tall cards. */
+  .why-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1rem;
+    padding: 1.25rem;
+  }
+  .why-card .why-icon {
+    grid-row: span 3;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.875rem;
+  }
+  .why-card h3 {
+    margin-top: 0;
+  }
+  .why-card p {
+    margin-top: 0.375rem;
+  }
+  .why-proof {
+    padding-top: 0.75rem;
+  }
   .partner-plate {
-    min-width: 7.25rem;
     padding: 0 0.9375rem;
   }
   .partner-plate img {
@@ -4413,9 +4357,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
   .partner-wordmark {
     font-size: 0.9375rem;
-  }
-  .why-tag {
-    margin-top: 1rem;
   }
   .about-tag {
     display: none;
@@ -4497,7 +4438,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
     align-items: flex-start;
   }
   .credential-thumb {
-    width: min(100%, 18rem);
+    /* The scan is mostly white paper; at full width it read as an empty box. */
+    width: 10rem;
   }
   .scope-confirm {
     border-top: 1px solid var(--line);

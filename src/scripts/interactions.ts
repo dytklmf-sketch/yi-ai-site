@@ -196,24 +196,30 @@ reduced.addEventListener('change', (event) => {
   if (event.matches) animations.forEach((animation) => animation.cancel());
 });
 
-// FAQ service filter (progressive: without JS every question stays listed).
-document.querySelectorAll<HTMLElement>('[data-faq-filter]').forEach((group) => {
-  const list = group.closest('.faq-layout')?.querySelector('.faq-list');
+// Service filters for the FAQ and the guide grid (progressive: without JS every item stays listed).
+const serviceFilter = (group: HTMLElement, items: HTMLElement[]) => {
   const buttons = [...group.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
-  if (!list) return;
   group.hidden = false;
   buttons.forEach((button) =>
     button.addEventListener('click', () => {
       const filter = button.dataset.filter;
       buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-      list.querySelectorAll<HTMLDetailsElement>('details[data-service]').forEach((item) => {
+      items.forEach((item) => {
         const show = filter === 'all' || item.dataset.service === filter;
-        if (!show) item.open = false;
+        if (!show && item instanceof HTMLDetailsElement) item.open = false;
         item.hidden = !show;
         if (show && !reduced.matches) play(item, [{ opacity: 0 }, { opacity: 1 }], { duration: 260 });
       });
     })
   );
+};
+document.querySelectorAll<HTMLElement>('[data-faq-filter]').forEach((group) => {
+  const list = group.closest('.faq-layout')?.querySelector('.faq-list');
+  if (list) serviceFilter(group, [...list.querySelectorAll<HTMLElement>('details[data-service]')]);
+});
+document.querySelectorAll<HTMLElement>('[data-filter-group]').forEach((group) => {
+  const section = group.closest('section');
+  if (section) serviceFilter(group, [...section.querySelectorAll<HTMLElement>('.guide-card[data-service]')]);
 });
 
 // Progressive reveal: content is visible in HTML and only hidden once the observer is ready.
@@ -245,24 +251,3 @@ if (!reduced.matches && 'IntersectionObserver' in window) {
     });
   }
 }
-
-// The partner lane travels only while motion is allowed: `is-motion` starts the travel and reveals the toggle.
-document.querySelectorAll<HTMLElement>('[data-partners]').forEach((strip) => {
-  const toggle = strip.querySelector<HTMLButtonElement>('.partner-toggle');
-  const sync = () => {
-    strip.classList.toggle('is-motion', !reduced.matches);
-    strip.classList.remove('is-paused');
-    if (!toggle) return;
-    toggle.hidden = reduced.matches;
-    const [pause] = (toggle.dataset.labels ?? '').split('|');
-    toggle.setAttribute('aria-label', pause ?? '');
-  };
-  sync();
-  reduced.addEventListener('change', sync);
-  if (!toggle) return;
-  const [pause, resume] = (toggle.dataset.labels ?? '').split('|');
-  toggle.addEventListener('click', () => {
-    const paused = strip.classList.toggle('is-paused');
-    toggle.setAttribute('aria-label', paused ? resume : pause);
-  });
-});

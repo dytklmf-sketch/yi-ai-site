@@ -1,7 +1,8 @@
 import type { Lang, Service } from './yi-ai';
 
 type Layer = { name: string; tag: string };
-type Reason = { title: string; text: string };
+/** `proof` labels the link to where the reason can be checked; the targets live in WhyChapter. */
+type Reason = { title: string; text: string; proof: string };
 
 type HomeCopy = {
   heroEyebrow: string;
@@ -15,13 +16,14 @@ type HomeCopy = {
   scenariosLabel: string;
   faqAll: string;
   whyTitle: string;
-  /** One reason per service, then the shared contact. Facts only: no ratings, client counts or guarantees. */
+  /**
+   * What sets Easy AI apart, each with a link to its evidence (certificate, service page, contact), rather than a
+   * restatement of the three services. Facts only: no ratings, client counts or guarantees.
+   */
   why: [Reason, Reason, Reason, Reason];
   partnersKicker: string;
   partnersTitle: string;
   partnersLead: string;
-  /** Accessible names for the marquee pause toggle (icon only, so no glyphs reach the font subset). */
-  partnersPause: [pause: string, resume: string];
 };
 
 export const home: Record<Lang, HomeCopy> = {
@@ -40,15 +42,26 @@ export const home: Record<Lang, HomeCopy> = {
     faqAll: '全部',
     whyTitle: '为什么选择易AI',
     why: [
-      { title: 'WorkBuddy 代理商', text: '团队统一采购，按人数和期限报价。' },
-      { title: '模型 API 聚合接入', text: '聚合多家供应渠道，统一接口与计费口径，可用模型与结算按需确认。' },
-      { title: '自建机房', text: '计算、存储和网络资源按工作负载匹配。' },
-      { title: '需求集中受理', text: '应用、模型与算力需求由统一团队受理，确认后逐项跟进至交付。' },
+      {
+        title: '官方授权',
+        text: '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴，团队采购按人数和期限报价。',
+        proof: '查看授权证书',
+      },
+      {
+        title: '统一接口与计费',
+        text: '多家模型供应渠道收拢到一个接口和一套计费口径，可用模型与结算按需确认。',
+        proof: '了解模型服务',
+      },
+      { title: '自建机房', text: '计算、存储和网络资源来自自建机房，按工作负载匹配。', proof: '了解基础设施' },
+      {
+        title: '一个团队对接',
+        text: '应用、模型与算力需求由同一团队受理，确认后逐项跟进至交付。',
+        proof: '联系我们',
+      },
     ],
     partnersKicker: '合作伙伴',
     partnersTitle: '合作伙伴',
     partnersLead: '覆盖应用、模型与算力，与易AI 保持合作。',
-    partnersPause: ['暂停滚动', '继续滚动'],
   },
   en: {
     heroEyebrow: 'Your enterprise AI applications and compute provider',
@@ -65,21 +78,30 @@ export const home: Record<Lang, HomeCopy> = {
     faqAll: 'All',
     whyTitle: 'Why Easy AI',
     why: [
-      { title: 'WorkBuddy reseller', text: 'Team purchases quoted by seats and term.' },
       {
-        title: 'Aggregated model API access',
-        text: 'Multiple supply channels behind one interface and one billing basis; available models and settlement are confirmed per case.',
+        title: 'Authorized partner',
+        text: 'A Tencent Cloud WorkBuddy / CodeBuddy authorized partner; team purchases are quoted by seats and term.',
+        proof: 'View the certificate',
       },
-      { title: 'Self-built data center', text: 'Compute, storage and networking matched to the workload.' },
       {
-        title: 'Single point of intake',
-        text: 'Requests across applications, models and compute are received by one team and followed through item by item to delivery.',
+        title: 'One interface, one billing basis',
+        text: 'Multiple model supply channels behind one interface and one billing basis; available models and settlement are confirmed per case.',
+        proof: 'Model services',
+      },
+      {
+        title: 'Self-built data center',
+        text: 'Compute, storage and networking come from our own data center, matched to the workload.',
+        proof: 'Infrastructure',
+      },
+      {
+        title: 'One team',
+        text: 'Requests across applications, models and compute are received by one team and followed through to delivery.',
+        proof: 'Contact us',
       },
     ],
     partnersKicker: 'Partners',
     partnersTitle: 'Partners',
     partnersLead: 'Across applications, models and compute, in cooperation with Easy AI.',
-    partnersPause: ['Pause scrolling', 'Resume scrolling'],
   },
 };
 

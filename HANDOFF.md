@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第二十七轮（工程整理，见下）；上一轮：第二十六轮 WorkBuddy 页面 UI 改造
+- 当前轮次：第二十八轮（UI：版面节奏、授权徽章、差异点与降噪，见 `docs/rounds/28-ui-rhythm-and-trust.md`）；上一轮：第二十七轮工程整理
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -24,8 +24,7 @@
   改动该片段时必须同步更新 `/etc/nginx/snippets/yi-ai-site-headers.conf`。
 - CSS：删除从未匹配任何页面的规则（未用的 `StackVisual` 浅色版、`.section-intro`、`.section-flush`、
   `.split-head`、`.partners-band`、`.page-hero .slab`），`StackVisual` 去掉 `tone` 属性。
-- 「一屏一章」改为布局目标：超出一屏的章节自然变长，测试记入 `enhancement-report.json` 的 `chapterOverflow`
-  而不失败；章节不足一屏仍然失败。
+- 「一屏一章」改为布局目标（第二十八轮起站长决定取消，只保留首屏满屏）。
 - 修复偶发失败：动效录屏时 IntersectionObserver 回调滞后，先等全部 reveal 完成再断言「不回退」。
 - CI：`.github/workflows/ci.yml` 在推送和 PR 时跑 check、build、test、生产构建测试和 Chromium/WebKit 浏览器测试。
 - 文档：长篇历史移入 `docs/history/`，本文件与 `plan.md` 只保留现状与待办。
