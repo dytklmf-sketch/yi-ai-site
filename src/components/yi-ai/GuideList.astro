@@ -1,0 +1,27 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import type { CollectionEntry } from 'astro:content';
+import { articlePath, type Lang } from '../../data/yi-ai';
+interface Props {
+  lang: Lang;
+  guides: CollectionEntry<'guides'>[];
+}
+const { lang, guides } = Astro.props;
+---
+
+{/* Round 40: further reading as a compact two-column list — a title and one line per guide. */}
+<ul class="guide-list" data-reveal>
+  {
+    guides.map(({ data }) => (
+      <li>
+        <a href={articlePath(lang, data.pairKey)}>
+          <span class="guide-list-copy">
+            <strong>{data.title}</strong>
+            <span>{data.description}</span>
+          </span>
+          <ArrowRight size={18} />
+        </a>
+      </li>
+    ))
+  }
+</ul>

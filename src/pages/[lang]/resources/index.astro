@@ -2,7 +2,6 @@
 import { ArrowRight } from '@lucide/astro';
 import YiAiLayout from '../../../layouts/YiAiLayout.astro';
 import GuideCards from '../../../components/yi-ai/GuideCards.astro';
-import CallToAction from '../../../components/yi-ai/CallToAction.astro';
 import PageHero from '../../../components/yi-ai/PageHero.astro';
 import { editorial } from '../../../data/editorial';
 import { home } from '../../../data/home';
@@ -58,5 +57,4 @@ const sorted = services.flatMap((service) => guides.filter(({ data }) => data.se
       </nav>
     </div>
   </section>
-  <CallToAction lang={lang} />
 </YiAiLayout>

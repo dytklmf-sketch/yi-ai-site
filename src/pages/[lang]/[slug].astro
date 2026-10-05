@@ -3,9 +3,8 @@ import { ArrowUpRight, ArrowRight, Check, CircleAlert, CircleDashed, Download } 
 import ServiceIcon from '../../components/yi-ai/ServiceIcon.astro';
 import { scenarioIcons } from '../../components/yi-ai/icons';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
-import CallToAction from '../../components/yi-ai/CallToAction.astro';
 import ContactPanel from '../../components/yi-ai/ContactPanel.astro';
-import GuideCards from '../../components/yi-ai/GuideCards.astro';
+import GuideList from '../../components/yi-ai/GuideList.astro';
 import ServiceSample from '../../components/yi-ai/ServiceSample.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
 import WorkBuddyEditions from '../../components/yi-ai/WorkBuddyEditions.astro';
@@ -240,7 +239,7 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                 <ArrowRight size={16} />
               </a>
             </div>
-            <GuideCards lang={lang} guides={guides} />
+            <GuideList lang={lang} guides={guides} />
             <nav class="other-services" aria-label={zhUI ? '其他业务' : 'Other services'}>
               <p>{zhUI ? '还有其他需求？' : 'Exploring another need?'}</p>
               {services
@@ -255,7 +254,6 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
             </nav>
           </div>
         </section>
-        <CallToAction lang={lang} service={service} />
       </>
     ) : (
       <>

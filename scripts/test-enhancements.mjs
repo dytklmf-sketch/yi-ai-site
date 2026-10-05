@@ -201,29 +201,24 @@ export async function testEnhancements(base, routes) {
 
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(`${base}/en/resources/model-api-procurement/`, { waitUntil: 'networkidle' });
-      const fixed = page.locator('.mobile-inquiry');
-      assert.equal(await fixed.getAttribute('data-hidden'), '', 'Inquiry bar waits until the reader has scrolled');
-      await page.locator('.mobile-toc summary').click();
-      await page.waitForTimeout(400);
-      await page.locator('.mobile-toc a').nth(2).click();
-      await page.waitForTimeout(600);
-      assert.equal(await fixed.getAttribute('data-hidden'), null);
-      assert(await fixed.isVisible());
-      assert((await fixed.locator('a').getAttribute('href')).includes('topic=model-services'));
-      await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
-      await settle(page, 200);
-      assert.equal(await fixed.getAttribute('data-hidden'), '', 'Inquiry bar steps aside for the footer');
+      // Round 40: a resident "contact us" button replaces the phone inquiry bar.
+      const fab = page.locator('.contact-fab');
+      assert(await fab.locator('summary').isVisible(), 'Contact button is always there');
       const footerReachable = await page.evaluate(() => {
-        const bottom = document.querySelector('.footer-bottom').getBoundingClientRect().bottom;
-        return bottom <= innerHeight + 1;
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+        return document.querySelector('.footer-bottom').getBoundingClientRect().bottom <= innerHeight + 1;
       });
       assert(footerReachable, 'Footer must be fully reachable');
-      await page.evaluate(() => window.scrollTo({ top: innerHeight * 2, behavior: 'instant' }));
-      await settle(page, 200);
-      await fixed.locator('a').click();
+      await fab.locator('summary').click();
+      assert(await fab.locator('.contact-fab-panel').isVisible());
+      assert((await fab.locator('.contact-fab-topic').innerText()).includes('Model services'));
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.querySelector('.contact-fab').open);
+      await fab.locator('summary').click();
+      await fab.locator('.contact-fab-more').click();
       await page.waitForURL(/\/en\/contact\//);
       assert(await page.locator('input[value="model-services"]').isChecked());
-      assert.equal(await page.locator('.mobile-inquiry').count(), 0);
+      assert.equal(await page.locator('.contact-fab').count(), 0);
       await page.locator('.language-link').click();
       await page.waitForURL(/\/zh\/contact\//);
       assert(await page.locator('input[value="model-services"]').isChecked());

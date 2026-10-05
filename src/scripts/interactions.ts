@@ -10,7 +10,6 @@ const header = document.querySelector<HTMLElement>('[data-header]');
 const darkHero = document.body.classList.contains('has-dark-hero')
   ? document.querySelector<HTMLElement>('main > .hero')
   : null;
-const mobileInquiry = document.querySelector<HTMLElement>('[data-mobile-inquiry]');
 const progress = document.querySelector<HTMLElement>('[data-reading-progress]');
 const progressTarget = document.querySelector<HTMLElement>('.article-body');
 const animations = new Set<Animation>();
@@ -29,12 +28,6 @@ const onScroll = () => {
   header?.classList.toggle('is-scrolled', y > 8);
   if (header && darkHero)
     header.classList.toggle('is-solid', darkHero.getBoundingClientRect().bottom <= header.offsetHeight);
-  if (mobileInquiry) {
-    // Stay out of the way over the first screen and the closing inquiry band.
-    const cta = document.querySelector('.cta-band, .site-footer')?.getBoundingClientRect();
-    const hide = y < innerHeight * 0.6 || (cta ? cta.top < innerHeight - 40 : false);
-    mobileInquiry.toggleAttribute('data-hidden', hide);
-  }
   if (progress && progressTarget) {
     const box = progressTarget.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight * 0.6)));
@@ -251,3 +244,28 @@ if (!reduced.matches && 'IntersectionObserver' in window) {
     });
   }
 }
+
+// Round 40: the resident contact button — copy the WeChat ID, and close when the reader clicks elsewhere.
+const fab = document.querySelector<HTMLDetailsElement>('[data-contact-fab]');
+fab?.querySelector<HTMLButtonElement>('[data-fab-copy]')?.addEventListener('click', async (event) => {
+  const button = event.currentTarget as HTMLButtonElement;
+  const status = fab.querySelector<HTMLElement>('.contact-fab-status');
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(button.dataset.fabCopy || '');
+    if (status) status.textContent = button.dataset.success || '';
+  } catch {
+    if (status) status.textContent = button.dataset.failure || '';
+    const id = fab.querySelector<HTMLElement>('.contact-fab-id');
+    if (id) {
+      id.focus();
+      const range = document.createRange();
+      range.selectNodeContents(id);
+      getSelection()?.removeAllRanges();
+      getSelection()?.addRange(range);
+    }
+  }
+});
+document.addEventListener('click', (event) => {
+  if (fab?.open && !fab.contains(event.target as Node)) fab.open = false;
+});

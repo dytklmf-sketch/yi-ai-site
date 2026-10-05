@@ -1,6 +1,5 @@
 ---
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
-import CallToAction from '../../components/yi-ai/CallToAction.astro';
 import FaqChapter from '../../components/yi-ai/FaqChapter.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
 import { editorial } from '../../data/editorial';
@@ -16,5 +15,4 @@ const e = editorial[lang];
 <YiAiLayout lang={lang} slug="faq" title={e.faqSeoTitle} description={e.faqIntro}>
   <PageHero lang={lang} crumb={e.faq} title={e.faq} intro={e.faqIntro} compact />
   <FaqChapter lang={lang} full />
-  <CallToAction lang={lang} />
 </YiAiLayout>

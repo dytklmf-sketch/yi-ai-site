@@ -448,7 +448,7 @@ try {
   report.interactions.push('clipboard denied: localized fallback and selectable ID');
 
   await page.goto(`${base}/zh/contact/`, { waitUntil: 'networkidle' });
-  assert.equal(await page.locator('.mobile-inquiry').count(), 0, 'The contact page has no duplicate inquiry bar');
+  assert.equal(await page.locator('.contact-fab').count(), 0, 'The contact page has no contact button');
   assert.equal(await page.locator('.footer-lead .btn').count(), 0, 'The contact page has no footer inquiry button');
   await page.locator('input[value="workbuddy"]').focus();
   await page.keyboard.press('ArrowRight');

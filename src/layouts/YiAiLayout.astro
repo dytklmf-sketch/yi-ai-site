@@ -129,7 +129,7 @@ const zhUI = lang === 'zh';
     </script>
   </head>
   <body
-    class:list={{ 'has-dark-hero': darkHero, 'has-mobile-inquiry': slug !== 'contact' }}
+    class:list={{ 'has-dark-hero': darkHero, 'has-contact-fab': slug !== 'contact' }}
     data-theme={!article && services.includes(slug as Service) ? slug : undefined}
   >
     <a class="skip-link" href="#main">{zhUI ? '跳转到正文' : 'Skip to content'}</a>
@@ -206,7 +206,7 @@ const zhUI = lang === 'zh';
     <footer class="site-footer">
       <div class="container">
         {
-          (slug === 'contact' || Astro.props.notFound) && (
+          (slug || Astro.props.notFound) && (
             <div class="footer-lead">
               <p class="footer-promise">
                 {zhUI ? (
@@ -268,14 +268,53 @@ const zhUI = lang === 'zh';
     </footer>
 
     {
+      /* Round 40: a resident "contact us" button on every page but the contact page; a native disclosure, so it
+         opens without JavaScript and Escape closes it like the other disclosures. */
       slug !== 'contact' && (
-        <div class="mobile-inquiry" data-mobile-inquiry>
-          <a class="btn btn-primary" href={inquiryPath(lang, service)} aria-label={`${t.nav.contact}: ${t.primary}`}>
-            <MessageCircle size={18} />
-            {t.primary}
-            <ArrowUpRight size={18} />
-          </a>
-        </div>
+        <details class="contact-fab" data-contact-fab>
+          <summary aria-label={zhUI ? '联系我们' : 'Contact us'}>
+            <MessageCircle size={22} />
+            <span class="contact-fab-label">{zhUI ? '联系我们' : 'Contact us'}</span>
+          </summary>
+          <div class="contact-fab-panel">
+            <p class="contact-fab-title">{zhUI ? '联系我们' : 'Contact us'}</p>
+            {service && (
+              <p class="contact-fab-topic">
+                {zhUI ? '咨询方向：' : 'Topic: '}
+                {t.services[service].label}
+              </p>
+            )}
+            <div class="contact-fab-row">
+              <span class="contact-fab-key">{zhUI ? '微信' : 'WeChat'}</span>
+              <span class="contact-fab-id mono" tabindex="0">
+                {contact.wechat}
+              </span>
+              <button
+                type="button"
+                class="contact-fab-copy"
+                data-fab-copy={contact.wechat}
+                data-success={t.contact.copied}
+                data-failure={t.contact.fallback}
+              >
+                {zhUI ? '复制' : 'Copy'}
+              </button>
+            </div>
+            <p class="contact-fab-status" role="status" aria-live="polite" />
+            <div class="contact-fab-row">
+              <span class="contact-fab-key">{zhUI ? '邮箱' : 'Email'}</span>
+              <a
+                class="mono"
+                href={`mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.subject}${service ? ` | ${t.services[service].label}` : ''}`)}`}
+              >
+                {contact.email}
+              </a>
+            </div>
+            <a class="btn btn-primary btn-sm contact-fab-more" href={inquiryPath(lang, service)}>
+              {zhUI ? '查看联系页' : 'Contact page'}
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        </details>
       )
     }
     <script src="../scripts/interactions.ts"></script>

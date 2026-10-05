@@ -134,6 +134,13 @@ for (const file of html) {
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
     assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
   }
+  // Round 40: every page but contact carries the resident contact button; the closing contact card is gone.
+  if (file !== 'dist/index.html' && file !== 'dist/404.html') {
+    assert.equal(text.includes('data-contact-fab'), !file.endsWith('/contact/index.html'), `${file}: contact button`);
+    assert(!text.includes('cta-strip'), `${file}: the closing contact card stays removed`);
+  }
+  if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file))
+    assert(/class="guide-list"[^]*?(<li>[^]*?){4}<\/ul>/.test(text), `${file}: related guides as a compact list`);
   if (file.endsWith('/faq/index.html')) {
     assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 18, `${file}: six questions per service`);
     assert(text.includes('data-faq-filter'), `${file}: filter by service`);
@@ -142,7 +149,8 @@ for (const file of html) {
   if (file.endsWith('/about/index.html')) {
     assert(text.includes('<span class="mono">CCG API</span>'), `${file}: the product is named CCG API`);
     assert(!text.includes('principle'), `${file}: the working-rules block stays removed`);
-    assert.equal((text.match(/<section /g) || []).length, 4, `${file}: four chapters`);
+    // Round 40: the closing contact card left; the resident contact button is not a section.
+    assert.equal((text.match(/<section /g) || []).length, 3, `${file}: three chapters`);
   }
   if (file.endsWith('/zh/index.html') || file.endsWith('/en/index.html')) {
     assert(!text.includes('CCG'), `${file}: product displaced the brand`);
