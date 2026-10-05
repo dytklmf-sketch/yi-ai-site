@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十一轮（指南扩写与新增，见 `docs/rounds/31-guides-depth.md`）；上一轮：第三十轮服务器清理
+- 当前轮次：第三十二轮（业务页详解章节，见 `docs/rounds/32-service-explainers.md`）；上一轮：第三十一轮指南
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -36,6 +36,13 @@
   由生成的 `src/styles/font-guides.css` 以 unicode-range 声明）。新增或修改指南后按 BRAND.md 重跑 `prepare-brand.py`。
 - 指南里的链接一律写相对路径（如 `../../../templates/zh/x.txt`），随 base 路径。
 - 只有模型服务页和关于页可以出现「CCG」（`test-browser.mjs`），指南里用通用说法。
+
+## 第三十二轮：业务页详解（2026-10-05）
+
+- 业务页第四章 `ServiceExplainer.astro`（数据 `src/data/service-explainers.ts`）：WorkBuddy 版本与积分、模型服务接入与计费
+  （含 `CostEstimator.astro`，不预填价格）、基础设施部署与分工。吸顶目录 4 项。官方规则类内容注明核对日期，
+  官方规则变化时更新数据文件。
+- `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
 
 ## 目录与源码指向
 

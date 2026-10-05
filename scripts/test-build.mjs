@@ -102,11 +102,16 @@ for (const file of html) {
     assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
     assert.equal((text.match(/class="step-card-index/g) || []).length, 3, `${file}: three step cards`);
     assert.equal((text.match(/class="tag-list"/g) || []).length, 1, `${file}: quote inputs as chips`);
+    // Round 32: a fourth chapter explains editions, access or deployment forms, with downloads and guides.
     assert.equal(
       (text.match(/<a href="#[a-z]+"><span class="mono">/g) || []).length,
-      3,
-      `${file}: three chapters in the subnav`
+      4,
+      `${file}: four chapters in the subnav`
     );
+    assert(/<section id="(?:editions|access|forms)" class="section">/.test(text), `${file}: service explainer`);
+    assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
+    if (file.includes('/model-services/')) assert(text.includes('data-cost-estimator'), `${file}: cost estimator`);
+    if (file.includes('/workbuddy/')) assert(text.includes('datetime="2026-12-31"'), `${file}: certificate validity`);
   }
   if (file.endsWith('/about/index.html')) {
     assert(text.includes('<span class="mono">CCG API</span>'), `${file}: the product is named CCG API`);

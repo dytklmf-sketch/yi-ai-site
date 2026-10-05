@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, ArrowRight, Check, CircleAlert, CircleDashed } from '@lucide/astro';
+import { ArrowUpRight, ArrowRight, Check, CircleAlert, CircleDashed, Download } from '@lucide/astro';
 import ServiceIcon from '../../components/yi-ai/ServiceIcon.astro';
 import { scenarioIcons } from '../../components/yi-ai/icons';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
@@ -8,10 +8,12 @@ import ContactPanel from '../../components/yi-ai/ContactPanel.astro';
 import GuideCards from '../../components/yi-ai/GuideCards.astro';
 import ServiceSample from '../../components/yi-ai/ServiceSample.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
+import ServiceExplainer from '../../components/yi-ai/ServiceExplainer.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
+import { serviceExplainers } from '../../data/service-explainers';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -44,7 +46,18 @@ const r = refinement[lang];
 const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
-const { certificate } = workbuddyCredential;
+const { certificate, validUntil } = workbuddyCredential;
+const explainer = service ? serviceExplainers[lang][service] : null;
+// Page order: use cases, process, the service explainer (round 32), guides.
+const chapters: [string, string][] = explainer
+  ? [
+      ['fit', r.serviceContents.fit],
+      ['process', r.serviceContents.process],
+      [explainer.id, explainer.label],
+      ['guides', r.serviceContents.guides],
+    ]
+  : [];
+const briefFile = explainer?.downloads[0];
 const credentials = {
   partner: workbuddyCredential.partner[lang],
   note: zhUI
@@ -109,7 +122,7 @@ const credentials = {
 
         <nav class="subnav" data-section-nav aria-label={zhUI ? '本页目录' : 'On this page'}>
           <div class="container subnav-row">
-            {Object.entries(r.serviceContents).map(([id, label], i) => (
+            {chapters.map(([id, label], i) => (
               <a href={`#${id}`}>
                 <span class="mono">{String(i + 1).padStart(2, '0')}</span>
                 {label}
@@ -208,10 +221,18 @@ const credentials = {
                     </p>
                   )}
                 </div>
-                <a class="btn btn-light" href={inquiryPath(lang, service)}>
-                  {t.primary}
-                  <ArrowRight size={17} />
-                </a>
+                <div class="brief-actions">
+                  <a class="btn btn-light" href={inquiryPath(lang, service)}>
+                    {t.primary}
+                    <ArrowRight size={17} />
+                  </a>
+                  {briefFile && (
+                    <a class="brief-download" href={withBase(`/templates/${lang}/${briefFile.file}`)} download>
+                      <Download size={15} />
+                      {zhUI ? `下载${briefFile.label}` : `Download the ${briefFile.label.toLowerCase()}`}
+                    </a>
+                  )}
+                </div>
               </div>
 
               {service === 'workbuddy' && (
@@ -246,6 +267,12 @@ const credentials = {
                     </div>
                     <p class="credential-title">{credentials.partner}</p>
                     <p class="credential-note">{credentials.note}</p>
+                    <p class="credential-valid">
+                      {zhUI ? '证书有效期至 ' : 'Certificate valid until '}
+                      <time class="mono" datetime={validUntil}>
+                        {validUntil}
+                      </time>
+                    </p>
                     <a class="text-link" href={withBase(certificate)} target="_blank" rel="noopener noreferrer">
                       {zhUI ? '查看证书' : 'View the certificate'}
                       <ArrowUpRight size={16} />
@@ -258,7 +285,9 @@ const credentials = {
           </section>
         )}
 
-        <section id="guides" class="section">
+        <ServiceExplainer lang={lang} service={service} />
+
+        <section id="guides" class="section section-tint">
           <div class="container">
             <div class="section-head section-head-split" data-reveal>
               <h2 class="section-title">{r.serviceContents.guides}</h2>

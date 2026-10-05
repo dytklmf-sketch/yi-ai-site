@@ -1,0 +1,74 @@
+---
+import type { Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const zhUI = lang === 'zh';
+// Volumes default to the worked example in the token-cost guide; prices stay empty because this site lists none.
+const fields = [
+  { name: 'requests', label: zhUI ? '每月请求数' : 'Requests per month', value: '450000' },
+  { name: 'input', label: zhUI ? '平均输入 Token' : 'Avg input tokens', value: '4100' },
+  { name: 'output', label: zhUI ? '平均输出 Token' : 'Avg output tokens', value: '300' },
+  { name: 'inputPrice', label: zhUI ? '输入单价 / 百万 Token' : 'Input price / 1M tokens', value: '' },
+  { name: 'outputPrice', label: zhUI ? '输出单价 / 百万 Token' : 'Output price / 1M tokens', value: '' },
+];
+const formula = zhUI
+  ? '月度成本 = 每月请求数 × (输入 Token × 输入单价 + 输出 Token × 输出单价) ÷ 1,000,000'
+  : 'Monthly cost = requests × (input tokens × input price + output tokens × output price) ÷ 1,000,000';
+---
+
+<form
+  class="explainer-card cost-estimator"
+  data-cost-estimator
+  data-result={zhUI ? '约 {n} / 月（与单价同一币种）' : 'About {n} a month (in the price currency)'}
+  data-empty={zhUI ? '填入两个单价后显示估算。' : 'Enter both prices to see an estimate.'}
+>
+  <p class="micro-label">{zhUI ? '月度成本估算' : 'Monthly cost estimate'}</p>
+  <div class="cost-fields">
+    {
+      fields.map((field) => (
+        <label>
+          <span>{field.label}</span>
+          <input name={field.name} type="number" inputmode="decimal" min="0" step="any" value={field.value} />
+        </label>
+      ))
+    }
+  </div>
+  <output aria-live="polite">{formula}</output>
+  <p class="cost-note">
+    {
+      zhUI
+        ? '单价请以 CCG API 页面或正式报价为准；结果只是估算，不含缓存、重试与税费。'
+        : 'Use prices from CCG API or a formal quote; this is an estimate without caching, retries or tax.'
+    }
+  </p>
+</form>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-cost-estimator]')) {
+    const output = form.querySelector('output')!;
+    const value = (name: string) => {
+      const input = form.elements.namedItem(name) as HTMLInputElement;
+      return input.value === '' ? NaN : Number(input.value);
+    };
+    const format = new Intl.NumberFormat(document.documentElement.lang, { maximumFractionDigits: 2 });
+    const update = () => {
+      const [requests, input, out, inputPrice, outputPrice] = [
+        'requests',
+        'input',
+        'output',
+        'inputPrice',
+        'outputPrice',
+      ].map(value);
+      const cost = (requests * (input * inputPrice + out * outputPrice)) / 1_000_000;
+      output.textContent = Number.isFinite(cost)
+        ? form.dataset.result!.replace('{n}', format.format(cost))
+        : form.dataset.empty!;
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('submit', (event) => event.preventDefault());
+    update();
+  }
+</script>

@@ -13,6 +13,7 @@ export const contact: { wechat: string; email: string; wechatQr?: string } = {
 // page and as the home hero badge; the certificate is valid until 2026-12-31 (see plan.md).
 export const workbuddyCredential = {
   certificate: '/credentials/tencent-cloud-workbuddy-authorization.jpg',
+  validUntil: '2026-12-31',
   partner: {
     zh: '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴',
     en: 'Tencent Cloud WorkBuddy / CodeBuddy authorized partner',
