@@ -63,7 +63,7 @@ export const en: SiteCopy = {
       service: 'workbuddy',
       question: 'How do personal plans and Enterprise differ?',
       answer:
-        'Personal plans are per account with monthly credits; Enterprise is per seat with an admin console and a choice of shared VPC, dedicated VPC or on-premises. See “Editions & credits” on the WorkBuddy page.',
+        'Personal plans are per account with monthly credits; Enterprise is per seat with an admin console and a choice of shared VPC, dedicated VPC or on-premises. Enterprise list prices are under “Enterprise pricing” on the WorkBuddy page.',
     },
     {
       service: 'workbuddy',

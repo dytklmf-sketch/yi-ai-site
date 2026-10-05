@@ -54,7 +54,7 @@ export const zh: SiteCopy = {
       service: 'workbuddy',
       question: '个人版和企业版有什么区别？',
       answer:
-        '个人版按账号订阅、每月发放积分；企业版按人数订阅，有管理后台，可选共享 VPC、独享 VPC 或本地部署。对比见 WorkBuddy 页的「版本与积分」。',
+        '个人版按账号订阅、每月发放积分；企业版按人数订阅，有管理后台，可选共享 VPC、独享 VPC 或本地部署。企业版官方价格见 WorkBuddy 页的「企业版价格」。',
     },
     {
       service: 'workbuddy',
