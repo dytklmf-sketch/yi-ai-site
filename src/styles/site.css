@@ -5606,4 +5606,7 @@ html:has(.mobile-menu[open]) .contact-fab {
   .wb-vs-pro li {
     font-size: 0.875rem;
   }
+  .wb-vs-price {
+    margin-left: 0;
+  }
 }
