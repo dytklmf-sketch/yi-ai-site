@@ -7,7 +7,7 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十六轮（只保留企业版价格、浅色面板、指南一行四张，见 `docs/rounds/36-enterprise-light.md`）；上一轮：第三十五轮
+- 当前轮次：第三十七轮（试行业务页主题色、价格上移，见 `docs/rounds/37-service-themes.md`）；上一轮：第三十六轮
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
@@ -45,6 +45,11 @@
   更新数据文件里的核对日期。
 - 需求单清单 `serviceBriefs` 供询价卡片与联系面板共用；联系面板每个业务方向预填自己的邮件正文。
 - `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
+
+## 第三十七轮：业务页主题色（试行，2026-10-05）
+
+- 三个业务页 `<body data-theme>`，`main` 内强调色为 WorkBuddy 绿 / CCG API 紫 / 机房蓝；其他页面与顶栏页脚仍是品牌蓝。
+  写新样式时用 `var(--cobalt)` 或 `rgb(var(--accent-rgb) / x)`，不要写死品牌蓝，否则主题页不会跟随。
 
 ## 第三十五轮：WorkBuddy 官方价格（2026-10-05）
 

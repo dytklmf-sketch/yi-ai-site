@@ -1004,7 +1004,11 @@ main:focus {
   background-size: 0.875rem 0.875rem;
 }
 [data-service='infrastructure'] > .service-art {
-  background-image: repeating-linear-gradient(180deg, rgb(var(--accent-rgb) / 11%) 0 0.375rem, transparent 0.375rem 0.75rem);
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgb(var(--accent-rgb) / 11%) 0 0.375rem,
+    transparent 0.375rem 0.75rem
+  );
   background-size: auto;
 }
 .service-column:hover > .service-art,
