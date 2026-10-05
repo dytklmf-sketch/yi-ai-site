@@ -110,6 +110,15 @@ for (const file of html) {
       `${file}: chapters in the subnav`
     );
     assert.equal(text.includes('id="editions"'), wb, `${file}: WorkBuddy editions only on its page`);
+    // Round 35: official list prices, with their sources and the date they were checked.
+    if (wb)
+      assert(
+        text.includes('codebuddy.cn/docs/workbuddy/Pricing') &&
+          text.includes('cloud.tencent.com/document/product/1831/134332') &&
+          /(?:核对于|checked) \d{4}-\d{2}-\d{2}/.test(text) &&
+          (text.match(/class="wb-tier"/g) || []).length === 7,
+        `${file}: official WorkBuddy prices with sources and date`
+      );
     assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
     assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
     if (file.includes('/workbuddy/')) assert(text.includes('datetime="2026-12-31"'), `${file}: certificate validity`);

@@ -29,27 +29,41 @@ const guides = x.guides.map((key) => all.find((guide) => guide.data.pairKey === 
         </h2>
         <p class="wb-editions-lead">{x.lead}</p>
       </header>
-      <ul class="wb-plans">
-        {
-          x.plans.map((plan) => (
-            <li class="wb-plan">
-              <h3>{plan.name}</h3>
-              <p class="wb-plan-fit">
-                <span>{zhUI ? '适合' : 'For'}</span>
-                {plan.fit}
-              </p>
-              <ul>
-                {plan.points.map((point) => (
-                  <li>
-                    <Check size={16} />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        [x.personal, x.enterprise].map((group, g) => (
+          <div class="wb-price-group">
+            <div class="wb-price-head">
+              <h3>{group.title}</h3>
+              <p>{group.note}</p>
+            </div>
+            <ul class:list={['wb-tiers', g === 0 ? 'wb-tiers-4' : 'wb-tiers-3']}>
+              {group.tiers.map((tier) => (
+                <li class="wb-tier">
+                  <h4>{tier.name}</h4>
+                  <p class="wb-price">
+                    <strong>{tier.price}</strong>
+                    {tier.unit && <span>{tier.unit}</span>}
+                  </p>
+                  <ul>
+                    {tier.lines.map((line) => (
+                      <li>
+                        <Check size={15} />
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                  {tier.fit && (
+                    <p class="wb-tier-fit">
+                      <span>{zhUI ? '适合' : 'For'}</span>
+                      {tier.fit}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
       <ul class="wb-rules" aria-label={zhUI ? '采购前要知道的规则' : 'Rules to know before buying'}>
         {x.rules.map((rule) => <li>{rule}</li>)}
       </ul>
