@@ -69,8 +69,7 @@ export const zh: SiteCopy = {
     {
       service: 'workbuddy',
       question: '可以开发票吗？',
-      answer:
-        '企业版通过腾讯云控制台开票。通过易AI采购时，发票的开具方与方式以订单约定为准。',
+      answer: '企业版通过腾讯云控制台开票。通过易AI采购时，发票的开具方与方式以订单约定为准。',
     },
     {
       service: 'model-services',

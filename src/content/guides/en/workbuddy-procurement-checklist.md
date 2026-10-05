@@ -19,13 +19,13 @@ sources:
 
 WorkBuddy Enterprise has three editions. Much of the functionality is shared; deployment and minimum seats are what differ.
 
-| | Flagship | Exclusive | Private Enterprise |
-| --- | --- | --- | --- |
-| Where it runs | Tencent Cloud shared VPC | Tencent Cloud dedicated VPC | On-premises |
-| Minimum seats | 1 | 100 | By consultation |
-| List price | ¥198/seat/month or ¥2,376/seat/year | ¥316/seat/month or ¥3,792/seat/year | By consultation |
-| Usage | 2,000 credits per seat a month, shared | As Flagship | No usage limit |
-| Also | Admin console, SSO | All of Flagship plus dedicated network access and enterprise plugins | All administration features |
+|               | Flagship                               | Exclusive                                                            | Private Enterprise          |
+| ------------- | -------------------------------------- | -------------------------------------------------------------------- | --------------------------- |
+| Where it runs | Tencent Cloud shared VPC               | Tencent Cloud dedicated VPC                                          | On-premises                 |
+| Minimum seats | 1                                      | 100                                                                  | By consultation             |
+| List price    | ¥198/seat/month or ¥2,376/seat/year    | ¥316/seat/month or ¥3,792/seat/year                                  | By consultation             |
+| Usage         | 2,000 credits per seat a month, shared | As Flagship                                                          | No usage limit              |
+| Also          | Admin console, SSO                     | All of Flagship plus dedicated network access and enterprise plugins | All administration features |
 
 Most teams start with Flagship. Network isolation and 100 or more seats point to Exclusive; data that must stay in your own environment points to Private Enterprise. Purchases through Easy AI follow the formal quote.
 

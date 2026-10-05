@@ -179,7 +179,10 @@ for (const file of html) {
       4,
       `${file}: every reason has a proof link`
     );
-    assert(/class="hero-credential" href="[^"]*\/workbuddy\/#editions"/.test(text), `${file}: hero authorization badge`);
+    assert(
+      /class="hero-credential" href="[^"]*\/workbuddy\/#editions"/.test(text),
+      `${file}: hero authorization badge`
+    );
     for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
       assert(text.includes(`/contact/?topic=${service}`), `${file}: service-specific inquiry is missing`);
       assert(text.includes(`data-topic-preparation="${service}"`), `${file}: preparation copy is missing`);

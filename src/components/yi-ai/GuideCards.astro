@@ -15,7 +15,16 @@ const { lang, guides, featured = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
 // The card lists what a guide actually covers: its section headings, minus the generic ones (summary, scope, FAQ)
 // that older guides share. The update date stays off the page (round 38).
-const generic = new Set(['先给结论', '适用条件', '常见误区', '常见问题', 'The short answer', 'When this applies', 'Common mistakes', 'FAQ']);
+const generic = new Set([
+  '先给结论',
+  '适用条件',
+  '常见误区',
+  '常见问题',
+  'The short answer',
+  'When this applies',
+  'Common mistakes',
+  'FAQ',
+]);
 const bodySections = (body: string) =>
   [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).filter((heading) => !generic.has(heading));
 ---

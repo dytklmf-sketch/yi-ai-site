@@ -52,7 +52,9 @@ const cert = withBase(workbuddyCredential.certificate);
       <a class="wb-cert" href={cert} target="_blank" rel="noopener noreferrer">
         <img
           src={cert}
-          alt={zhUI ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书' : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'}
+          alt={zhUI
+            ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书'
+            : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'}
           width="1200"
           height="848"
           loading="lazy"
@@ -61,7 +63,11 @@ const cert = withBase(workbuddyCredential.certificate);
         <span class="wb-cert-copy">
           <strong>{workbuddyCredential.partner[lang]}</strong>
           <span>
-            {zhUI ? '易AI 通过该授权渠道开展 WorkBuddy 企业版采购。' : 'Easy AI sells WorkBuddy Enterprise through this authorized channel.'}
+            {
+              zhUI
+                ? '易AI 通过该授权渠道开展 WorkBuddy 企业版采购。'
+                : 'Easy AI sells WorkBuddy Enterprise through this authorized channel.'
+            }
           </span>
         </span>
         <span class="wb-cert-view">
