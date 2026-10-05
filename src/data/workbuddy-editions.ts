@@ -112,7 +112,7 @@ export const serviceBriefs: Record<Lang, Record<Service, { label: string; file: 
  * side, each row aligned, the Enterprise card larger. Without a label column every cell must read on its own. Every
  * cell comes from the official pricing page or Tencent Cloud's editions page; Enterprise describes Flagship.
  */
-type Model = { name: string; tiers: string; badge?: string; price?: string };
+type Model = { name: string; tiers: string; price?: string };
 export const workbuddyCompare: Record<
   Lang,
   { title: string; lead: string; personal: Model; enterprise: Model; rows: [string, string][]; note: string }
@@ -124,7 +124,6 @@ export const workbuddyCompare: Record<
     enterprise: {
       name: '企业版',
       tiers: '旗舰版 · 专享版 · 私有化企业版',
-      badge: '易AI 提供',
       price: '198 元/人/月起',
     },
     rows: [
@@ -146,7 +145,6 @@ export const workbuddyCompare: Record<
     enterprise: {
       name: 'Enterprise',
       tiers: 'Flagship · Exclusive · Private',
-      badge: 'From Easy AI',
       price: 'From ¥198/seat/month',
     },
     rows: [

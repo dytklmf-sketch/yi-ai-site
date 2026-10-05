@@ -23,7 +23,16 @@ const x = workbuddyCompare[lang];
     <div class="wb-vs" data-reveal>
       <div class="wb-vs-card wb-vs-personal">
         <header class="wb-vs-head">
-          <img src={withBase('/partners/workbuddy.svg')} alt="" width="40" height="40" />
+          <span class="wb-vs-brand">
+            <img src={withBase('/partners/workbuddy.svg')} alt="" width="40" height="40" />
+            <img
+              class="wb-wordmark"
+              src={withBase('/partners/workbuddy-wordmark.svg')}
+              alt="WorkBuddy"
+              width="74"
+              height="32"
+            />
+          </span>
           <h3>{x.personal.name}</h3>
           <p>{x.personal.tiers}</p>
         </header>
@@ -38,11 +47,19 @@ const x = workbuddyCompare[lang];
           }
         </ul>
       </div>
-      <span class="wb-vs-badge" aria-hidden="true">VS</span>
+      <span class="wb-vs-divider" aria-hidden="true"><span>VS</span></span>
       <div class="wb-vs-card wb-vs-pro">
         <header class="wb-vs-head">
-          <span class="wb-vs-ribbon">{x.enterprise.badge}</span>
-          <img src={withBase('/partners/workbuddy.svg')} alt="" width="40" height="40" />
+          <span class="wb-vs-brand">
+            <img src={withBase('/partners/workbuddy.svg')} alt="" width="40" height="40" />
+            <img
+              class="wb-wordmark"
+              src={withBase('/partners/workbuddy-wordmark.svg')}
+              alt="WorkBuddy"
+              width="74"
+              height="32"
+            />
+          </span>
           <h3>
             {x.enterprise.name}
             {x.enterprise.price && <span class="wb-vs-price">{x.enterprise.price}</span>}
@@ -53,7 +70,7 @@ const x = workbuddyCompare[lang];
           {
             x.rows.map(([, enterprise], i) => (
               <li data-row={i} style={`--i:${i}`}>
-                <Check size={20} />
+                <Check size={16} />
                 {enterprise}
               </li>
             ))
