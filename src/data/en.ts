@@ -59,6 +59,78 @@ export const en: SiteCopy = {
       answer:
         'Workload type (inference or training), model size, compute and storage needs, network requirements and duration. Location, equipment, operations and SLA terms are agreed separately.',
     },
+    {
+      service: 'workbuddy',
+      question: 'How do personal plans and Enterprise differ?',
+      answer:
+        'Personal plans are per account with monthly credits; Enterprise is per seat with an admin console and a choice of shared VPC, dedicated VPC or on-premises. See “Editions & credits” on the WorkBuddy page.',
+    },
+    {
+      service: 'workbuddy',
+      question: 'Do unused credits carry over?',
+      answer:
+        'According to the official credits page, personal-plan credits are granted monthly, valid that month and do not roll over. Before choosing an edition, measure a few typical users for one or two weeks.',
+    },
+    {
+      service: 'workbuddy',
+      question: 'What happens when the authorization expires?',
+      answer:
+        'The official documentation says Enterprise cannot be used after expiry. Review usage and seats a month ahead and allow time for internal approval.',
+    },
+    {
+      service: 'workbuddy',
+      question: 'Can we get an invoice?',
+      answer:
+        'Through official channels, individuals request invoices in the WorkBuddy personal center and enterprises use the Tencent Cloud console. When buying through Easy AI, who issues the invoice and how follows the order agreement.',
+    },
+    {
+      service: 'model-services',
+      question: 'Our code uses the OpenAI SDK. What changes when we switch?',
+      answer:
+        'Usually only the base URL, key and model name. Before going live, test each feature you use, such as streaming, tool calls and structured output.',
+    },
+    {
+      service: 'model-services',
+      question: 'How do we estimate the monthly cost?',
+      answer:
+        'Take average input and output tokens from the usage fields in responses and multiply by monthly requests and prices. The model services page has an estimator; prices come from the product page or a formal quote.',
+    },
+    {
+      service: 'model-services',
+      question: 'Can we run an integration test before signing?',
+      answer:
+        'An integration test can be discussed; scope, cost and call rate are agreed in advance. Use separate test credentials and permitted samples, and never pass production keys in chats or documents.',
+    },
+    {
+      service: 'model-services',
+      question: 'What does a supply partner need to prepare?',
+      answer:
+        'A credential-free resource description: model IDs, interface, capacity and limits, supply period, supply basis and settlement. Do not send accounts or keys in the first conversation.',
+    },
+    {
+      service: 'infrastructure',
+      question: 'Can we ask for a specific GPU model?',
+      answer:
+        'Yes, along with the workload, quantity, duration and acceptable alternatives. Availability has to be confirmed.',
+    },
+    {
+      service: 'infrastructure',
+      question: 'We don’t know how much GPU memory we need.',
+      answer:
+        'Estimate weights as parameters × bytes per parameter, then add KV cache and headroom; the guides include a worked example. The final configuration comes from a real load test.',
+    },
+    {
+      service: 'infrastructure',
+      question: 'Can training and inference be discussed together?',
+      answer:
+        'Submit them together if you like, but describe them separately. They differ greatly in memory, storage and duration.',
+    },
+    {
+      service: 'infrastructure',
+      question: 'What happens to data at the end of cooperation?',
+      answer:
+        'Agree data export, deletion scope and account revocation before starting, and keep a deletion record. Arrangements are confirmed item by item.',
+    },
   ],
   ctaTitle: 'Let’s talk',
   ctaBody: 'WeChat or email. Tell us the use case and scale.',

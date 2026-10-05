@@ -3,6 +3,10 @@ import type { Lang } from './yi-ai';
 export const editorial = {
   zh: {
     resources: '资源与指南',
+    faq: '常见问题',
+    faqSeoTitle: '常见问题：WorkBuddy 采购、模型 API 与机房合作',
+    faqIntro: 'WorkBuddy 采购、模型 API 接入与机房资源合作中常被问到的问题，按业务分组，可筛选。',
+    faqAllLink: '查看全部问题',
     about: '关于易AI',
     allGuides: '全部指南',
     readGuide: '阅读指南',
@@ -28,6 +32,11 @@ export const editorial = {
   },
   en: {
     resources: 'Guides',
+    faq: 'FAQ',
+    faqSeoTitle: 'FAQ: WorkBuddy purchasing, model APIs and data-center cooperation',
+    faqIntro:
+      'Common questions about buying WorkBuddy, integrating model APIs and data-center cooperation, grouped by service.',
+    faqAllLink: 'All questions',
     about: 'About',
     allGuides: 'All guides',
     readGuide: 'Read guide',

@@ -20,10 +20,10 @@ const local = (url) => url.slice(base.length);
 const files = await walk('dist');
 const html = files.filter((file) => file.endsWith('.html'));
 const routes = JSON.parse(await readFile('dist/site-manifest.json', 'utf8'));
-// Seven pages per language (home, three services, contact, guides, about) plus one per guide.
+// Eight pages per language (home, three services, contact, guides, about, FAQ) plus one per guide.
 const guideCount = (await readdir('src/content/guides/zh')).length;
 assert.equal(guideCount, (await readdir('src/content/guides/en')).length, 'every guide is paired');
-const routeCount = 2 * (7 + guideCount);
+const routeCount = 2 * (8 + guideCount);
 assert.equal(routes.length, routeCount, `${routeCount} bilingual content routes`);
 assert.equal(html.length, routeCount + 2, 'content pages, the entry and the 404');
 assert.equal(new Set(routes.map((route) => route.path)).size, routeCount);
@@ -113,6 +113,11 @@ for (const file of html) {
     if (file.includes('/model-services/')) assert(text.includes('data-cost-estimator'), `${file}: cost estimator`);
     if (file.includes('/workbuddy/')) assert(text.includes('datetime="2026-12-31"'), `${file}: certificate validity`);
   }
+  if (file.endsWith('/faq/index.html')) {
+    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 18, `${file}: six questions per service`);
+    assert(text.includes('data-faq-filter'), `${file}: filter by service`);
+    assert(!text.includes('CCG'), `${file}: product stays off the FAQ`);
+  }
   if (file.endsWith('/about/index.html')) {
     assert(text.includes('<span class="mono">CCG API</span>'), `${file}: the product is named CCG API`);
     assert(!text.includes('principle'), `${file}: the working-rules block stays removed`);
@@ -125,7 +130,10 @@ for (const file of html) {
     assert(!text.includes('role="tab"'), `${file}: services are side-by-side columns, not tabs`);
     assert(!text.includes('id="process"'), `${file}: the process lives in the inquiry chapter`);
     assert.equal((text.match(/class="guide-card"/g) || []).length, 3, `${file}: one featured guide per service`);
-    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 6, `${file}: two FAQs per service`);
+    // Round 33: one question per service on the home page; the rest live on the FAQ page.
+    assert.equal((text.match(/class="faq-number[ "]/g) || []).length, 3, `${file}: one FAQ per service`);
+    assert(/href="[^"]*\/faq\/"/.test(text), `${file}: link to the FAQ page`);
+    assert(!text.includes('data-faq-filter'), `${file}: no filter for three questions`);
     assert.equal((text.match(/class="check-grid"/g) || []).length, 3, `${file}: scenarios on each service card`);
     assert(!/\bL[123]\b/.test(text.replace(/<svg[\s\S]*?<\/svg>/g, '')), `${file}: layer codes stay off the page`);
     assert(!text.includes('cta-steps'), `${file}: the inquiry carries no step list`);

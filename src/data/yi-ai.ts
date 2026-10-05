@@ -4,7 +4,7 @@ export const services = ['workbuddy', 'model-services', 'infrastructure'] as con
 export type Service = (typeof services)[number];
 export type PageSlug = Service | 'contact';
 export const pageSlugs: PageSlug[] = [...services, 'contact'];
-export type SitePage = PageSlug | 'about' | 'resources';
+export type SitePage = PageSlug | 'about' | 'resources' | 'faq';
 export const contact: { wechat: string; email: string; wechatQr?: string } = {
   wechat: 'Li___CaB6',
   email: 'yi__ai@126.com',

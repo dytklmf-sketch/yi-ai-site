@@ -36,7 +36,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     const t = lang === 'zh' ? zh : en;
     const e = editorial[lang];
     const other = lang === 'zh' ? 'en' : 'zh';
-    const pages: (SitePage | undefined)[] = [undefined, ...pageSlugs, 'about', 'resources'];
+    const pages: (SitePage | undefined)[] = [undefined, ...pageSlugs, 'about', 'resources', 'faq'];
     for (const slug of pages) {
       // Chinese lines join without a space; English lines join with one.
       const sep = lang === 'zh' ? '' : ' ';
@@ -48,7 +48,9 @@ export async function getRoutes(): Promise<RouteEntry[]> {
             ? e.aboutTitle.replace('\n', sep)
             : slug === 'resources'
               ? e.resources
-              : t.services[slug].seoTitle;
+              : slug === 'faq'
+                ? e.faqSeoTitle
+                : t.services[slug].seoTitle;
       const description = !slug
         ? t.heroIntro
         : slug === 'contact'
@@ -57,7 +59,9 @@ export async function getRoutes(): Promise<RouteEntry[]> {
             ? e.aboutIntro
             : slug === 'resources'
               ? e.guidesSeoDescription
-              : t.services[slug].intro;
+              : slug === 'faq'
+                ? e.faqIntro
+                : t.services[slug].intro;
       routes.push({
         lang,
         kind: 'page',

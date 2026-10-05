@@ -139,22 +139,24 @@ export async function testEnhancements(base, routes) {
         assert(fit.row, `Service columns share one row at ${width}×${height}`);
       }
       await page.setViewportSize({ width: 1440, height: 960 });
+      // Round 33: the filter lives on the FAQ page (six questions per service); home shows one per service.
+      await page.goto(`${base}/zh/faq/`, { waitUntil: 'networkidle' });
       await scrollToElement(page, '#faq');
       // Let the reveal finish so the pointer targets the settled filter row.
       await page.waitForFunction(() => getComputedStyle(document.querySelector('.faq-aside')).transform === 'none');
       await page.locator('[data-faq-filter] button[data-filter="infrastructure"]').click();
       await page
-        .waitForFunction(() => document.querySelectorAll('.faq-list details:not([hidden])').length === 2, undefined, {
+        .waitForFunction(() => document.querySelectorAll('.faq-list details:not([hidden])').length === 6, undefined, {
           timeout: 2000,
         })
         .catch(() => {});
-      assert.equal(await page.locator('.faq-list details:visible').count(), 2);
+      assert.equal(await page.locator('.faq-list details:visible').count(), 6);
       assert.equal(
         await page.locator('[data-faq-filter] button[data-filter="infrastructure"]').getAttribute('aria-pressed'),
         'true'
       );
       await page.locator('[data-faq-filter] button[data-filter="all"]').click();
-      assert.equal(await page.locator('.faq-list details:visible').count(), 6);
+      assert.equal(await page.locator('.faq-list details:visible').count(), 18);
       result.flows.push(
         'Header surface change, three service columns in one row, hero-only first screen and compact chapters at 3 desktop sizes, FAQ filter'
       );
@@ -259,7 +261,10 @@ export async function testEnhancements(base, routes) {
       // Rapid double click settles in the last requested state.
       await page.locator('.faq-list summary').first().click();
       await page.locator('.faq-list summary').first().click();
-      await page.waitForTimeout(500);
+      // WebKit can deliver the closing animation's finish a few hundred ms late under load; wait for it to settle.
+      await page
+        .waitForFunction(() => !document.querySelector('.faq-list details').open, undefined, { timeout: 3000 })
+        .catch(() => {});
       assert.equal(await page.locator('.faq-list details[open]').count(), 0);
       result.flows.push('FAQ animated open/close, keyboard activation, Escape and interrupted toggles');
 

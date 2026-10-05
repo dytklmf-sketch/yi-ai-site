@@ -51,6 +51,7 @@ const labels = {
   contact: t.nav.contact,
   resources: e.resources,
   about: e.about,
+  faq: e.faq,
 };
 const links = navigationPages.map((page) => ({
   href: pathFor(lang, page),
@@ -248,6 +249,7 @@ const zhUI = lang === 'zh';
           <nav class="footer-col" aria-label={zhUI ? '了解更多' : 'More'}>
             <p class="footer-label">{zhUI ? '了解更多' : 'More'}</p>
             <a href={pathFor(lang, 'resources')}>{e.resources}</a>
+            <a href={pathFor(lang, 'faq')}>{e.faq}</a>
             <a href={pathFor(lang, 'about')}>{e.about}</a>
             <a href={pathFor(lang, 'contact')}>{t.nav.contact}</a>
           </nav>

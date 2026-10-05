@@ -1,14 +1,17 @@
 ---
-import { ArrowUpRight, Plus } from '@lucide/astro';
+import { ArrowRight, ArrowUpRight, Plus } from '@lucide/astro';
 import { home } from '../../data/home';
-import { services, inquiryPath, type Lang } from '../../data/yi-ai';
+import { editorial } from '../../data/editorial';
+import { services, inquiryPath, pathFor, type Lang } from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
 
 interface Props {
   lang: Lang;
+  /** Home shows the first question of each service and links to the FAQ page; the FAQ page shows all with a filter. */
+  full?: boolean;
 }
-const { lang } = Astro.props;
+const { lang, full = false } = Astro.props;
 const t = lang === 'zh' ? zh : en;
 const h = home[lang];
 const serviceLabels = {
@@ -16,33 +19,47 @@ const serviceLabels = {
   'model-services': t.nav.models,
   infrastructure: t.nav.infrastructure,
 };
+const grouped = services.flatMap((service) => t.faq.filter((item) => item.service === service));
+const items = full ? grouped : services.map((service) => grouped.find((item) => item.service === service)!);
 ---
 
 <section class="section faq-band" id="faq" aria-labelledby="faq-title">
   <div class="container faq-layout">
     <div class="faq-aside" data-reveal>
       <h2 id="faq-title" class="section-title">{t.faqTitle}</h2>
-      <div
-        class="faq-filter"
-        data-faq-filter
-        hidden
-        role="group"
-        aria-label={lang === 'zh' ? '按业务筛选' : 'Filter by service'}
-      >
-        <button type="button" aria-pressed="true" data-filter="all">{h.faqAll}</button>
-        {
-          services.map((slug) => (
-            <button type="button" aria-pressed="false" data-filter={slug}>
-              {serviceLabels[slug]}
+      {
+        full && (
+          <div
+            class="faq-filter"
+            data-faq-filter
+            hidden
+            role="group"
+            aria-label={lang === 'zh' ? '按业务筛选' : 'Filter by service'}
+          >
+            <button type="button" aria-pressed="true" data-filter="all">
+              {h.faqAll}
             </button>
-          ))
-        }
-      </div>
+            {services.map((slug) => (
+              <button type="button" aria-pressed="false" data-filter={slug}>
+                {serviceLabels[slug]}
+              </button>
+            ))}
+          </div>
+        )
+      }
+      {
+        !full && (
+          <a class="text-link" href={pathFor(lang, 'faq')}>
+            {editorial[lang].faqAllLink}
+            <ArrowRight size={16} />
+          </a>
+        )
+      }
       <a class="text-link" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={16} /></a>
     </div>
     <div class="faq-list" data-reveal>
       {
-        t.faq.map((item, i) => (
+        items.map((item, i) => (
           <details data-service={item.service}>
             <summary>
               <span class="faq-number mono">{String(i + 1).padStart(2, '0')}</span>

@@ -50,6 +50,73 @@ export const zh: SiteCopy = {
       answer:
         '工作负载类型（推理或训练）、模型规模、计算与存储需求、网络要求及预计周期。位置、设备、运维与 SLA 另行约定。',
     },
+    {
+      service: 'workbuddy',
+      question: '个人版和企业版有什么区别？',
+      answer:
+        '个人版按账号订阅、每月发放积分；企业版按人数订阅，有管理后台，可选共享 VPC、独享 VPC 或本地部署。对比见 WorkBuddy 页的「版本与积分」。',
+    },
+    {
+      service: 'workbuddy',
+      question: '积分用不完可以留到下个月吗？',
+      answer:
+        '据官方积分说明，个人版积分按月发放、当月有效，不结转到下个月。选版本前建议统计几位典型用户一到两周的实际用量。',
+    },
+    {
+      service: 'workbuddy',
+      question: '授权到期后会怎样？',
+      answer: '官方说明企业版到期后无法继续使用。建议到期前一个月核对用量与人数，留出内部审批时间。',
+    },
+    {
+      service: 'workbuddy',
+      question: '可以开发票吗？',
+      answer:
+        '官方渠道中，个人用户在 WorkBuddy 个人中心申请，企业用户通过腾讯云控制台处理。通过易AI采购时，发票的开具方与方式以订单约定为准。',
+    },
+    {
+      service: 'model-services',
+      question: '现有代码用的是 OpenAI SDK，切换要改什么？',
+      answer: '通常只需改接口地址、密钥和模型名。上线前按实际用到的功能逐项测试，例如流式输出、函数调用和结构化输出。',
+    },
+    {
+      service: 'model-services',
+      question: '怎么估算每月费用？',
+      answer:
+        '用接口返回的用量字段统计平均输入与输出 Token，乘以每月请求数和单价。模型服务页有估算工具，单价以产品页面或正式报价为准。',
+    },
+    {
+      service: 'model-services',
+      question: '签约前可以做接入测试吗？',
+      answer:
+        '接入测试可以洽谈，测试范围、费用与调用频率需要事先约定。测试使用独立凭据和允许使用的样本，不在聊天或文档里传生产密钥。',
+    },
+    {
+      service: 'model-services',
+      question: '作为供应方合作，需要准备什么？',
+      answer:
+        '一份不含凭据的资源说明：模型标识、接口形式、容量与限额、可提供周期、供应依据和结算方式。首次沟通不发账号或密钥。',
+    },
+    {
+      service: 'infrastructure',
+      question: '可以直接问某个显卡型号吗？',
+      answer: '可以，同时请说明工作负载、数量、使用周期和可替代条件。型号是否可用需要实际确认。',
+    },
+    {
+      service: 'infrastructure',
+      question: '不知道需要多少显存怎么办？',
+      answer:
+        '权重可按「参数量 × 每参数字节数」估算，再加上 KV 缓存和运行余量；资源与指南里有完整算例。最终配置以实际压测为准。',
+    },
+    {
+      service: 'infrastructure',
+      question: '训练和推理可以一起谈吗？',
+      answer: '可以一起提交，建议分开描述。两者对显存、存储和使用周期的要求差别很大。',
+    },
+    {
+      service: 'infrastructure',
+      question: '合作结束时数据怎么处理？',
+      answer: '数据导出、删除范围与账号撤销应在合作开始前约定，并保留删除记录。具体安排逐项确认。',
+    },
   ],
   ctaTitle: '联系合作',
   ctaBody: '通过微信或邮件说明用途与规模。',

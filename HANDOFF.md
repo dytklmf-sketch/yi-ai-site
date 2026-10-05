@@ -7,11 +7,11 @@
 ## 当前版本
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（2026-09-30 站长授权，允许收录）
-- 当前轮次：第三十二轮（业务页详解章节，见 `docs/rounds/32-service-explainers.md`）；上一轮：第三十一轮指南
+- 当前轮次：第三十三轮（常见问题页，见 `docs/rounds/33-faq-page.md`）；上一轮：第三十二轮业务页详解
 - 线上版本：`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间；
   每次发布另有 Git tag `release-<时间戳>`
 - 工作目录：服务器 `/root/yi-ai-site`；远端 GitHub `dytklmf-sketch/yi-ai-site`（公开仓库）
-- 构建页面数：40 个静态 HTML（每语言 7 个基础页 + 12 篇指南，再加根入口与 404）；数量由 `test-build.mjs` 按指南数推算
+- 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）；数量由 `test-build.mjs` 按指南数推算
 - 站长授权（2026-10-02 起）：每轮测试通过后直接上线
 
 ## 第二十七轮：工程整理（2026-10-05）
@@ -43,6 +43,11 @@
   （含 `CostEstimator.astro`，不预填价格）、基础设施部署与分工。吸顶目录 4 项。官方规则类内容注明核对日期，
   官方规则变化时更新数据文件。
 - `workbuddyCredential.validUntil` 显示证书有效期，2026-12-31 到期时与证书区、首页徽章一并处理。
+
+## 第三十三轮：常见问题页（2026-10-05）
+
+- `/zh/faq/`、`/en/faq/`：18 条（每项业务 6 条）可筛选；首页 FAQ 只取每项业务第一条并链接到全部问题。
+  FAQ 数据仍在 `zh.ts` / `en.ts` 的 `faq`，`FaqChapter` 按业务分组（`full` 属性区分首页与 FAQ 页）。
 
 ## 目录与源码指向
 

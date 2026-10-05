@@ -1,0 +1,20 @@
+---
+import YiAiLayout from '../../layouts/YiAiLayout.astro';
+import CallToAction from '../../components/yi-ai/CallToAction.astro';
+import FaqChapter from '../../components/yi-ai/FaqChapter.astro';
+import PageHero from '../../components/yi-ai/PageHero.astro';
+import { editorial } from '../../data/editorial';
+import { languages } from '../../data/routes';
+import type { Lang } from '../../data/yi-ai';
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const e = editorial[lang];
+---
+
+<YiAiLayout lang={lang} slug="faq" title={e.faqSeoTitle} description={e.faqIntro}>
+  <PageHero lang={lang} crumb={e.faq} title={e.faq} intro={e.faqIntro} compact />
+  <FaqChapter lang={lang} full />
+  <CallToAction lang={lang} />
+</YiAiLayout>
