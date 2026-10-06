@@ -90,6 +90,10 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 模型服务页加模型目录、接入与计费、合作方式（含分销合作），详细程度对齐 WorkBuddy 页。详见 `docs/rounds/48-model-services-detail.md`。
 
+## 已完成：第四十九轮（2026-10-06）
+
+模型卡美化并压到一屏、接入加 OpenAI Responses、合作方式并入合作流程。详见 `docs/rounds/49-model-cards-and-ways.md`。
+
 ## UI 待办
 
 - [ ] 手机首页约 7200px（第二十九轮 7892→7595；第三十三轮 FAQ 移出后 7654→7233）。再缩短需要删减真实内容（首页 FAQ、合作伙伴或咨询面板），需站长决定。

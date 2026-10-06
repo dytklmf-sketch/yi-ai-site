@@ -11,7 +11,10 @@ const x = modelCatalog[lang];
 const zhUI = lang === 'zh';
 ---
 
-{/* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel. */}
+{
+  /* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel; round 49 gives each card
+    a gradient top edge like the Enterprise card, the family's models as chips, the first one tinted. */
+}
 <section id="models" class="section mc-section" aria-labelledby="models-title">
   <div class="container">
     <div class="mc-panel" data-reveal>
@@ -25,15 +28,24 @@ const zhUI = lang === 'zh';
           {x.title[0]}<em>{x.title[1]}</em>
         </h2>
         <p class="mc-lead">{x.lead}</p>
+        <div class="mc-cta">
+          <a class="btn btn-primary" href={modelLinks.catalog} target="_blank" rel="noopener noreferrer">
+            {zhUI ? '打开模型广场' : 'Open the catalog'}
+            <ArrowUpRight size={17} />
+            <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+          </a>
+          <p class="mc-note">{x.note}</p>
+        </div>
       </header>
       <ul class="mc-families">
         {
           x.families.map((family) => (
             <li class="mc-family">
-              <h3>
-                {family.name}
-                <span>{family.maker}</span>
-              </h3>
+              <header class="mc-family-head">
+                <h3>{family.name}</h3>
+                <span class="mc-region">{family.region}</span>
+                {family.maker && <p class="mc-maker">{family.maker}</p>}
+              </header>
               <ul class="mc-models">
                 {family.models.map((model) => (
                   <li>
@@ -41,23 +53,15 @@ const zhUI = lang === 'zh';
                   </li>
                 ))}
               </ul>
-              <p class="mc-tags">
+              <ul class="mc-tags">
                 {family.tags.map((tag) => (
-                  <span>{tag}</span>
+                  <li>{tag}</li>
                 ))}
-              </p>
+              </ul>
             </li>
           ))
         }
       </ul>
-      <div class="mc-foot">
-        <a class="btn btn-primary" href={modelLinks.catalog} target="_blank" rel="noopener noreferrer">
-          {zhUI ? '打开模型广场' : 'Open the catalog'}
-          <ArrowUpRight size={17} />
-          <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
-        </a>
-        <p class="mc-note">{x.note}</p>
-      </div>
     </div>
   </div>
 </section>

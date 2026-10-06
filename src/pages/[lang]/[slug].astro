@@ -11,13 +11,13 @@ import WorkBuddyEditions from '../../components/yi-ai/WorkBuddyEditions.astro';
 import WorkBuddyCompare from '../../components/yi-ai/WorkBuddyCompare.astro';
 import ModelCatalog from '../../components/yi-ai/ModelCatalog.astro';
 import ModelAccess from '../../components/yi-ai/ModelAccess.astro';
-import ModelPartners from '../../components/yi-ai/ModelPartners.astro';
+import ModelWays from '../../components/yi-ai/ModelWays.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
 import { serviceBriefs, workbuddyCompare, workbuddyEditions } from '../../data/workbuddy-editions';
-import { modelAccess, modelCatalog, modelPartners } from '../../data/model-catalog';
+import { modelAccess, modelCatalog, modelWays } from '../../data/model-catalog';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -49,8 +49,8 @@ const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
 // Page order: (WorkBuddy only) Enterprise pricing and the personal/Enterprise comparison first; (model services
-// only, round 48) the catalog and access/billing first and the ways to work together after the use cases; then
-// process and guides.
+// only, round 48) the catalog and access/billing first, and (round 49) the ways to work together merged into the
+// process; then process and guides.
 const chapters: [string, string][] = [
   ...(service === 'workbuddy'
     ? ([
@@ -65,8 +65,7 @@ const chapters: [string, string][] = [
       ] as [string, string][])
     : []),
   ['fit', r.serviceContents.fit],
-  ...(service === 'model-services' ? ([['partners', modelPartners[lang].title]] as [string, string][]) : []),
-  ['process', r.serviceContents.process],
+  ['process', service === 'model-services' ? modelWays[lang].title : r.serviceContents.process],
   ['guides', r.serviceContents.guides],
 ];
 const briefFile = service ? serviceBriefs[lang][service] : undefined;
@@ -196,23 +195,25 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
           </section>
         )}
 
-        {service === 'model-services' && <ModelPartners lang={lang} />}
-
         {detail && (
           <section id="process" class="section section-tint">
             <div class="container">
               <h2 class="section-title" data-reveal>
-                {r.serviceContents.process}
+                {service === 'model-services' ? modelWays[lang].title : r.serviceContents.process}
               </h2>
-              <ol class="step-cards">
-                {detail.steps.map((step, i) => (
-                  <li data-reveal style={`--d:${i}`}>
-                    <span class="step-card-index">{i + 1}</span>
-                    <h3>{step.title}</h3>
-                    <p>{step.text}</p>
-                  </li>
-                ))}
-              </ol>
+              {service === 'model-services' ? (
+                <ModelWays lang={lang} enterpriseSteps={detail.steps} />
+              ) : (
+                <ol class="step-cards">
+                  {detail.steps.map((step, i) => (
+                    <li data-reveal style={`--d:${i}`}>
+                      <span class="step-card-index">{i + 1}</span>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
               <div class="brief-card" data-reveal>
                 <div class="brief-main">
                   <h3 class="brief-title">{e.pricing}</h3>

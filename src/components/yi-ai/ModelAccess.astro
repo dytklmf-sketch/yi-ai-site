@@ -24,7 +24,10 @@ const zhUI = lang === 'zh';
             x.endpoints.map((item) => (
               <li>
                 <strong>{item.name}</strong>
-                <code>{item.path}</code>
+                <code>
+                  <span class="ma-method">POST</span>
+                  {item.path}
+                </code>
                 <span>{item.scope}</span>
               </li>
             ))

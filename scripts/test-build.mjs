@@ -117,26 +117,31 @@ for (const file of html) {
       assert(text.includes('class="service-sample sample-window request-sheet"'), `${file}: request sheet missing`);
     assert(!text.includes('id="scope"') && !text.includes('id="brief"'), `${file}: scope and brief merged`);
     assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
-    assert.equal((text.match(/class="step-card-index/g) || []).length, 3, `${file}: three step cards`);
+    // Round 49: the model page shows three ways to work together, three steps each, in place of the step cards.
+    if (file.includes('/model-services/'))
+      assert.equal((text.match(/class="mw-step-index"/g) || []).length, 9, `${file}: three ways, three steps each`);
+    else assert.equal((text.match(/class="step-card-index/g) || []).length, 3, `${file}: three step cards`);
     assert.equal((text.match(/class="tag-list"/g) || []).length, 1, `${file}: quote inputs as chips`);
     // Round 34: only WorkBuddy keeps the fourth chapter (editions); the other services drop their explainers.
     const wb = file.includes('/workbuddy/');
     assert.equal(
       // Round 41: subnav items carry no numbers.
       ((text.match(/<nav class="subnav"[\s\S]*?<\/nav>/) || [''])[0].match(/<a href="#[a-z]+">/g) || []).length,
-      wb ? 5 : file.includes('/model-services/') ? 6 : 3,
+      wb || file.includes('/model-services/') ? 5 : 3,
       `${file}: chapters in the subnav`
     );
     // Round 48: the model page carries the catalog, access and billing, and the ways to work together.
     const ms = file.includes('/model-services/');
     assert.equal(
-      text.includes('id="models"') && text.includes('id="access"') && text.includes('id="partners"'),
+      text.includes('id="models"') && text.includes('id="access"') && text.includes('class="mw-ways"'),
       ms,
       `${file}: model chapters only on the model page`
     );
     if (ms)
       assert(
         (text.match(/class="mc-family"/g) || []).length === 12 &&
+          text.includes('/v1/responses') &&
+          !text.includes('id="partners"') &&
           text.includes('https://ccg-cli.online/models/') &&
           text.includes('https://ccg-cli.online/account/agent/') &&
           !/packyapi|codex\+\+|柏拉图|svip|黄昏星/.test(text),

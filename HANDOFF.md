@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 48 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 49 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第四十八轮）
+## 当前版本（第四十九轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第四十八轮（模型服务页加模型目录、接入与计费、合作方式，见 `docs/rounds/48-model-services-detail.md`）
+- 当前轮次：第四十九轮（模型卡美化、Responses 协议、合作方式并入流程，见 `docs/rounds/49-model-cards-and-ways.md`）
 - 线上发布：`release-20261006041324`，commit `37ea6d7`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 第四十八轮完整浏览器测试：见 `docs/rounds/48-model-services-detail.md`
+- 第四十九轮完整浏览器测试：见 `docs/rounds/49-model-cards-and-ways.md`
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
@@ -79,9 +79,10 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 → 企业版 vs 个人版 `#compare`（`WorkBuddyCompare.astro`：手机型号式双卡，左个人版减号、右企业版对勾，各 8 行，中间 VS 细线胶囊，
 `data-row` 行联动高亮，入场动效只在 `prefers-reduced-motion: no-preference` 下运行）→ 适用场景 → 合作流程 → 资源与指南（紧凑列表 `GuideList.astro`）。
 数据都在 `src/data/workbuddy-editions.ts`（`workbuddyEditions`、`workbuddyCompare`、`serviceBriefs`）。
-模型服务页（第四十八轮）：页首 → 模型目录 `#models`（`ModelCatalog.astro`，12 张模型卡）→ 接入与计费 `#access`（`ModelAccess.astro`）
-→ 适用场景 → 合作方式 `#partners`（`ModelPartners.astro`：自助接入、企业用量、分销合作）→ 合作流程 → 资源与指南；数据在
-`src/data/model-catalog.ts`，型号取自模型广场公开接口 `/api/shop/models/pricing`，只列主力型号、不列渠道变体，价格只链到模型广场。
+模型服务页（第四十八、四十九轮）：页首 → 模型目录 `#models`（`ModelCatalog.astro`，12 张模型卡，按钮在标题右侧，一屏可见）
+→ 接入与计费 `#access`（`ModelAccess.astro`：Chat、Responses、Anthropic、Gemini、图片五条路径与计费方式）→ 适用场景
+→ 合作方式与流程 `#process`（`ModelWays.astro`：自助接入、企业用量、分销合作各三步，下接询价准备卡）→ 资源与指南。
+数据在 `src/data/model-catalog.ts`，型号取自模型广场公开接口 `/api/shop/models/pricing`，只列主力型号、不列渠道变体，价格只链到模型广场。
 基础设施页只有 适用场景 / 合作流程 / 资源与指南 三章。
 
 ## 其他仍有效的约定

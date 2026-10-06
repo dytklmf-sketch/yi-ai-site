@@ -1,0 +1,53 @@
+---
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+import { modelWays } from '../../data/model-catalog';
+import { inquiryPath, type Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+  enterpriseSteps: { title: string; text: string }[];
+}
+const { lang, enterpriseSteps } = Astro.props;
+const x = modelWays[lang];
+const zhUI = lang === 'zh';
+---
+
+{
+  /* Round 49: the ways to work together merged into the process — one card per way, each with its own three steps
+    (numbered plainly, round 41). The enterprise card uses the shared process steps and the quote card below. */
+}
+<ol class="mw-ways" data-reveal>
+  {
+    x.ways.map((way) => (
+      <li class="mw-way">
+        <h3>{way.name}</h3>
+        <p class="mw-who">{way.who}</p>
+        <ol class="mw-steps">
+          {(way.steps || enterpriseSteps).map((step, i) => (
+            <li>
+              <span class="mw-step-index" aria-hidden="true">
+                {i + 1}
+              </span>
+              <span>
+                <strong>{step.title}</strong>
+                {step.text}
+              </span>
+            </li>
+          ))}
+        </ol>
+        {way.action.url ? (
+          <a class="text-link" href={way.action.url} target="_blank" rel="noopener noreferrer">
+            {way.action.label}
+            <ArrowUpRight size={16} />
+            <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+          </a>
+        ) : (
+          <a class="text-link" href={inquiryPath(lang, 'model-services')}>
+            {way.action.label}
+            <ArrowRight size={16} />
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ol>

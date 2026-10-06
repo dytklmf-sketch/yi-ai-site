@@ -5,7 +5,7 @@ import type { Lang } from './yi-ai';
  * https://ccg-cli.online/models/ (`/api/shop/models/pricing`): only each family's main models, without channel
  * variants. Prices stay on the catalog (the owner's call); this page explains how billing works.
  */
-type Family = { name: string; maker: string; models: string[]; tags: string[] };
+type Family = { name: string; maker?: string; region: string; models: string[]; tags: string[] };
 type Catalog = {
   label: string;
   title: [string, string];
@@ -27,162 +27,184 @@ export const modelCatalog: Record<Lang, Catalog> = {
   zh: {
     label: '模型目录',
     title: ['CCG API 模型目录', '一个 Key 调用各家主力模型'],
-    lead: '聚合国际与国产主流模型，统一用 OpenAI 兼容格式调用，Claude、Gemini、DeepSeek 等也接受 Anthropic 格式。以下是各家的主力型号，完整列表与实时价格见模型广场。',
+    lead: '各家主力型号一览，统一用 OpenAI 兼容格式调用；完整列表与实时价格见模型广场。',
     families: [
       {
         name: 'Claude',
         maker: 'Anthropic',
+        region: '国际',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
         tags: ['推理', '工具调用', '1M 上下文'],
       },
       {
         name: 'GPT',
         maker: 'OpenAI',
+        region: '国际',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
         tags: ['推理', '视觉', '1M 上下文'],
       },
       {
         name: 'Gemini',
         maker: 'Google',
+        region: '国际',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
         tags: ['推理', '音频', '1M 上下文'],
       },
       {
         name: 'Grok',
         maker: 'xAI',
+        region: '国际',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
         tags: ['推理', '视觉', '500K 上下文'],
       },
       {
         name: 'DeepSeek',
         maker: '深度求索',
+        region: '国产',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
       {
         name: '通义千问',
         maker: '阿里巴巴',
+        region: '国产',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
         tags: ['推理', '全模态', '1M 上下文'],
       },
       {
         name: 'GLM',
         maker: '智谱',
+        region: '国产',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
       {
         name: 'Kimi',
         maker: '月之暗面',
+        region: '国产',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
       {
         name: 'MiniMax',
         maker: 'MiniMax',
+        region: '国产',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
         tags: ['推理', '高速版', '1M 上下文'],
       },
       {
         name: '豆包 Seed',
         maker: '字节跳动',
+        region: '国产',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],
         tags: ['推理', '编程', '视觉'],
       },
       {
         name: 'MiMo',
         maker: '小米',
+        region: '国产',
         models: ['mimo-v2.6-pro', 'mimo-v2.5-pro', 'mimo-v2.5'],
         tags: ['推理', '音频', '开放权重'],
       },
       {
         name: '图片与视频',
-        maker: 'OpenAI · Google · 字节跳动',
-        models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'gemini-3.1-flash-image-preview', 'doubao-seedance-2.5'],
+        region: '多模态',
+        models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'doubao-seedance-2.5'],
         tags: ['文生图', '图片编辑', '视频生成'],
       },
     ],
-    note: '型号随上游更新，可用模型与价格以模型广场为准。',
+    note: '型号随上游更新',
   },
   en: {
     label: 'Models',
     title: ['CCG API models', 'One key for the leading models'],
-    lead: 'International and Chinese models behind one OpenAI-compatible API; Claude, Gemini, DeepSeek and others also take the Anthropic format. Below are each family’s main models; the catalog lists every model with live prices.',
+    lead: 'Each family’s main models, all on one OpenAI-compatible API; the catalog lists every model with live prices.',
     families: [
       {
         name: 'Claude',
         maker: 'Anthropic',
+        region: 'International',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
         tags: ['Reasoning', 'Tool use', '1M context'],
       },
       {
         name: 'GPT',
         maker: 'OpenAI',
+        region: 'International',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
         tags: ['Reasoning', 'Vision', '1M context'],
       },
       {
         name: 'Gemini',
         maker: 'Google',
+        region: 'International',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
         tags: ['Reasoning', 'Audio', '1M context'],
       },
       {
         name: 'Grok',
         maker: 'xAI',
+        region: 'International',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
         tags: ['Reasoning', 'Vision', '500K context'],
       },
       {
         name: 'DeepSeek',
         maker: 'DeepSeek',
+        region: 'China',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
       {
         name: 'Qwen',
         maker: 'Alibaba',
+        region: 'China',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
         tags: ['Reasoning', 'Omni-modal', '1M context'],
       },
       {
         name: 'GLM',
         maker: 'Zhipu',
+        region: 'China',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
       {
         name: 'Kimi',
         maker: 'Moonshot AI',
+        region: 'China',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
       {
         name: 'MiniMax',
         maker: 'MiniMax',
+        region: 'China',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
         tags: ['Reasoning', 'High-speed', '1M context'],
       },
       {
         name: 'Doubao Seed',
         maker: 'ByteDance',
+        region: 'China',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],
         tags: ['Reasoning', 'Coding', 'Vision'],
       },
       {
         name: 'MiMo',
         maker: 'Xiaomi',
+        region: 'China',
         models: ['mimo-v2.6-pro', 'mimo-v2.5-pro', 'mimo-v2.5'],
         tags: ['Reasoning', 'Audio', 'Open weights'],
       },
       {
         name: 'Image and video',
-        maker: 'OpenAI · Google · ByteDance',
-        models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'gemini-3.1-flash-image-preview', 'doubao-seedance-2.5'],
+        region: 'Multimodal',
+        models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'doubao-seedance-2.5'],
         tags: ['Text to image', 'Image editing', 'Video'],
       },
     ],
-    note: 'Models follow upstream releases; the catalog is the reference for availability and prices.',
+    note: 'Models follow upstream releases',
   },
 };
 
@@ -204,10 +226,11 @@ export const modelAccess: Record<Lang, Access> = {
     title: '接入与计费',
     baseLabel: '接入地址',
     endpoints: [
-      { name: 'OpenAI 兼容', path: 'POST /v1/chat/completions', scope: '全部文本模型' },
-      { name: 'Anthropic', path: 'POST /v1/messages', scope: 'Claude、Gemini、DeepSeek 等，以模型广场标注为准' },
-      { name: 'Gemini', path: 'POST /v1beta/models/{model}:generateContent', scope: 'Gemini 图片模型' },
-      { name: '图片生成', path: 'POST /v1/images/generations', scope: 'gpt-image 系列' },
+      { name: 'OpenAI Chat', path: '/v1/chat/completions', scope: '全部文本模型，兼容最广' },
+      { name: 'OpenAI Responses', path: '/v1/responses', scope: 'GPT 系列，Codex 默认使用' },
+      { name: 'Anthropic', path: '/v1/messages', scope: 'Claude、Gemini、DeepSeek 等，以模型广场标注为准' },
+      { name: 'Gemini', path: '/v1beta/models/{model}:generateContent', scope: 'Gemini 图片模型' },
+      { name: '图片生成', path: '/v1/images/generations', scope: 'gpt-image 系列' },
     ],
     toolsLabel: '常用工具',
     tools: ['Codex', 'Claude Code', 'OpenClaw', 'Hermes'],
@@ -229,10 +252,11 @@ export const modelAccess: Record<Lang, Access> = {
     title: 'Access & billing',
     baseLabel: 'Base URL',
     endpoints: [
-      { name: 'OpenAI-compatible', path: 'POST /v1/chat/completions', scope: 'All text models' },
-      { name: 'Anthropic', path: 'POST /v1/messages', scope: 'Claude, Gemini, DeepSeek and others; see the catalog' },
-      { name: 'Gemini', path: 'POST /v1beta/models/{model}:generateContent', scope: 'Gemini image models' },
-      { name: 'Images', path: 'POST /v1/images/generations', scope: 'gpt-image models' },
+      { name: 'OpenAI Chat', path: '/v1/chat/completions', scope: 'All text models; the widest support' },
+      { name: 'OpenAI Responses', path: '/v1/responses', scope: 'GPT models; what Codex uses' },
+      { name: 'Anthropic', path: '/v1/messages', scope: 'Claude, Gemini, DeepSeek and others; see the catalog' },
+      { name: 'Gemini', path: '/v1beta/models/{model}:generateContent', scope: 'Gemini image models' },
+      { name: 'Images', path: '/v1/images/generations', scope: 'gpt-image models' },
     ],
     toolsLabel: 'Works with',
     tools: ['Codex', 'Claude Code', 'OpenClaw', 'Hermes'],
@@ -252,31 +276,36 @@ export const modelAccess: Record<Lang, Access> = {
   },
 };
 
-type Way = { name: string; who: string; lines: string[]; action: { label: string; url?: string } };
+type Step = { title: string; text: string };
+// The enterprise way takes its steps from service-details (the shared process data); the others carry their own.
+type Way = { name: string; who: string; steps?: Step[]; action: { label: string; url?: string } };
 
-export const modelPartners: Record<Lang, { title: string; ways: Way[] }> = {
+export const modelWays: Record<Lang, { title: string; ways: Way[] }> = {
   zh: {
-    title: '合作方式',
+    title: '合作方式与流程',
     ways: [
       {
         name: '自助接入',
         who: '个人开发者与小团队',
-        lines: ['注册后在控制台创建 API Key', '按实际用量扣费，模型广场标明单价', '余额与调用日志随时可查'],
+        steps: [
+          { title: '注册账号', text: '在 CCG API 控制台注册。' },
+          { title: '开通 Key', text: '开通 API Key 并充值，按实际用量扣费。' },
+          { title: '接入调用', text: '把接入地址和 Key 填进代码或工具。' },
+        ],
         action: { label: '打开控制台', url: modelLinks.account },
       },
       {
         name: '企业用量',
         who: '调用量稳定增长的企业',
-        lines: ['用量与价格单独洽谈', '按月结算并对账', '约定异常联络人与模型变更通知'],
         action: { label: '企业用量咨询' },
       },
       {
         name: '分销合作',
         who: '有客户渠道的个人或机构',
-        lines: [
-          '在线申请，审核通过后获得邀请码与注册链接',
-          '按下游用户的实际消耗分档返佣',
-          '每月结算，返佣直接计入钱包余额',
+        steps: [
+          { title: '提交申请', text: '填写推广渠道与预计规模。' },
+          { title: '审核开通', text: '通过后获得邀请码与注册链接。' },
+          { title: '按月返佣', text: '按下游实际消耗分档计算，计入钱包余额。' },
         ],
         action: { label: '申请成为分销商', url: modelLinks.agent },
       },
@@ -288,30 +317,25 @@ export const modelPartners: Record<Lang, { title: string; ways: Way[] }> = {
       {
         name: 'Self-serve',
         who: 'Developers and small teams',
-        lines: [
-          'Sign up and create an API key in the console',
-          'Pay for what you use; the catalog lists unit prices',
-          'Balance and call logs are always available',
+        steps: [
+          { title: 'Sign up', text: 'Register in the CCG API console.' },
+          { title: 'Get a key', text: 'Open an API key and top it up; you pay for what you use.' },
+          { title: 'Connect', text: 'Put the base URL and key into your code or tools.' },
         ],
         action: { label: 'Open the console', url: modelLinks.account },
       },
       {
         name: 'Enterprise volume',
         who: 'Companies with steady, growing usage',
-        lines: [
-          'Volume and pricing agreed separately',
-          'Monthly billing and reconciliation',
-          'Agreed contacts and notice of model changes',
-        ],
         action: { label: 'Enterprise usage' },
       },
       {
         name: 'Referral partners',
         who: 'People or firms with customers to refer',
-        lines: [
-          'Apply online; approval brings an invite code and sign-up link',
-          'Tiered commission on referred users’ actual usage',
-          'Settled monthly and paid into your wallet balance',
+        steps: [
+          { title: 'Apply', text: 'Tell us your channels and expected reach.' },
+          { title: 'Approval', text: 'Get an invite code and a sign-up link.' },
+          { title: 'Monthly commission', text: 'Tiered on referred users’ usage, paid into your wallet.' },
         ],
         action: { label: 'Apply as a partner', url: modelLinks.agent },
       },
