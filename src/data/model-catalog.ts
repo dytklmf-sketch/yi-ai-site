@@ -5,11 +5,19 @@ import type { Lang } from './yi-ai';
  * https://ccg-cli.online/models/ (`/api/shop/models/pricing`): only each family's main models, without channel
  * variants. Prices stay on the catalog (the owner's call); this page explains how billing works.
  */
-type Family = { name: string; maker?: string; region: string; models: string[]; tags: string[] };
+// `mark` and `color` draw the family's monogram tile (round 50); colours are dark enough for white type.
+type Family = {
+  name: string;
+  maker?: string;
+  region: string;
+  mark: string;
+  color: string;
+  models: string[];
+  tags: string[];
+};
 type Catalog = {
   label: string;
   title: [string, string];
-  lead: string;
   families: Family[];
   note: string;
 };
@@ -27,12 +35,13 @@ export const modelCatalog: Record<Lang, Catalog> = {
   zh: {
     label: '模型目录',
     title: ['CCG API 模型目录', '一个 Key 调用各家主力模型'],
-    lead: '各家主力型号一览，统一用 OpenAI 兼容格式调用；完整列表与实时价格见模型广场。',
     families: [
       {
         name: 'Claude',
         maker: 'Anthropic',
         region: '国际',
+        mark: 'A',
+        color: '#b4532a',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
         tags: ['推理', '工具调用', '1M 上下文'],
       },
@@ -40,6 +49,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GPT',
         maker: 'OpenAI',
         region: '国际',
+        mark: 'O',
+        color: '#0b7a5f',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
         tags: ['推理', '视觉', '1M 上下文'],
       },
@@ -47,6 +58,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Gemini',
         maker: 'Google',
         region: '国际',
+        mark: 'G',
+        color: '#3b5bdb',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
         tags: ['推理', '音频', '1M 上下文'],
       },
@@ -54,6 +67,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Grok',
         maker: 'xAI',
         region: '国际',
+        mark: 'x',
+        color: '#1f2937',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
         tags: ['推理', '视觉', '500K 上下文'],
       },
@@ -61,6 +76,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'DeepSeek',
         maker: '深度求索',
         region: '国产',
+        mark: 'D',
+        color: '#3651d4',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
@@ -68,6 +85,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: '通义千问',
         maker: '阿里巴巴',
         region: '国产',
+        mark: 'Q',
+        color: '#5b47d6',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
         tags: ['推理', '全模态', '1M 上下文'],
       },
@@ -75,6 +94,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GLM',
         maker: '智谱',
         region: '国产',
+        mark: 'Z',
+        color: '#1e56c7',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
@@ -82,6 +103,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Kimi',
         maker: '月之暗面',
         region: '国产',
+        mark: 'K',
+        color: '#18181b',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
         tags: ['推理', '开放权重', '1M 上下文'],
       },
@@ -89,6 +112,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiniMax',
         maker: 'MiniMax',
         region: '国产',
+        mark: 'M',
+        color: '#c2185b',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
         tags: ['推理', '高速版', '1M 上下文'],
       },
@@ -96,6 +121,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: '豆包 Seed',
         maker: '字节跳动',
         region: '国产',
+        mark: '豆',
+        color: '#1f5fd6',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],
         tags: ['推理', '编程', '视觉'],
       },
@@ -103,27 +130,32 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiMo',
         maker: '小米',
         region: '国产',
+        mark: 'Mi',
+        color: '#c2410c',
         models: ['mimo-v2.6-pro', 'mimo-v2.5-pro', 'mimo-v2.5'],
         tags: ['推理', '音频', '开放权重'],
       },
       {
         name: '图片与视频',
         region: '多模态',
+        mark: '',
+        color: '#8e2fbf',
         models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'doubao-seedance-2.5'],
         tags: ['文生图', '图片编辑', '视频生成'],
       },
     ],
-    note: '型号随上游更新',
+    note: '完整列表与实时价格见模型广场',
   },
   en: {
     label: 'Models',
     title: ['CCG API models', 'One key for the leading models'],
-    lead: 'Each family’s main models, all on one OpenAI-compatible API; the catalog lists every model with live prices.',
     families: [
       {
         name: 'Claude',
         maker: 'Anthropic',
         region: 'International',
+        mark: 'A',
+        color: '#b4532a',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
         tags: ['Reasoning', 'Tool use', '1M context'],
       },
@@ -131,6 +163,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GPT',
         maker: 'OpenAI',
         region: 'International',
+        mark: 'O',
+        color: '#0b7a5f',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
         tags: ['Reasoning', 'Vision', '1M context'],
       },
@@ -138,6 +172,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Gemini',
         maker: 'Google',
         region: 'International',
+        mark: 'G',
+        color: '#3b5bdb',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
         tags: ['Reasoning', 'Audio', '1M context'],
       },
@@ -145,6 +181,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Grok',
         maker: 'xAI',
         region: 'International',
+        mark: 'x',
+        color: '#1f2937',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
         tags: ['Reasoning', 'Vision', '500K context'],
       },
@@ -152,6 +190,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'DeepSeek',
         maker: 'DeepSeek',
         region: 'China',
+        mark: 'D',
+        color: '#3651d4',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
@@ -159,6 +199,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Qwen',
         maker: 'Alibaba',
         region: 'China',
+        mark: 'Q',
+        color: '#5b47d6',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
         tags: ['Reasoning', 'Omni-modal', '1M context'],
       },
@@ -166,6 +208,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GLM',
         maker: 'Zhipu',
         region: 'China',
+        mark: 'Z',
+        color: '#1e56c7',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
@@ -173,6 +217,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Kimi',
         maker: 'Moonshot AI',
         region: 'China',
+        mark: 'K',
+        color: '#18181b',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
         tags: ['Reasoning', 'Open weights', '1M context'],
       },
@@ -180,6 +226,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiniMax',
         maker: 'MiniMax',
         region: 'China',
+        mark: 'M',
+        color: '#c2185b',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
         tags: ['Reasoning', 'High-speed', '1M context'],
       },
@@ -187,6 +235,8 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Doubao Seed',
         maker: 'ByteDance',
         region: 'China',
+        mark: 'B',
+        color: '#1f5fd6',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],
         tags: ['Reasoning', 'Coding', 'Vision'],
       },
@@ -194,17 +244,21 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiMo',
         maker: 'Xiaomi',
         region: 'China',
+        mark: 'Mi',
+        color: '#c2410c',
         models: ['mimo-v2.6-pro', 'mimo-v2.5-pro', 'mimo-v2.5'],
         tags: ['Reasoning', 'Audio', 'Open weights'],
       },
       {
         name: 'Image and video',
         region: 'Multimodal',
+        mark: '',
+        color: '#8e2fbf',
         models: ['gpt-image-2', 'gemini-3-pro-image-preview', 'doubao-seedance-2.5'],
         tags: ['Text to image', 'Image editing', 'Video'],
       },
     ],
-    note: 'Models follow upstream releases',
+    note: 'Every model and live prices are in the catalog',
   },
 };
 
@@ -218,6 +272,8 @@ type Access = {
   toolsNote: string;
   billingTitle: string;
   billing: [string, string][];
+  formulaLabel: string;
+  formula: string;
   links: { label: string; url: string }[];
 };
 
@@ -242,6 +298,8 @@ export const modelAccess: Record<Lang, Access> = {
       ['余额与用量', '余额查询页实时查看，控制台有逐次调用日志'],
       ['企业用量', '月结与价格单独洽谈'],
     ],
+    formulaLabel: '单次调用费用',
+    formula: '输入 tokens × 输入单价 + 输出 tokens × 输出单价 + 缓存 tokens × 缓存单价',
     links: [
       { label: '模型广场实时价格', url: modelLinks.catalog },
       { label: '余额查询', url: modelLinks.quota },
@@ -268,6 +326,8 @@ export const modelAccess: Record<Lang, Access> = {
       ['Balance and usage', 'Live on the balance page; the console logs every call'],
       ['Enterprise volume', 'Monthly billing and pricing agreed separately'],
     ],
+    formulaLabel: 'Cost of one call',
+    formula: 'input tokens × input price + output tokens × output price + cached tokens × cache price',
     links: [
       { label: 'Live prices in the catalog', url: modelLinks.catalog },
       { label: 'Balance', url: modelLinks.quota },

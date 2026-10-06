@@ -4978,7 +4978,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .mc-cta {
   display: grid;
   grid-column: 2;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   align-content: end;
   justify-items: end;
   gap: 0.375rem;
@@ -5020,57 +5020,139 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   color: var(--cobalt);
   font-style: normal;
 }
-.mc-lead {
-  max-width: 52rem;
-  margin: 0;
-  color: var(--body);
-  font-size: 0.9375rem;
-  line-height: 1.7;
+
+/* Round 50: the light shared by the model, access and process cards — a soft spotlight that follows the pointer
+   (--gx/--gy from interactions.ts) and a brighter rim near it, on hover-capable pointers only. */
+.glow-card {
+  --glow: var(--cobalt);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
+.glow-card::before,
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease);
+}
+.glow-card::before {
+  background: radial-gradient(
+    18rem circle at var(--gx, 50%) var(--gy, 0%),
+    color-mix(in srgb, var(--glow) 13%, transparent),
+    transparent 65%
+  );
+}
+.glow-card::after {
+  z-index: 1;
+  padding: 1px;
+  background: radial-gradient(
+    12rem circle at var(--gx, 50%) var(--gy, 0%),
+    color-mix(in srgb, var(--glow) 75%, transparent),
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+@media (hover: hover) {
+  .glow-card:hover::before,
+  .glow-card:hover::after {
+    opacity: 1;
+  }
+}
+/* One diagonal sheen crosses each card as it arrives; it never repeats and is hidden under reduced motion. */
+.card-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    color-mix(in srgb, var(--glow) 14%, transparent) 46%,
+    rgb(255 255 255 / 70%) 50%,
+    color-mix(in srgb, var(--glow) 14%, transparent) 54%,
+    transparent 65%
+  );
+  background-position: 100% 0;
+  background-size: 300% 100%;
+  pointer-events: none;
+}
+
 .mc-families {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.75rem;
-  margin: 1.125rem 0 0;
+  margin: 0.875rem 0 0;
   padding: 0;
   list-style: none;
 }
-/* Round 49: white cards with a gradient top edge (like the Enterprise card), the lead model as a tinted chip. */
+/* Round 50: each family has a monogram tile in its own colour and a faint wash of it in the top-right corner. */
 .mc-family {
-  position: relative;
+  --glow: var(--fam);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  padding: 0.875rem 1rem 0.6875rem;
-  border: 1px solid rgb(var(--accent-rgb) / 16%);
+  padding: 0.8125rem 1rem 0.625rem;
+  border: 1px solid rgb(var(--accent-rgb) / 14%);
   border-radius: 1.125rem;
-  background: #fff;
+  background:
+    radial-gradient(16rem 7rem at 100% 0, color-mix(in srgb, var(--fam) 9%, transparent), transparent 70%), #fff;
   box-shadow:
     0 1px 2px rgb(var(--accent-rgb) / 6%),
     0 0.875rem 1.75rem -1.5rem rgb(var(--accent-rgb) / 45%);
 }
-.mc-family::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, var(--cobalt), var(--cobalt-300));
-}
 .mc-family-head {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.625rem;
 }
-.mc-family-head h3 {
+.mc-tile {
+  display: grid;
   flex: none;
+  place-items: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.6875rem;
+  background: linear-gradient(140deg, var(--fam), color-mix(in srgb, var(--fam) 70%, #000));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 25%),
+    0 0.375rem 0.875rem -0.375rem color-mix(in srgb, var(--fam) 70%, transparent);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.mc-family-name {
+  min-width: 0;
+}
+.mc-family-name h3 {
   margin: 0;
   color: var(--ink);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   font-weight: 800;
+  line-height: 1.25;
+}
+.mc-maker {
+  margin: 0.0625rem 0 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.75rem;
   line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mc-region {
-  order: 2;
+  align-self: flex-start;
   margin-left: auto;
   padding: 0.0625rem 0.5rem;
   border-radius: 999px;
@@ -5080,31 +5162,11 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   font-weight: 600;
   white-space: nowrap;
 }
-.mc-maker {
-  order: 1;
-  min-width: 0;
-  margin: 0;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.mc-models code {
-  display: inline-block;
-  max-width: 100%;
-  padding: 0.1875rem 0.4375rem;
-  border-radius: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.71875rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
 .mc-models {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  margin: 0.625rem 0;
+  margin: 0.6875rem 0 0.625rem;
   padding: 0;
   list-style: none;
 }
@@ -5113,12 +5175,20 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   line-height: 1;
 }
 .mc-models code {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.1875rem 0.4375rem;
   border: 1px solid var(--line);
-  background: #fbfbfe;
+  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 80%);
   color: var(--body);
+  font-family: var(--font-mono);
+  font-size: 0.71875rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 .mc-models li:first-child code {
-  border: 1px solid var(--cobalt-200);
+  border-color: var(--cobalt-200);
   background: var(--pale);
   color: var(--cobalt-600);
   font-weight: 700;
@@ -5147,22 +5217,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background: var(--cobalt-300);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .mc-family {
-    transition:
-      transform 0.2s var(--ease),
-      border-color 0.2s var(--ease),
-      box-shadow 0.2s var(--ease);
-  }
-  .mc-family:hover {
-    transform: translateY(-2px);
-    border-color: var(--cobalt-300);
-    box-shadow:
-      0 1px 2px rgb(var(--accent-rgb) / 8%),
-      0 1.25rem 2rem -1.5rem rgb(var(--accent-rgb) / 60%);
-  }
+  background: var(--fam);
+  opacity: 0.7;
 }
 .mc-note {
   margin: 0;
@@ -5184,7 +5240,10 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: clamp(1.25rem, 2.4vw, 1.75rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background: #fff;
+  background:
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
+    #fff;
+  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
 }
 .ma-label {
   margin: 0;
@@ -5198,8 +5257,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .ma-base code {
   display: block;
   padding: 0.625rem 0.875rem;
+  border: 1px solid var(--cobalt-200);
   border-radius: 0.75rem;
-  background: var(--pale-2);
+  background: linear-gradient(90deg, var(--pale), var(--pale-2));
   color: var(--cobalt-600);
   font-family: var(--font-mono);
   font-size: 0.9375rem;
@@ -5216,8 +5276,14 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   display: grid;
   grid-template-columns: 9.5rem minmax(0, 1fr);
   gap: 0.125rem 0.75rem;
-  padding: 0.5625rem 0;
+  margin: 0 -0.625rem;
+  padding: 0.5625rem 0.625rem;
   border-bottom: 1px solid var(--line);
+  border-radius: 0.5rem;
+  transition: background-color 0.2s var(--ease);
+}
+.ma-endpoints li:hover {
+  background: rgb(var(--accent-rgb) / 6%);
 }
 .ma-endpoints strong {
   grid-row: span 2;
@@ -5234,8 +5300,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   margin-right: 0.375rem;
   padding: 0.0625rem 0.375rem;
   border-radius: 0.3125rem;
-  background: var(--pale);
-  color: var(--cobalt-600);
+  background: var(--cobalt);
+  color: #fff;
   font-size: 0.6875rem;
   font-weight: 700;
 }
@@ -5254,6 +5320,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: 0.25rem 0.75rem;
   border: 1px solid var(--cobalt-200);
   border-radius: 999px;
+  background: #fff;
   color: var(--ink);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -5296,6 +5363,27 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   font-size: 0.875rem;
   line-height: 1.6;
 }
+/* Round 50: how one text call is priced, under the billing rows. */
+.ma-formula {
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem;
+  border: 1px dashed var(--cobalt-200);
+  border-radius: 0.875rem;
+  background: var(--pale-2);
+}
+.ma-formula p {
+  margin: 0;
+  color: var(--cobalt-600);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.ma-formula code {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
 .ma-links {
   display: flex;
   flex-wrap: wrap;
@@ -5313,21 +5401,34 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   list-style: none;
 }
 .mw-way {
-  position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   padding: clamp(1.25rem, 2.4vw, 1.625rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background: #fff;
+  background:
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
+    radial-gradient(18rem 9rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%),
+    #fff;
+  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
 }
-.mw-way::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, var(--cobalt), var(--cobalt-300));
+.mw-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mw-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  background: linear-gradient(140deg, var(--cobalt), var(--cobalt-600));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 25%),
+    0 0.5rem 1rem -0.5rem rgb(var(--accent-rgb) / 70%);
+  color: #fff;
 }
 .mw-way h3 {
   margin: 0;
@@ -5335,14 +5436,14 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   font-size: 1.125rem;
 }
 .mw-who {
-  margin: 0.25rem 0 0;
+  margin: 0.125rem 0 0;
   color: var(--muted);
   font-size: 0.875rem;
 }
 .mw-steps {
   display: grid;
   gap: 0.875rem;
-  margin: 1rem 0 1.25rem;
+  margin: 1.125rem 0 1.25rem;
   padding: 1rem 0 0;
   border-top: 1px solid var(--line);
   list-style: none;
@@ -5363,8 +5464,11 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   top: 1.875rem;
   bottom: -0.75rem;
   left: 0.875rem;
-  width: 1px;
-  background: var(--cobalt-200);
+  width: 2px;
+  margin-left: -0.5px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--cobalt-300), var(--cobalt-200));
+  transform-origin: top;
 }
 .mw-steps strong {
   display: block;
@@ -5382,12 +5486,103 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   color: var(--cobalt);
   font-size: 0.875rem;
   font-weight: 800;
+  transition:
+    background-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+.mw-steps li:hover .mw-step-index {
+  border-color: var(--cobalt);
+  background: var(--cobalt);
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgb(var(--accent-rgb) / 14%);
 }
 .mw-way .text-link {
   margin-top: auto;
 }
 .mw-ways + .brief-card {
   margin-top: 1.5rem;
+}
+
+/* Round 50 motion: the cards rise in turn with one sheen each, the step numbers light up in order and the line
+   between them draws down. Hover lifts the card and its tile. All of it plays once, only without reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .glow-card {
+    transition:
+      transform 0.25s var(--ease),
+      border-color 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  .glow-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 1px 2px rgb(var(--accent-rgb) / 8%),
+      0 1.5rem 2.5rem -1.75rem color-mix(in srgb, var(--glow) 70%, transparent);
+  }
+  .mc-tile,
+  .mw-icon {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .glow-card:hover .mc-tile,
+  .glow-card:hover .mw-icon {
+    transform: scale(1.08) rotate(-4deg);
+  }
+  .card-sheen {
+    display: block;
+  }
+  .reveal-ready .mc-panel.is-in .mc-family,
+  .reveal-ready .ma-grid.is-in .ma-card,
+  .reveal-ready .mw-ways.is-in .mw-way {
+    animation: card-rise 0.7s calc(var(--i, 0) * 60ms + 0.15s) var(--ease) both;
+  }
+  .reveal-ready .mc-panel.is-in .card-sheen,
+  .reveal-ready .ma-grid.is-in .card-sheen,
+  .reveal-ready .mw-ways.is-in .card-sheen {
+    animation: card-sheen 1.3s calc(var(--i, 0) * 60ms + 0.55s) var(--ease) both;
+  }
+  .reveal-ready .mw-ways.is-in .mw-step-index {
+    animation: step-light 0.9s calc(var(--i, 0) * 120ms + var(--s, 0) * 260ms + 0.5s) var(--ease) both;
+  }
+  .reveal-ready .mw-ways.is-in .mw-steps li:not(:last-child)::after {
+    animation: line-down 0.4s calc(var(--i, 0) * 120ms + var(--s, 0) * 260ms + 0.75s) var(--ease) both;
+  }
+}
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.98);
+  }
+}
+/* The sheen moves its background, not the layer, so nothing ever sits outside the card. */
+@keyframes card-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes step-light {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.12);
+    border-color: var(--cobalt);
+    background: var(--cobalt);
+    color: #fff;
+    box-shadow: 0 0 0 0.375rem rgb(var(--accent-rgb) / 18%);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes line-down {
+  from {
+    transform: scaleY(0);
+  }
 }
 
 @media (max-width: 1080px) {

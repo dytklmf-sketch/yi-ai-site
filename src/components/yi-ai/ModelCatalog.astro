@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight } from '@lucide/astro';
+import { ArrowUpRight, Images } from '@lucide/astro';
 import { modelCatalog, modelLinks } from '../../data/model-catalog';
 import { withBase, type Lang } from '../../data/yi-ai';
 
@@ -12,8 +12,9 @@ const zhUI = lang === 'zh';
 ---
 
 {
-  /* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel; round 49 gives each card
-    a gradient top edge like the Enterprise card, the family's models as chips, the first one tinted. */
+  /* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel. Round 50: each family
+    gets a monogram tile in its own colour and a faint corner tint; cards rise in once with a sheen, and a soft light
+    follows the pointer (data-glow, interactions.ts). The family's models are chips, the first one tinted. */
 }
 <section id="models" class="section mc-section" aria-labelledby="models-title">
   <div class="container">
@@ -27,7 +28,6 @@ const zhUI = lang === 'zh';
         <h2 id="models-title" class="mc-title">
           {x.title[0]}<em>{x.title[1]}</em>
         </h2>
-        <p class="mc-lead">{x.lead}</p>
         <div class="mc-cta">
           <a class="btn btn-primary" href={modelLinks.catalog} target="_blank" rel="noopener noreferrer">
             {zhUI ? '打开模型广场' : 'Open the catalog'}
@@ -39,12 +39,18 @@ const zhUI = lang === 'zh';
       </header>
       <ul class="mc-families">
         {
-          x.families.map((family) => (
-            <li class="mc-family">
+          x.families.map((family, i) => (
+            <li class="mc-family glow-card" style={`--fam:${family.color};--i:${i}`} data-glow>
+              <span class="card-sheen" aria-hidden="true" />
               <header class="mc-family-head">
-                <h3>{family.name}</h3>
+                <span class="mc-tile" aria-hidden="true">
+                  {family.mark || <Images size={18} />}
+                </span>
+                <div class="mc-family-name">
+                  <h3>{family.name}</h3>
+                  {family.maker && <p class="mc-maker">{family.maker}</p>}
+                </div>
                 <span class="mc-region">{family.region}</span>
-                {family.maker && <p class="mc-maker">{family.maker}</p>}
               </header>
               <ul class="mc-models">
                 {family.models.map((model) => (

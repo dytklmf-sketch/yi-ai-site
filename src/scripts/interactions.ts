@@ -269,3 +269,14 @@ fab?.querySelector<HTMLButtonElement>('[data-fab-copy]')?.addEventListener('clic
 document.addEventListener('click', (event) => {
   if (fab?.open && !fab.contains(event.target as Node)) fab.open = false;
 });
+
+// Round 50: cards marked data-glow light up around the pointer; the CSS draws the light from --gx/--gy.
+if (matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll<HTMLElement>('[data-glow]').forEach((card) => {
+    card.addEventListener('pointermove', (event) => {
+      const box = card.getBoundingClientRect();
+      card.style.setProperty('--gx', `${Math.round(event.clientX - box.left)}px`);
+      card.style.setProperty('--gy', `${Math.round(event.clientY - box.top)}px`);
+    });
+  });
+}

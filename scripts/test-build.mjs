@@ -139,7 +139,7 @@ for (const file of html) {
     );
     if (ms)
       assert(
-        (text.match(/class="mc-family"/g) || []).length === 12 &&
+        (text.match(/class="mc-family glow-card"[^>]*data-glow/g) || []).length === 12 &&
           text.includes('/v1/responses') &&
           !text.includes('id="partners"') &&
           text.includes('https://ccg-cli.online/models/') &&
