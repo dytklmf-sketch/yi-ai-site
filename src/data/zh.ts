@@ -35,9 +35,9 @@ export const zh: SiteCopy = {
     },
     {
       service: 'model-services',
-      question: '供应合作等于模型厂商直供吗？',
+      question: '支持哪些接口格式？',
       answer:
-        '不是。我们对接的是直接合作的供应渠道，不是模型厂商直供，也没有厂商官方授权。可用模型、结算与责任范围逐项确认。',
+        '支持 OpenAI Chat（/v1/chat/completions）与 OpenAI Responses（/v1/responses）；Claude、Gemini、DeepSeek 等模型也可用 Anthropic 格式（/v1/messages）调用。各模型支持的格式以模型广场标注为准。',
     },
     {
       service: 'infrastructure',
@@ -153,7 +153,6 @@ export const zh: SiteCopy = {
         { title: '供应合作', text: '持有模型资源或额度，以供应方身份合作' },
       ],
       preparation: ['所需模型', '每月预估调用量', '结算方式'],
-      boundary: '我们对接的是直接合作的供应渠道，不是模型厂商直供，也没有厂商官方授权。',
     },
     infrastructure: {
       label: '基础设施能力',

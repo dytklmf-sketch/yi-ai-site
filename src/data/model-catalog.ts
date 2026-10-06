@@ -5,11 +5,15 @@ import type { Lang } from './yi-ai';
  * https://ccg-cli.online/models/ (`/api/shop/models/pricing`): only each family's main models, without channel
  * variants. Prices stay on the catalog (the owner's call); this page explains how billing works.
  */
-// `mark` and `color` draw the family's monogram tile (round 50); colours are dark enough for white type.
+// `icon` is the vendor's logo in public/models/ (round 51): SVGs from @lobehub/icons-static-svg 1.95.1 (MIT,
+// github.com/lobehub/lobe-icons), unmodified; the logos are their owners' trademarks and only say whose model a card
+// lists. `mark` is the fallback monogram (round 50): used for MiMo, which only has a wordmark, or if a logo has to
+// come down. `color` tints the card.
 type Family = {
   name: string;
   maker?: string;
   region: string;
+  icon?: string;
   mark: string;
   color: string;
   models: string[];
@@ -40,6 +44,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Claude',
         maker: 'Anthropic',
         region: '国际',
+        icon: 'claude-color.svg',
         mark: 'A',
         color: '#b4532a',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
@@ -49,6 +54,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GPT',
         maker: 'OpenAI',
         region: '国际',
+        icon: 'openai.svg',
         mark: 'O',
         color: '#0b7a5f',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
@@ -58,6 +64,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Gemini',
         maker: 'Google',
         region: '国际',
+        icon: 'gemini-color.svg',
         mark: 'G',
         color: '#3b5bdb',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
@@ -67,6 +74,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Grok',
         maker: 'xAI',
         region: '国际',
+        icon: 'grok.svg',
         mark: 'x',
         color: '#1f2937',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
@@ -76,6 +84,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'DeepSeek',
         maker: '深度求索',
         region: '国产',
+        icon: 'deepseek-color.svg',
         mark: 'D',
         color: '#3651d4',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
@@ -85,6 +94,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: '通义千问',
         maker: '阿里巴巴',
         region: '国产',
+        icon: 'qwen-color.svg',
         mark: 'Q',
         color: '#5b47d6',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
@@ -94,6 +104,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GLM',
         maker: '智谱',
         region: '国产',
+        icon: 'zhipu-color.svg',
         mark: 'Z',
         color: '#1e56c7',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
@@ -103,6 +114,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Kimi',
         maker: '月之暗面',
         region: '国产',
+        icon: 'kimi.svg',
         mark: 'K',
         color: '#18181b',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
@@ -112,6 +124,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiniMax',
         maker: 'MiniMax',
         region: '国产',
+        icon: 'minimax-color.svg',
         mark: 'M',
         color: '#c2185b',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
@@ -121,6 +134,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: '豆包 Seed',
         maker: '字节跳动',
         region: '国产',
+        icon: 'doubao-color.svg',
         mark: '豆',
         color: '#1f5fd6',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],
@@ -154,6 +168,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Claude',
         maker: 'Anthropic',
         region: 'International',
+        icon: 'claude-color.svg',
         mark: 'A',
         color: '#b4532a',
         models: ['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'],
@@ -163,6 +178,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GPT',
         maker: 'OpenAI',
         region: 'International',
+        icon: 'openai.svg',
         mark: 'O',
         color: '#0b7a5f',
         models: ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-luna', 'gpt-5.5'],
@@ -172,6 +188,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Gemini',
         maker: 'Google',
         region: 'International',
+        icon: 'gemini-color.svg',
         mark: 'G',
         color: '#3b5bdb',
         models: ['gemini-3.1-pro', 'gemini-3.5-flash', 'gemini-3-flash'],
@@ -181,6 +198,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Grok',
         maker: 'xAI',
         region: 'International',
+        icon: 'grok.svg',
         mark: 'x',
         color: '#1f2937',
         models: ['grok-4.7', 'grok-4.6', 'grok-4.5'],
@@ -190,6 +208,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'DeepSeek',
         maker: 'DeepSeek',
         region: 'China',
+        icon: 'deepseek-color.svg',
         mark: 'D',
         color: '#3651d4',
         models: ['deepseek-v4-pro', 'deepseek-v4.1-flash', 'deepseek-v4-flash'],
@@ -199,6 +218,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Qwen',
         maker: 'Alibaba',
         region: 'China',
+        icon: 'qwen-color.svg',
         mark: 'Q',
         color: '#5b47d6',
         models: ['qwen3.8-max', 'qwen3.8-flash', 'qwen3.7-plus', 'qwen3.8-omni-flash'],
@@ -208,6 +228,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'GLM',
         maker: 'Zhipu',
         region: 'China',
+        icon: 'zhipu-color.svg',
         mark: 'Z',
         color: '#1e56c7',
         models: ['glm-5.3', 'glm-5.3-flash', 'glm-5.2'],
@@ -217,6 +238,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Kimi',
         maker: 'Moonshot AI',
         region: 'China',
+        icon: 'kimi.svg',
         mark: 'K',
         color: '#18181b',
         models: ['kimi-k3', 'kimi-k2.7', 'kimi-k2.6'],
@@ -226,6 +248,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'MiniMax',
         maker: 'MiniMax',
         region: 'China',
+        icon: 'minimax-color.svg',
         mark: 'M',
         color: '#c2185b',
         models: ['MiniMax-M3', 'MiniMax-M3-highspeed', 'MiniMax-M2.7'],
@@ -235,6 +258,7 @@ export const modelCatalog: Record<Lang, Catalog> = {
         name: 'Doubao Seed',
         maker: 'ByteDance',
         region: 'China',
+        icon: 'doubao-color.svg',
         mark: 'B',
         color: '#1f5fd6',
         models: ['doubao-seed-2.1-turbo', 'doubao-seed-2.0-pro', 'doubao-seed-2.0-code'],

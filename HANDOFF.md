@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 50 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 51 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第五十轮）
+## 当前版本（第五十一轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第五十轮（模型卡重做为字母色块、三块卡片加光效与动效，见 `docs/rounds/50-model-cards-glow.md`）
+- 当前轮次：第五十一轮（模型卡换厂商图标、去掉授权相关说明，见 `docs/rounds/51-vendor-icons.md`）
 - 线上发布：`release-20261006060408`，commit `efa7104`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 第五十轮完整浏览器测试：见 `docs/rounds/50-model-cards-glow.md`
+- 第五十一轮完整浏览器测试：见 `docs/rounds/51-vendor-icons.md`
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
@@ -64,6 +64,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - **用官方 WorkBuddy 标志**：图标 + 官方字标 `public/partners/workbuddy-wordmark.svg`（深色）/ `workbuddy-wordmark-white.svg`
   （白色，页首示例窗口用），不要用打字拼出来的「WorkBuddy」字样代替。
 - 业务流程里不写具体用量示例（如「2000 万 tokens」）；联系入口是每页右下角常驻「联系我们」按钮（联系页除外）。
+- 站长要求（第五十一轮）：模型服务相关页面不写「是否厂商官方授权 / 是否直供」之类的说明；WorkBuddy 的授权证书照旧展示。
 - 「CCG」只允许出现在模型服务页和关于页，且写作「CCG API」；指南里用通用说法（如 `api.example.com`）。
 - 每次改动后都要上线并推 GitHub，回复里给线上链接。站长看了效果会继续提细节修改，按轮推进。
 
@@ -79,11 +80,11 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 → 企业版 vs 个人版 `#compare`（`WorkBuddyCompare.astro`：手机型号式双卡，左个人版减号、右企业版对勾，各 8 行，中间 VS 细线胶囊，
 `data-row` 行联动高亮，入场动效只在 `prefers-reduced-motion: no-preference` 下运行）→ 适用场景 → 合作流程 → 资源与指南（紧凑列表 `GuideList.astro`）。
 数据都在 `src/data/workbuddy-editions.ts`（`workbuddyEditions`、`workbuddyCompare`、`serviceBriefs`）。
-模型服务页（第四十八至五十轮）：页首 → 模型目录 `#models`（`ModelCatalog.astro`，12 张模型卡，按钮在标题右侧，一屏可见）
+模型服务页（第四十八至五十一轮）：页首 → 模型目录 `#models`（`ModelCatalog.astro`，12 张模型卡，按钮在标题右侧，一屏可见）
 → 接入与计费 `#access`（`ModelAccess.astro`：Chat、Responses、Anthropic、Gemini、图片五条路径与计费方式）→ 适用场景
 → 合作方式与流程 `#process`（`ModelWays.astro`：自助接入、企业用量、分销合作各三步，下接询价准备卡）→ 资源与指南。
 卡片光效用 `.glow-card` + `data-glow`（指针位置由 `interactions.ts` 写入 `--gx/--gy`），入场与扫光只在未开启减少动态效果时播放一次。
-数据在 `src/data/model-catalog.ts`（每个系列含字母 `mark` 与颜色 `color`），型号取自模型广场公开接口 `/api/shop/models/pricing`，只列主力型号、不列渠道变体，价格只链到模型广场。
+数据在 `src/data/model-catalog.ts`（每个系列含厂商图标 `icon`、后备字母 `mark` 与颜色 `color`；图标在 `public/models/`，来自 lobehub MIT 图标库），型号取自模型广场公开接口 `/api/shop/models/pricing`，只列主力型号、不列渠道变体，价格只链到模型广场。
 基础设施页只有 适用场景 / 合作流程 / 资源与指南 三章。
 
 ## 其他仍有效的约定

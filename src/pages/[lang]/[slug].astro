@@ -186,10 +186,12 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                     </ul>
                   </div>
                 </div>
-                <p class="boundary-note">
-                  <CircleAlert size={18} />
-                  <span>{page.boundary}</span>
-                </p>
+                {page.boundary && (
+                  <p class="boundary-note">
+                    <CircleAlert size={18} />
+                    <span>{page.boundary}</span>
+                  </p>
+                )}
               </div>
             </div>
           </section>

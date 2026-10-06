@@ -10,7 +10,6 @@ keyPoints:
   - 'Bring a verifiable resource description and responsibility list, not just a price.'
   - 'Test with separate credentials and approved samples; never pass production keys in chats or documents.'
   - 'Agree reconciliation, billing of failed requests and exit before starting.'
-  - 'Easy AI works with direct supply channels, not supply straight from model vendors.'
 sources:
   - label: 'Google Gemini API: rate limits'
     url: https://ai.google.dev/gemini-api/docs/rate-limits
@@ -83,10 +82,6 @@ Run one reconciliation during the test to make sure both sides’ numbers match 
 ### Is the lowest price enough to start cooperating?
 
 No. Supply basis, available scope, responsibilities and settlement terms must also be confirmed before options can be compared.
-
-### Do you require supply directly from the model vendor?
-
-Channel roles must be stated truthfully. Easy AI does not present a supply-channel arrangement as unconfirmed direct vendor supply.
 
 ### Should I send accounts and keys in the first conversation?
 

@@ -45,7 +45,8 @@ export type ServiceCopy = {
   /** Typical situations, as a short label plus one line. Hypothetical, not case studies. */
   scenarios: { title: string; text: string }[];
   preparation: string[];
-  boundary: string;
+  // Round 51: optional; the model page carries no statement about vendor authorization (owner's call).
+  boundary?: string;
 };
 
 export type SiteCopy = {

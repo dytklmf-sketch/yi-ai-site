@@ -43,9 +43,9 @@ export const en: SiteCopy = {
     },
     {
       service: 'model-services',
-      question: 'Does supply cooperation mean direct developer supply?',
+      question: 'Which request formats are supported?',
       answer:
-        'No. We work with direct supply-channel partners, not direct supply or official authorization from model developers. Available models, settlement and responsibilities are confirmed item by item.',
+        'OpenAI Chat (/v1/chat/completions) and OpenAI Responses (/v1/responses); Claude, Gemini, DeepSeek and others also accept the Anthropic format (/v1/messages). The catalog marks which formats each model supports.',
     },
     {
       service: 'infrastructure',
@@ -170,8 +170,6 @@ export const en: SiteCopy = {
         { title: 'Supply', text: 'Model resources or credits to supply' },
       ],
       preparation: ['Models you need', 'Monthly volume', 'Settlement method'],
-      boundary:
-        'We work through direct supply channels. That is not the same as direct supply or official authorization from model developers.',
     },
     infrastructure: {
       label: 'Infrastructure capability',

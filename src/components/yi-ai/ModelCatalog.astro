@@ -13,7 +13,7 @@ const zhUI = lang === 'zh';
 
 {
   /* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel. Round 50: each family
-    gets a monogram tile in its own colour and a faint corner tint; cards rise in once with a sheen, and a soft light
+    gets a tile and a faint corner tint in its own colour (round 51: the vendor's logo on white, the monogram as a fallback); cards rise in once with a sheen, and a soft light
     follows the pointer (data-glow, interactions.ts). The family's models are chips, the first one tinted. */
 }
 <section id="models" class="section mc-section" aria-labelledby="models-title">
@@ -44,7 +44,11 @@ const zhUI = lang === 'zh';
               <span class="card-sheen" aria-hidden="true" />
               <header class="mc-family-head">
                 <span class="mc-tile" aria-hidden="true">
-                  {family.mark || <Images size={18} />}
+                  {family.icon ? (
+                    <img src={withBase(`/models/${family.icon}`)} alt="" width="22" height="22" />
+                  ) : (
+                    family.mark || <Images size={20} />
+                  )}
                 </span>
                 <div class="mc-family-name">
                   <h3>{family.name}</h3>
