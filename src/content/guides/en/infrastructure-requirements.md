@@ -9,7 +9,7 @@ order: 5
 keyPoints:
   - 'A request states five things: what runs, what it needs, how it connects, how long it runs and who manages it.'
   - 'A hardware model is one condition; describe it together with the workload.'
-  - 'Easy AI owns a self-built data center; equipment, capacity, location and scope are confirmed per request.'
+  - 'Easy AI provides first-hand data-center resources; equipment, capacity, location and scope are confirmed per request.'
 sources:
   - label: 'Google Cloud Architecture Framework: shared responsibility'
     url: https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
@@ -78,7 +78,7 @@ Next, check matching resources, operating conditions and duration. Only once res
 
 ### Can I ask directly for a particular hardware model?
 
-Yes, but also describe purpose, quantity, environment and acceptable alternatives. Availability must be confirmed; it cannot be inferred from “self-built data center”.
+Yes, but also describe purpose, quantity, environment and acceptable alternatives. Availability must be confirmed; it cannot be inferred from “has data-center resources”.
 
 ### What if I do not know exact usage?
 
@@ -86,7 +86,7 @@ Give a range, its basis and growth assumptions. Validation can be discussed, but
 
 ### Does using a model API mean the model runs in this data center?
 
-No. Model access channels and infrastructure are separate matters, and the actual location of third-party models cannot be inferred from Easy AI owning a data center.
+No. Model access channels and infrastructure are separate matters, and the actual location of third-party models cannot be inferred from Easy AI offering data-center resources.
 
 ### Can training and inference go in one request?
 

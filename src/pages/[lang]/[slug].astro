@@ -12,12 +12,15 @@ import WorkBuddyCompare from '../../components/yi-ai/WorkBuddyCompare.astro';
 import ModelCatalog from '../../components/yi-ai/ModelCatalog.astro';
 import ModelAccess from '../../components/yi-ai/ModelAccess.astro';
 import ModelWays from '../../components/yi-ai/ModelWays.astro';
+import InfraOptions from '../../components/yi-ai/InfraOptions.astro';
+import InfraSizing from '../../components/yi-ai/InfraSizing.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
 import { serviceBriefs, workbuddyCompare, workbuddyEditions } from '../../data/workbuddy-editions';
 import { modelAccess, modelCatalog, modelWays } from '../../data/model-catalog';
+import { infraOptions, infraSizing } from '../../data/infra-detail';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -50,7 +53,7 @@ const guides = service ? (await getGuides(lang)).filter(({ data }) => data.servi
 const zhUI = lang === 'zh';
 // Page order: (WorkBuddy only) Enterprise pricing and the personal/Enterprise comparison first; (model services
 // only, round 48) the catalog and access/billing first, and (round 49) the ways to work together merged into the
-// process; then process and guides.
+// process; (infrastructure only, round 53) ways to deploy and the sizing guide first; then process and guides.
 const chapters: [string, string][] = [
   ...(service === 'workbuddy'
     ? ([
@@ -62,6 +65,12 @@ const chapters: [string, string][] = [
     ? ([
         ['models', modelCatalog[lang].label],
         ['access', modelAccess[lang].title],
+      ] as [string, string][])
+    : []),
+  ...(service === 'infrastructure'
+    ? ([
+        ['options', infraOptions[lang].title],
+        ['sizing', infraSizing[lang].title],
       ] as [string, string][])
     : []),
   ['fit', r.serviceContents.fit],
@@ -137,6 +146,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
         {service === 'workbuddy' && <WorkBuddyCompare lang={lang} />}
         {service === 'model-services' && <ModelCatalog lang={lang} />}
         {service === 'model-services' && <ModelAccess lang={lang} />}
+        {service === 'infrastructure' && <InfraOptions lang={lang} />}
+        {service === 'infrastructure' && <InfraSizing lang={lang} />}
 
         {detail && (
           <section id="fit" class="section">

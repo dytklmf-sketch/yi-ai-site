@@ -7,7 +7,7 @@ service: infrastructure
 updatedAt: '2026-10-05'
 order: 6
 keyPoints:
-  - 'Owning a data center does not mean the provider deploys, operates and backs up everything; name who provides, operates and approves at each layer.'
+  - 'Having data-center resources does not mean the provider deploys, operates and backs up everything; name who provides, operates and approves at each layer.'
   - 'Confirm every cell of a responsibility matrix; none stays open at signing.'
   - 'Agree data export and deletion at exit before cooperation starts.'
 sources:
@@ -82,7 +82,7 @@ No. Define least-necessary permissions, approver, duration and revocation. The f
 
 ### Does Easy AI provide every service listed?
 
-No. Easy AI has confirmed owning self-built data-center resources; external services, capacity, deployment, operations, backup and response arrangements are confirmed case by case.
+No. Easy AI provides first-hand data-center resources; external services, capacity, deployment, operations, backup and response arrangements are confirmed case by case.
 
 ### Who drafts the matrix?
 

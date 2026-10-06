@@ -1,0 +1,48 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import { infraSizing } from '../../data/infra-detail';
+import { articlePath, type Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const x = infraSizing[lang];
+---
+
+{/* Round 53: rough GPU memory by model size, one lit card; on phones each row becomes a small card (data-label). */}
+<section id="sizing" class="section section-tint" aria-labelledby="sizing-title">
+  <div class="container">
+    <h2 id="sizing-title" class="section-title" data-reveal>{x.title}</h2>
+    <div class="is-card glow-card" data-reveal data-glow>
+      <span class="card-sheen" aria-hidden="true"></span>
+      <p class="is-lead">{x.lead}</p>
+      <table class="is-table">
+        <thead>
+          <tr>
+            {x.head.map((cell) => <th scope="col">{cell}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            x.rows.map(([size, bf16, int4, fit]) => (
+              <tr>
+                <th scope="row">{size}</th>
+                <td data-label={x.head[1]}>{bf16}</td>
+                <td data-label={x.head[2]}>{int4}</td>
+                <td data-label={x.head[3]}>{fit}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <ul class="is-notes">
+        {x.notes.map((note) => <li>{note}</li>)}
+      </ul>
+      <a class="text-link" href={articlePath(lang, x.guide.slug)}>
+        {x.guide.label}
+        <ArrowRight size={16} />
+      </a>
+    </div>
+  </div>
+</section>

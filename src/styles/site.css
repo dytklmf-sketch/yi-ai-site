@@ -5753,6 +5753,218 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 }
 
+/* Round 53: infrastructure detail — three ways to deploy (Easy AI's first-hand resources in the middle) and a
+   sizing table, in the page blue with the shared card light. */
+.io-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.io-option {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.25rem, 2.4vw, 1.625rem);
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 40%);
+}
+.io-ours {
+  border-color: var(--cobalt-300);
+  background:
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 4px no-repeat,
+    radial-gradient(20rem 10rem at 100% 0, rgb(var(--accent-rgb) / 10%), transparent 70%),
+    #fff;
+  box-shadow:
+    0 0 0 1px rgb(var(--accent-rgb) / 12%),
+    0 1.5rem 2.75rem -1.75rem rgb(var(--accent-rgb) / 60%);
+}
+.io-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+}
+.io-head h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.1875rem;
+}
+.io-badge {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--cobalt);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.io-head p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.io-rows {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.io-rows div {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.6875rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.io-rows dt {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.io-rows dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9063rem;
+  line-height: 1.55;
+}
+.io-ours .io-rows dt {
+  color: var(--cobalt);
+}
+.io-option .text-link {
+  margin-top: auto;
+}
+.io-note {
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.is-card {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding: clamp(1.25rem, 2.6vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
+    #fff;
+  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
+}
+.is-lead {
+  margin: 0;
+  color: var(--body);
+  font-size: 0.9375rem;
+}
+.is-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.is-table th,
+.is-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.is-table thead th {
+  border-bottom: 2px solid var(--cobalt-200);
+  background: var(--pale-2);
+  color: var(--cobalt-600);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.is-table thead th:first-child {
+  border-top-left-radius: 0.625rem;
+}
+.is-table thead th:last-child {
+  border-top-right-radius: 0.625rem;
+}
+.is-table tbody th {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.is-table td {
+  color: var(--body);
+}
+.is-table tbody tr {
+  transition: background-color 0.2s var(--ease);
+}
+.is-table tbody tr:hover {
+  background: rgb(var(--accent-rgb) / 5%);
+}
+.is-notes {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 1.125rem;
+  color: var(--muted);
+  font-size: 0.8438rem;
+  line-height: 1.6;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready .io-options.is-in .io-option {
+    animation: card-rise 0.7s calc(var(--i, 0) * 80ms + 0.1s) var(--ease) both;
+  }
+  .reveal-ready .io-options.is-in .card-sheen,
+  .reveal-ready .is-card.is-in .card-sheen {
+    animation: card-sheen 1.3s calc(var(--i, 0) * 80ms + 0.5s) var(--ease) both;
+  }
+}
+@media (min-width: 1081px) {
+  .io-ours {
+    margin-block: -0.5rem;
+    padding-block: calc(clamp(1.25rem, 2.4vw, 1.625rem) + 0.5rem);
+  }
+}
+@media (max-width: 1080px) {
+  .io-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Phones: each table row becomes a small card. */
+@media (max-width: 720px) {
+  .is-table thead {
+    display: none;
+  }
+  .is-table,
+  .is-table tbody,
+  .is-table tr,
+  .is-table th,
+  .is-table td {
+    display: block;
+  }
+  .is-table tr {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .is-table th,
+  .is-table td {
+    padding: 0.125rem 0;
+    border: 0;
+  }
+  .is-table tbody th {
+    margin-bottom: 0.25rem;
+  }
+  .is-table td {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .is-table td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+}
+
 /* Round 34: each contact topic offers its brief as a download. */
 .topic-brief {
   display: inline-flex;

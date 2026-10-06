@@ -35,7 +35,7 @@ export const home: Record<Lang, HomeCopy> = {
     layers: {
       workbuddy: { name: '应用层', tag: 'WorkBuddy 代理采购' },
       'model-services': { name: '模型层', tag: '模型 API 与供应合作' },
-      infrastructure: { name: '算力层', tag: '自建机房资源' },
+      infrastructure: { name: '算力层', tag: '一手机房资源' },
     },
     stackTitle: '主营业务',
     scenariosLabel: '常见场景',
@@ -52,7 +52,11 @@ export const home: Record<Lang, HomeCopy> = {
         text: '多家模型供应渠道收拢到一个接口和一套计费口径，可用模型与结算按需确认。',
         proof: '了解模型服务',
       },
-      { title: '自建机房', text: '计算、存储和网络资源来自自建机房，按工作负载匹配。', proof: '了解基础设施' },
+      {
+        title: '一手机房资源',
+        text: '直接对接机房方，计算、存储和网络按工作负载匹配，没有中间转手。',
+        proof: '了解基础设施',
+      },
       {
         title: '一个团队对接',
         text: '应用、模型与算力需求由同一团队受理，确认后逐项跟进至交付。',
@@ -71,7 +75,7 @@ export const home: Record<Lang, HomeCopy> = {
     layers: {
       workbuddy: { name: 'Application', tag: 'WorkBuddy procurement' },
       'model-services': { name: 'Model', tag: 'Model APIs & supply' },
-      infrastructure: { name: 'Compute', tag: 'Self-built data center' },
+      infrastructure: { name: 'Compute', tag: 'First-hand data centers' },
     },
     stackTitle: 'Core services',
     scenariosLabel: 'Common cases',
@@ -89,8 +93,8 @@ export const home: Record<Lang, HomeCopy> = {
         proof: 'Model services',
       },
       {
-        title: 'Self-built data center',
-        text: 'Compute, storage and networking come from our own data center, matched to the workload.',
+        title: 'First-hand data centers',
+        text: 'Direct from the operators: compute, storage and networking matched to the workload, with no middle layer.',
         proof: 'Infrastructure',
       },
       {
