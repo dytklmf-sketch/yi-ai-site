@@ -149,7 +149,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                   {page.scenarios.map((item, i) => {
                     const Icon = scenarioIcons[service][i];
                     return (
-                      <li>
+                      <li class="glow-card" style={`--i:${i}`} data-glow>
+                        <span class="card-sheen" aria-hidden="true" />
                         <span class="scenario-icon">
                           <Icon size={20} />
                         </span>
@@ -160,7 +161,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                   })}
                 </ul>
               </div>
-              <div class="scope-panel" data-reveal>
+              <div class="scope-panel glow-card" data-reveal data-glow>
+                <span class="card-sheen" aria-hidden="true" />
                 <h3 class="scope-panel-title">{e.scope}</h3>
                 <div class="scope-grid">
                   <div class="scope-col scope-yes">
@@ -208,10 +210,14 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
               ) : (
                 <ol class="step-cards">
                   {detail.steps.map((step, i) => (
-                    <li data-reveal style={`--d:${i}`}>
-                      <span class="step-card-index">{i + 1}</span>
-                      <h3>{step.title}</h3>
-                      <p>{step.text}</p>
+                    <li data-reveal style={`--d:${i};--i:${i}`}>
+                      {/* Round 52: the step is a lit card; the connector stays on the li, across the gap. */}
+                      <div class="step-card glow-card" data-glow>
+                        <span class="card-sheen" aria-hidden="true" />
+                        <span class="step-card-index">{i + 1}</span>
+                        <h3>{step.title}</h3>
+                        <p>{step.text}</p>
+                      </div>
                     </li>
                   ))}
                 </ol>
