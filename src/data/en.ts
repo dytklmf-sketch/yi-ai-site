@@ -11,7 +11,7 @@ export const en: SiteCopy = {
   otherLanguage: '中文',
   heroHeadline: 'Enterprise AI applications and compute, delivered end to end',
   heroIntro:
-    'Easy AI works on WorkBuddy procurement, model API access and first-hand data-center resources, handling selection, integration and delivery, so AI is easy to understand, use and put to work.',
+    'Easy AI works on WorkBuddy procurement, model API access and self-built data-center resources, handling selection, integration and delivery, so AI is easy to understand, use and put to work.',
   primary: 'Talk to us',
   secondary: 'Explore our services',
   explore: 'Explore this service',
@@ -49,9 +49,9 @@ export const en: SiteCopy = {
     },
     {
       service: 'infrastructure',
-      question: 'How do you confirm data-center resources are available?',
+      question: 'Are all data-center resources available to partners?',
       answer:
-        'Easy AI works directly with data-center operators and offers first-hand resources. Configuration, quantity, region and duration are confirmed against your workload; using a model API does not mean the model runs in these data centers.',
+        'No. Part of the capacity runs Easy AI’s own business; what is available to partners depends on actual resources and your workload. Owning a data center also does not mean third-party models run in it.',
     },
     {
       service: 'infrastructure',
@@ -173,11 +173,11 @@ export const en: SiteCopy = {
     },
     infrastructure: {
       label: 'Infrastructure capability',
-      seoTitle: 'First-Hand Data-Center Resources and AI Compute',
-      short: 'First-hand resources · Direct from operators',
-      title: 'First-hand data-center resources',
+      seoTitle: 'Self-Built Data Center and AI Infrastructure',
+      short: 'Self-built data center · Hosting',
+      title: 'Self-built data center',
       intro:
-        'Easy AI works directly with data-center operators for first-hand compute, and matches configuration, price and responsibilities to your workload and duration.',
+        'Easy AI owns a self-built data center. We check your workload and duration against available resources and agree who does what.',
       audience: 'Enterprise technical teams · Infrastructure partners',
       summary: 'Compute, storage and network matched to your workload.',
       scenarios: [
@@ -188,7 +188,7 @@ export const en: SiteCopy = {
       ],
       preparation: ['Workload type', 'Resources and duration', 'Network and data needs'],
       boundary:
-        'Resources come directly from the data-center operators we work with; configuration, quantity, region and duration are confirmed against actual availability.',
+        'Part of the data center runs Easy AI’s own business, so not all of it is available. Owning a data center does not mean third-party models run in it.',
     },
   },
   contact: {

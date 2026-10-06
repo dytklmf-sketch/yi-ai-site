@@ -14,7 +14,7 @@ export const editorial = {
     guidesIntro: '采购、比价和部署前的核对清单，注明资料来源。',
     guidesSeoDescription: 'WorkBuddy 采购、模型 API 比价、机房合作和企业 AI 需求的核对清单，注明资料来源。',
     aboutTitle: '关于易AI',
-    aboutIntro: '易AI 是 WorkBuddy 代理商，有直接合作的模型供应渠道，也有一手机房资源。',
+    aboutIntro: '易AI 是 WorkBuddy 代理商，有直接合作的模型供应渠道，也有自建机房。',
     servicesTitle: '主营业务',
     relationshipTitle: '品牌与产品',
     contents: '本文目录',
@@ -45,7 +45,7 @@ export const editorial = {
       'Checklists for WorkBuddy procurement, model API pricing, data-center cooperation and enterprise AI briefs, with sources.',
     aboutTitle: 'About Easy AI',
     aboutIntro:
-      'Easy AI is a WorkBuddy reseller, works with direct model supply channels and offers first-hand data-center resources.',
+      'Easy AI is a WorkBuddy reseller, works with direct model supply channels and owns a self-built data center.',
     servicesTitle: 'Core services',
     relationshipTitle: 'Brand and product',
     contents: 'On this page',

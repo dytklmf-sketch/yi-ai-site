@@ -5,7 +5,7 @@ export const zh: SiteCopy = {
   otherLanguage: 'EN',
   heroHeadline: '为企业提供 AI 应用与算力：选型、接入与交付',
   heroIntro:
-    '易AI 专注 WorkBuddy 代理采购、模型 API 接入与一手机房资源，围绕企业的用量与合规要求，完成选型、接入与交付，让 AI 易懂、易用、易落地。',
+    '易AI 专注 WorkBuddy 代理采购、模型 API 接入与自建机房资源，围绕企业的用量与合规要求，完成选型、接入与交付，让 AI 易懂、易用、易落地。',
   primary: '咨询合作',
   secondary: '了解服务',
   explore: '了解这项服务',
@@ -41,9 +41,9 @@ export const zh: SiteCopy = {
     },
     {
       service: 'infrastructure',
-      question: '机房资源怎么确认能不能用？',
+      question: '自建机房资源是否全部对外开放？',
       answer:
-        '易AI 直接对接机房方，提供一手资源。可用配置、数量、地区与周期按工作负载逐项确认；使用模型 API 不代表模型运行在这些机房。',
+        '不是。部分资源承载易AI 自有业务，可对外合作的部分需按实际资源与工作量确认。第三方模型也不一定运行在自有机房内。',
     },
     {
       service: 'infrastructure',
@@ -156,10 +156,10 @@ export const zh: SiteCopy = {
     },
     infrastructure: {
       label: '基础设施能力',
-      seoTitle: '一手机房资源与 AI 算力部署',
-      short: '一手机房资源 · 直接对接机房方',
-      title: '一手机房资源',
-      intro: '易AI 直接对接机房方，提供一手算力资源，按工作负载与周期确认配置、报价与双方分工。',
+      seoTitle: '自建机房与 AI 基础设施能力',
+      short: '自建机房 · 业务承载',
+      title: '自建机房资源',
+      intro: '易AI 拥有自建机房，将按工作负载与周期确认资源匹配情况及双方分工。',
       audience: '企业技术团队 · 基础设施合作伙伴',
       summary: '按工作负载匹配计算、存储和网络资源。',
       scenarios: [
@@ -169,12 +169,12 @@ export const zh: SiteCopy = {
         { title: '资源合作', text: '持有算力或机房资源，寻求合作' },
       ],
       preparation: ['工作负载类型', '所需资源和周期', '网络与数据要求'],
-      boundary: '资源来自直接合作的机房方；具体配置、数量、地区与周期按实际资源确认。',
+      boundary: '机房的一部分资源承载易AI 自己的业务，可对外的部分按实际资源确认；第三方模型也不一定运行在自有机房内。',
     },
   },
   contact: {
     seoTitle: '联系合作：企业 AI、模型服务与基础设施',
-    seoDescription: '联系易AI：WorkBuddy 代理采购、模型 API 与供应合作、一手机房资源，微信或邮件均可。',
+    seoDescription: '联系易AI：WorkBuddy 代理采购、模型 API 与供应合作、自建机房资源，微信或邮件均可。',
     title: '联系合作',
     intro: '选择业务方向，查看需要准备的信息。',
     topic: '业务方向',

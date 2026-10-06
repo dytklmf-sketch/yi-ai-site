@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 53 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 54 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第五十三轮）
+## 当前版本（第五十四轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第五十三轮（「自建机房」改为「一手机房资源」，基础设施页加部署方式对比与选型参考，见 `docs/rounds/53-first-hand-infrastructure.md`）
+- 当前轮次：第五十四轮（机房措辞改回「自建机房」，保留第五十三轮的部署方式对比与选型参考，见 `docs/rounds/54-self-built-wording.md`）
 - 线上发布：`release-20261006130929`，commit `7dd4937`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 第五十三轮完整浏览器测试：见 `docs/rounds/53-first-hand-infrastructure.md`
+- 第五十四轮完整浏览器测试：见 `docs/rounds/54-self-built-wording.md`
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
@@ -64,7 +64,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - **用官方 WorkBuddy 标志**：图标 + 官方字标 `public/partners/workbuddy-wordmark.svg`（深色）/ `workbuddy-wordmark-white.svg`
   （白色，页首示例窗口用），不要用打字拼出来的「WorkBuddy」字样代替。
 - 业务流程里不写具体用量示例（如「2000 万 tokens」）；联系入口是每页右下角常驻「联系我们」按钮（联系页除外）。
-- 站长说明（第五十三轮）：机房是一手资源（直接对接机房方），不是自己投资建设；全站写「一手机房资源」，不写「自建 / 自有机房」（测试拦截），也不写设备、数量、地区或 SLA。
+- 站长要求（第五十四轮）：机房一律写「自建机房」（第五十三轮曾改为「一手机房资源」，站长要求改回）；不写设备、数量、地区或 SLA。
 - 站长要求（第五十一轮）：模型服务相关页面不写「是否厂商官方授权 / 是否直供」之类的说明；WorkBuddy 的授权证书照旧展示。
 - 「CCG」只允许出现在模型服务页和关于页，且写作「CCG API」；指南里用通用说法（如 `api.example.com`）。
 - 每次改动后都要上线并推 GitHub，回复里给线上链接。站长看了效果会继续提细节修改，按轮推进。

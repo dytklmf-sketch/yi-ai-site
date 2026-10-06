@@ -1,9 +1,9 @@
 import type { Lang } from './yi-ai';
 
 /**
- * Round 53: the infrastructure page in the model page's level of detail. Easy AI's resources are first-hand — direct
- * from the data-center operators it works with, not its own investment (owner, round 53). Nothing here names
- * equipment, quantities, regions or SLAs; those are confirmed per request. The sizing figures follow the
+ * Round 53: the infrastructure page in the model page's level of detail; round 54 keeps the site's wording, the
+ * self-built data center (owner's call). Nothing here names equipment, quantities, regions or SLAs; those are
+ * confirmed per request. The sizing figures follow the
  * self-hosted-llm-sizing guide (weights = parameters × bytes per parameter, plus 10–20% runtime headroom).
  */
 type Option = { name: string; who: string; ours?: boolean; rows: [string, string][] };
@@ -25,8 +25,8 @@ export const infraOptions: Record<Lang, Options> = {
         ],
       },
       {
-        name: '一手机房资源',
-        who: '直接对接机房方，没有中间转手',
+        name: '自建机房资源',
+        who: '易AI 自建机房，按工作负载匹配',
         ours: true,
         rows: [
           ['适合', '长期运行的推理服务、按周期的训练与微调'],
@@ -46,7 +46,7 @@ export const infraOptions: Record<Lang, Options> = {
         ],
       },
     ],
-    note: '三种方式可以组合，例如试验期用公有云，稳定后迁到机房资源。',
+    note: '三种方式可以组合，例如试验期用公有云，稳定后迁到自建机房。',
   },
   en: {
     title: 'Ways to deploy',
@@ -63,8 +63,8 @@ export const infraOptions: Record<Lang, Options> = {
         ],
       },
       {
-        name: 'First-hand data centers',
-        who: 'Direct from the operators, no middle layer',
+        name: 'Self-built data center',
+        who: 'Easy AI’s own data center, matched to the workload',
         ours: true,
         rows: [
           ['Suits', 'Long-running inference and periodic training or fine-tuning'],
@@ -84,7 +84,7 @@ export const infraOptions: Record<Lang, Options> = {
         ],
       },
     ],
-    note: 'The three can be combined, for example a cloud trial that moves to data-center resources once it is stable.',
+    note: 'The three can be combined, for example a cloud trial that moves to our data center once it is stable.',
   },
 };
 

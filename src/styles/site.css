@@ -5753,7 +5753,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 }
 
-/* Round 53: infrastructure detail — three ways to deploy (Easy AI's first-hand resources in the middle) and a
+/* Round 53: infrastructure detail — three ways to deploy (Easy AI's self-built data center in the middle) and a
    sizing table, in the page blue with the shared card light. */
 .io-options {
   display: grid;

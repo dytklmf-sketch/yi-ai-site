@@ -117,8 +117,7 @@ for (const file of html) {
       assert(text.includes('class="service-sample sample-window request-sheet"'), `${file}: request sheet missing`);
     assert(!text.includes('id="scope"') && !text.includes('id="brief"'), `${file}: scope and brief merged`);
     assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
-    // Round 53: infrastructure shows three ways to deploy (one marked as Easy AI's) and the sizing table; no
-    // self-built or owned data-center claim anywhere on these pages.
+    // Round 53: infrastructure shows three ways to deploy (one marked as Easy AI's) and the sizing table.
     if (file.includes('/infrastructure/'))
       assert(
         (text.match(/class="io-option /g) || []).length === 3 &&
@@ -127,10 +126,6 @@ for (const file of html) {
           text.includes('self-hosted-llm-sizing'),
         `${file}: ways to deploy and sizing`
       );
-    assert(
-      !/自建机房|自有机房|self-built data|owns a self-built/.test(text),
-      `${file}: data centers are first-hand, not self-built`
-    );
     // Round 49: the model page shows three ways to work together, three steps each, in place of the step cards.
     if (file.includes('/model-services/'))
       assert.equal((text.match(/class="mw-step-index"/g) || []).length, 9, `${file}: three ways, three steps each`);
