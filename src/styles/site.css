@@ -2299,12 +2299,6 @@ main > section:first-child + section {
   font-size: 1.125rem;
   font-weight: 800;
 }
-.step-cards li:first-child .step-card-index {
-  border-color: var(--cobalt);
-  background: var(--cobalt);
-  color: #fff;
-  box-shadow: 0 0 0 0.375rem rgb(var(--accent-rgb) / 12%);
-}
 .step-cards h3 {
   margin-top: 1.25rem;
   font-size: 1.25rem;
