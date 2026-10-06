@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
 - 当前轮次：第五十轮（模型卡重做为字母色块、三块卡片加光效与动效，见 `docs/rounds/50-model-cards-glow.md`）
-- 线上发布：`release-20261006045344`，commit `7e443d9`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261006060408`，commit `efa7104`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
 - 第五十轮完整浏览器测试：见 `docs/rounds/50-model-cards-glow.md`
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
