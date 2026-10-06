@@ -5037,7 +5037,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .glow-card::before {
   background: radial-gradient(
     18rem circle at var(--gx, 50%) var(--gy, 0%),
-    color-mix(in srgb, var(--glow) 13%, transparent),
+    color-mix(in srgb, var(--glow) 7%, transparent),
     transparent 65%
   );
 }
@@ -5046,7 +5046,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: 1px;
   background: radial-gradient(
     12rem circle at var(--gx, 50%) var(--gy, 0%),
-    color-mix(in srgb, var(--glow) 75%, transparent),
+    color-mix(in srgb, var(--glow) 40%, transparent),
     transparent 70%
   );
   -webkit-mask:
@@ -5062,25 +5062,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .glow-card:hover::after {
     opacity: 1;
   }
-}
-/* One diagonal sheen crosses each card as it arrives; it never repeats and is hidden under reduced motion. */
-.card-sheen {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: none;
-  border-radius: inherit;
-  background: linear-gradient(
-    105deg,
-    transparent 35%,
-    color-mix(in srgb, var(--glow) 14%, transparent) 46%,
-    rgb(255 255 255 / 70%) 50%,
-    color-mix(in srgb, var(--glow) 14%, transparent) 54%,
-    transparent 65%
-  );
-  background-position: 100% 0;
-  background-size: 300% 100%;
-  pointer-events: none;
 }
 
 .mc-families {
@@ -5505,8 +5486,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   margin-top: 1.5rem;
 }
 
-/* Round 50 motion: the cards rise in turn with one sheen each, the step numbers light up in order and the line
-   between them draws down. Hover lifts the card and its tile. All of it plays once, only without reduced motion. */
+/* Round 50 motion, toned down in round 57 at the owner's request: the cards fade up a little in turn, the step
+   numbers fade in and the line between them draws; no sheen. Hover lifts the card a pixel. Plays once, only without
+   reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
   .glow-card {
     transition:
@@ -5515,7 +5497,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
       box-shadow 0.25s var(--ease);
   }
   .glow-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-1px);
     box-shadow:
       0 1px 2px rgb(var(--accent-rgb) / 8%),
       0 1.5rem 2.5rem -1.75rem color-mix(in srgb, var(--glow) 70%, transparent);
@@ -5526,23 +5508,15 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
   .glow-card:hover .mc-tile,
   .glow-card:hover .mw-icon {
-    transform: scale(1.08) rotate(-4deg);
-  }
-  .card-sheen {
-    display: block;
+    transform: scale(1.03);
   }
   .reveal-ready .mc-panel.is-in .mc-family,
   .reveal-ready .ma-grid.is-in .ma-card,
   .reveal-ready .mw-ways.is-in .mw-way {
-    animation: card-rise 0.7s calc(var(--i, 0) * 60ms + 0.15s) var(--ease) both;
-  }
-  .reveal-ready .mc-panel.is-in .card-sheen,
-  .reveal-ready .ma-grid.is-in .card-sheen,
-  .reveal-ready .mw-ways.is-in .card-sheen {
-    animation: card-sheen 1.3s calc(var(--i, 0) * 60ms + 0.55s) var(--ease) both;
+    animation: card-rise 0.5s calc(var(--i, 0) * 60ms + 0.15s) var(--ease) both;
   }
   .reveal-ready .mw-ways.is-in .mw-step-index {
-    animation: step-light 0.9s calc(var(--i, 0) * 120ms + var(--s, 0) * 260ms + 0.5s) var(--ease) both;
+    animation: step-light 0.5s calc(var(--i, 0) * 120ms + var(--s, 0) * 260ms + 0.5s) var(--ease) both;
   }
   .reveal-ready .mw-ways.is-in .mw-steps li:not(:last-child)::after {
     animation: line-down 0.4s calc(var(--i, 0) * 120ms + var(--s, 0) * 260ms + 0.75s) var(--ease) both;
@@ -5551,33 +5525,13 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 @keyframes card-rise {
   from {
     opacity: 0;
-    transform: translateY(1.25rem) scale(0.98);
+    transform: translateY(0.5rem);
   }
 }
-/* The sheen moves its background, not the layer, so nothing ever sits outside the card. */
-@keyframes card-sheen {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
+/* Round 57: the numbers fade in; no flash, no overshoot. */
 @keyframes step-light {
-  0% {
+  from {
     opacity: 0;
-    transform: scale(0.4);
-  }
-  45% {
-    opacity: 1;
-    transform: scale(1.12);
-    border-color: var(--cobalt);
-    background: var(--cobalt);
-    color: #fff;
-    box-shadow: 0 0 0 0.375rem rgb(var(--accent-rgb) / 18%);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 @keyframes line-down {
@@ -5623,7 +5577,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 
 /* Round 52: use cases, scope and process on every service page take the model page's cards — gradient top edge,
-   a wash of the page colour, the shared pointer light (.glow-card) and one sheen as they arrive. */
+   a wash of the page colour, the shared pointer light (.glow-card); round 57 dropped the arrival sheen. */
 .scenario-grid {
   gap: 0.875rem;
   overflow: visible;
@@ -5725,17 +5679,10 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 @media (prefers-reduced-motion: no-preference) {
   .reveal-ready .scenario-grid.is-in li {
-    animation: card-rise 0.7s calc(var(--i, 0) * 70ms + 0.1s) var(--ease) both;
-  }
-  .reveal-ready .scenario-grid.is-in .card-sheen,
-  .reveal-ready .scope-panel.is-in .card-sheen {
-    animation: card-sheen 1.3s calc(var(--i, 0) * 70ms + 0.5s) var(--ease) both;
-  }
-  .reveal-ready .step-cards li.is-in .card-sheen {
-    animation: card-sheen 1.3s calc(var(--i, 0) * 180ms + 0.45s) var(--ease) both;
+    animation: card-rise 0.5s calc(var(--i, 0) * 70ms + 0.1s) var(--ease) both;
   }
   .reveal-ready .step-cards li.is-in .step-card-index {
-    animation: step-light 0.9s calc(var(--i, 0) * 220ms + 0.35s) var(--ease) both;
+    animation: step-light 0.5s calc(var(--i, 0) * 220ms + 0.35s) var(--ease) both;
   }
   .reveal-ready .step-cards li.is-in:not(:last-child)::after {
     animation: line-draw 0.5s calc(var(--i, 0) * 220ms + 0.7s) var(--ease) both;
@@ -5904,11 +5851,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 @media (prefers-reduced-motion: no-preference) {
   .reveal-ready .io-options.is-in .io-option {
-    animation: card-rise 0.7s calc(var(--i, 0) * 80ms + 0.1s) var(--ease) both;
-  }
-  .reveal-ready .io-options.is-in .card-sheen,
-  .reveal-ready .is-card.is-in .card-sheen {
-    animation: card-sheen 1.3s calc(var(--i, 0) * 80ms + 0.5s) var(--ease) both;
+    animation: card-rise 0.5s calc(var(--i, 0) * 80ms + 0.1s) var(--ease) both;
   }
 }
 @media (min-width: 1081px) {

@@ -31,6 +31,7 @@ import {
   withBase,
   type Lang,
   type PageSlug,
+  type Service,
 } from '../../data/yi-ai';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
@@ -78,6 +79,12 @@ const chapters: [string, string][] = [
   ['guides', r.serviceContents.guides],
 ];
 const briefFile = service ? serviceBriefs[lang][service] : undefined;
+// Round 57: every service hero shows its product mark beside the eyebrow (WorkBuddy had it alone before).
+const heroMarks: Record<Service, string> = {
+  workbuddy: '/partners/workbuddy.svg',
+  'model-services': '/partners/ccg-api.svg',
+  infrastructure: '/partners/datacenter.svg',
+};
 ---
 
 <YiAiLayout
@@ -95,7 +102,7 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
           lang={lang}
           crumb={page.label}
           eyebrow={`${h.layers[service].name} · ${page.short}`}
-          mark={service === 'workbuddy' ? '/partners/workbuddy.svg' : undefined}
+          mark={service ? heroMarks[service] : undefined}
           title={title}
           intro={intro}
         >
@@ -161,7 +168,6 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                     const Icon = scenarioIcons[service][i];
                     return (
                       <li class="glow-card" style={`--i:${i}`} data-glow>
-                        <span class="card-sheen" aria-hidden="true" />
                         <span class="scenario-icon">
                           <Icon size={20} />
                         </span>
@@ -173,7 +179,6 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                 </ul>
               </div>
               <div class="scope-panel glow-card" data-reveal data-glow>
-                <span class="card-sheen" aria-hidden="true" />
                 <h3 class="scope-panel-title">{e.scope}</h3>
                 <div class="scope-grid">
                   <div class="scope-col scope-yes">
@@ -224,7 +229,6 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
                     <li data-reveal style={`--d:${i};--i:${i}`}>
                       {/* Round 52: the step is a lit card; the connector stays on the li, across the gap. */}
                       <div class="step-card glow-card" data-glow>
-                        <span class="card-sheen" aria-hidden="true" />
                         <span class="step-card-index">{i + 1}</span>
                         <h3>{step.title}</h3>
                         <p>{step.text}</p>

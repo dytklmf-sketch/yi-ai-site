@@ -13,7 +13,7 @@ const zhUI = lang === 'zh';
 
 {
   /* Round 53: three ways to get compute side by side; the middle card is what Easy AI offers — its self-built data-center
-    resources — lifted and outlined in the page blue. Same light and sheen as the other service cards. */
+    resources — lifted and outlined in the page blue. Same light as the other service cards. */
 }
 <section id="options" class="section" aria-labelledby="options-title">
   <div class="container">
@@ -22,7 +22,6 @@ const zhUI = lang === 'zh';
       {
         x.options.map((option, i) => (
           <li class:list={['io-option', 'glow-card', { 'io-ours': option.ours }]} style={`--i:${i}`} data-glow>
-            <span class="card-sheen" aria-hidden="true" />
             <header class="io-head">
               <h3>{option.name}</h3>
               {option.ours && <span class="io-badge">{x.badge}</span>}

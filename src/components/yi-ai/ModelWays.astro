@@ -16,7 +16,7 @@ const icons = [KeyRound, Building2, Handshake];
 {
   /* Round 49: the ways to work together merged into the process — one card per way, each with its own three steps
     (numbered plainly, round 41). The enterprise card uses the shared process steps and the quote card below.
-    Round 50: an icon per way, the light and sheen shared with the catalog, and the steps light up in turn. */
+    Round 50: an icon per way, the light shared with the catalog, and the steps light up in turn. */
 }
 <ol class="mw-ways" data-reveal>
   {
@@ -24,7 +24,6 @@ const icons = [KeyRound, Building2, Handshake];
       const Icon = icons[n];
       return (
         <li class="mw-way glow-card" style={`--i:${n}`} data-glow>
-          <span class="card-sheen" aria-hidden="true" />
           <header class="mw-head">
             <span class="mw-icon" aria-hidden="true">
               <Icon size={20} />
