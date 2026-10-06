@@ -14,6 +14,15 @@ const t = lang === 'zh' ? zh : en;
 const Heading = compact ? 'h3' : 'h2';
 const key = `${lang}-${compact ? 'compact' : 'full'}`;
 const initialLabel = t.services.workbuddy.label;
+// Round 56: one short line per topic card, short enough to stay on one line beside the mark.
+const topicNotes: Record<Service, string> =
+  lang === 'zh'
+    ? { workbuddy: '企业版采购与续费', 'model-services': '模型 API 与企业用量', infrastructure: '自建机房 · 私有化' }
+    : {
+        workbuddy: 'Enterprise seats',
+        'model-services': 'Model APIs & volume',
+        infrastructure: 'Data center & hosting',
+      };
 const topicLabels = {
   workbuddy: 'WorkBuddy',
   'model-services': t.nav.models,
@@ -28,9 +37,14 @@ const brief = (slug: Service) => serviceBriefs[lang][slug];
 const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.subject} | ${initialLabel}`)}&body=${encodeURIComponent(bodyFor('workbuddy').replace('{topic}', initialLabel))}`;
 ---
 
+{
+  /* Round 56: the panel takes the colour of the chosen service (CSS :has, so it also works without JS), carries the
+    shared card light, and both contact methods share one layout so the IDs and buttons line up. */
+}
 <div
-  class:list={['contact-panel', { 'contact-panel-compact': compact }]}
+  class:list={['contact-panel', 'glow-card', { 'contact-panel-compact': compact }]}
   data-contact-panel
+  data-glow
   data-email={contact.email}
   data-subject={t.contact.subject}
   data-body={t.contact.emailBody}
@@ -50,8 +64,11 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
               data-body={bodyFor(slug)}
             />
             <span>
-              <ServiceIcon service={slug} size={16} class="topic-code" />
-              {topicLabels[slug]}
+              <ServiceIcon service={slug} size={34} tile brand class="topic-mark" />
+              <span class="topic-text">
+                <strong>{topicLabels[slug]}</strong>
+                <small>{topicNotes[slug]}</small>
+              </span>
               <Check size={15} aria-hidden="true" />
             </span>
           </label>
@@ -77,7 +94,7 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
     <span class="step-tag">2</span>{lang === 'zh' ? '选择联系方式' : 'Choose how to reach us'}
   </p>
   <div class="contact-options">
-    <section class="contact-option">
+    <section class="contact-option glow-card" data-glow>
       <div class="contact-option-head">
         <span class="contact-symbol"><MessageCircle size={20} stroke-width={1.6} /></span>
         <Heading>{t.contact.wechatTitle}</Heading>
@@ -95,7 +112,7 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
       >
       <p class="copy-status" id={`contact-copy-status-${key}`} role="status" aria-live="polite"></p>
     </section>
-    <section class="contact-option">
+    <section class="contact-option glow-card" data-glow>
       <div class="contact-option-head">
         <span class="contact-symbol"><Mail size={20} stroke-width={1.6} /></span>
         <Heading>{t.contact.emailTitle}</Heading>
@@ -103,6 +120,13 @@ const href = `mailto:${contact.email}?subject=${encodeURIComponent(`${t.contact.
       <p>{t.contact.emailText}</p>
       <a class="contact-id email-address mono" href={`mailto:${contact.email}`}>{contact.email}</a>
       <a class="btn btn-outline inquiry-email" href={href}>{t.contact.emailAction}<ArrowUpRight size={17} /></a>
+      <p class="contact-hint">
+        {
+          lang === 'zh'
+            ? '邮件会预填所选业务和需要准备的信息。'
+            : 'The email comes pre-filled with your topic and what to prepare.'
+        }
+      </p>
     </section>
   </div>
   <p class="contact-note">{t.contact.note}</p>

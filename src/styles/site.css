@@ -5959,6 +5959,236 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 }
 
+/* Round 56: the contact page. The panel and the service links take each service's own colour (same values as
+   body[data-theme]); with :has the panel follows the chosen topic without any script. */
+.contact-panel:has(input[value='workbuddy']:checked),
+.service-links a[data-theme-service='workbuddy'] {
+  --cobalt: #097a64;
+  --cobalt-600: #06614f;
+  --cobalt-300: #66e0c4;
+  --cobalt-200: #b4eedf;
+  --pale: #dcf6ef;
+  --pale-2: #effbf7;
+  --accent-rgb: 9 122 100;
+}
+.contact-panel:has(input[value='model-services']:checked),
+.service-links a[data-theme-service='model-services'] {
+  --cobalt: #5b3fd6;
+  --cobalt-600: #4a2fc0;
+  --cobalt-300: #b7aaff;
+  --cobalt-200: #d6cffd;
+  --pale: #ece8ff;
+  --pale-2: #f5f3ff;
+  --accent-rgb: 91 63 214;
+}
+.contact-panel:has(input[value='infrastructure']:checked),
+.service-links a[data-theme-service='infrastructure'] {
+  --cobalt: #0a76b5;
+  --cobalt-600: #08639a;
+  --cobalt-300: #7dcffa;
+  --cobalt-200: #bfe6fb;
+  --pale: #e0f2fc;
+  --pale-2: #f0f9fe;
+  --accent-rgb: 10 118 181;
+}
+.contact-panel {
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 4px no-repeat,
+    radial-gradient(30rem 14rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%),
+    var(--paper);
+  box-shadow: 0 1.5rem 3rem -2.25rem rgb(var(--accent-rgb) / 50%);
+  transition: box-shadow 0.4s var(--ease);
+}
+.contact-panel .step-tag {
+  transition: background-color 0.3s var(--ease);
+}
+/* Topic choices: the service's own mark, its name and one line on what it covers. */
+.topic-options label > span {
+  min-height: 4.25rem;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-color: var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+}
+.topic-options .topic-mark {
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.625rem;
+}
+.topic-text {
+  display: grid;
+  min-width: 0;
+  gap: 0.125rem;
+}
+.topic-text strong {
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+.topic-text small {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.topic-options input:checked + span {
+  background: linear-gradient(160deg, var(--pale-2), var(--paper));
+  color: var(--ink);
+}
+.topic-options input:checked + span .topic-text strong {
+  color: var(--cobalt);
+}
+.topic-options input:checked + span > svg {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.1875rem;
+  border-radius: 50%;
+  background: var(--cobalt);
+  color: #fff;
+}
+.topic-preparation {
+  border: 1px dashed var(--cobalt-200);
+  background: var(--pale-2);
+}
+/* Both methods share one layout — head, one line, the ID in a full-width box, the button, a reserved line — and
+   subgrid lines the rows up across the two cards. */
+.contact-options {
+  grid-template-rows: repeat(5, auto);
+}
+.contact-option {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 1.375rem;
+  border-color: var(--line);
+  border-radius: 1.125rem;
+  background: radial-gradient(16rem 8rem at 100% 0, rgb(var(--accent-rgb) / 6%), transparent 70%), var(--paper);
+}
+.contact-option > .contact-id {
+  margin: 0;
+}
+.contact-id,
+.email-address {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--cobalt-200);
+  background: var(--pale-2);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  text-align: center;
+}
+.email-address:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+}
+.copy-button,
+.inquiry-email {
+  width: 100%;
+  justify-content: center;
+  margin: 0;
+}
+.contact-symbol {
+  background: linear-gradient(150deg, var(--cobalt), var(--cobalt-300));
+}
+.copy-status,
+.contact-hint {
+  min-height: 2.5rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+/* Contact page hero: three facts as chips. */
+.contact-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.contact-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--cobalt-200);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 80%);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.contact-facts svg {
+  color: var(--cobalt);
+}
+/* Aside: the service links become small cards in their own colours; the steps become a joined timeline. */
+.service-links {
+  display: grid;
+  gap: 0.625rem;
+  border-top: 0;
+}
+.service-links a {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--paper);
+  transition:
+    border-color 0.25s var(--ease),
+    box-shadow 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+.service-links a:hover {
+  border-color: var(--cobalt-200);
+  box-shadow: 0 0.875rem 1.75rem -1.25rem rgb(var(--accent-rgb) / 55%);
+}
+.contact-steps li {
+  position: relative;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  padding: 0 0 1.25rem;
+}
+.contact-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.875rem;
+  bottom: 0.25rem;
+  left: calc(0.8125rem - 1px);
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--cobalt-300), var(--cobalt-200));
+}
+.contact-steps li > .contact-step-index {
+  border: 1px solid var(--cobalt-200);
+  background: var(--paper);
+  transition:
+    background-color 0.25s var(--ease),
+    color 0.25s var(--ease);
+}
+.contact-steps li:hover > .contact-step-index {
+  background: var(--cobalt);
+  color: #fff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .service-links a:hover {
+    transform: translateY(-2px);
+  }
+}
+@media (max-width: 720px) {
+  .contact-options {
+    grid-template-rows: none;
+  }
+  .contact-option {
+    grid-row: auto;
+    grid-template-rows: none;
+  }
+}
+
 /* Round 34: each contact topic offers its brief as a download. */
 .topic-brief {
   display: inline-flex;

@@ -290,7 +290,20 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
       </>
     ) : (
       <>
-        <PageHero lang={lang} crumb={t.nav.contact} title={title} intro={intro} compact />
+        <PageHero lang={lang} crumb={t.nav.contact} title={title} intro={intro} compact>
+          {/* Round 56: three plain facts about how contact works, under the intro. */}
+          <ul slot="meta" class="contact-facts">
+            {(zhUI
+              ? ['微信、邮件均可', '邮件按业务预填', '需求单可下载']
+              : ['WeChat or email', 'Emails pre-filled by topic', 'Briefs to download']
+            ).map((fact) => (
+              <li>
+                <Check size={15} />
+                {fact}
+              </li>
+            ))}
+          </ul>
+        </PageHero>
         <section class="section contact-section">
           <div class="container contact-layout">
             <ContactPanel lang={lang} />
@@ -298,7 +311,7 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
               <p class="micro-label">{e.explore}</p>
               <nav class="service-links" aria-label={zhUI ? '继续了解业务' : 'Explore our services'}>
                 {services.map((serviceSlug) => (
-                  <a href={pathFor(lang, serviceSlug)}>
+                  <a href={pathFor(lang, serviceSlug)} data-theme-service={serviceSlug}>
                     <ServiceIcon service={serviceSlug} size={18} tile />
                     <span>
                       <strong>{t.services[serviceSlug].label}</strong>

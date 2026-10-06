@@ -92,8 +92,9 @@ try {
             favicon: document.querySelector('link[rel="icon"]')?.getAttribute('href'),
             accent: getComputedStyle(document.documentElement).getPropertyValue('--cobalt').trim(),
             bodyFont: getComputedStyle(document.body).fontFamily,
-            primaryButton: document.querySelector('main .btn-primary')
-              ? getComputedStyle(document.querySelector('main .btn-primary')).backgroundColor
+            primaryButton: document.querySelector('main .btn-primary:not([data-contact-panel] *)')
+              ? getComputedStyle(document.querySelector('main .btn-primary:not([data-contact-panel] *)'))
+                  .backgroundColor
               : null,
           };
         });
@@ -119,7 +120,26 @@ try {
           infrastructure: 'rgb(10, 118, 181)',
         };
         const owner = routes.find((route) => route.lang === 'zh' && route.path.slice(4) === suffix)?.service;
+        // Round 56: the contact panel takes the chosen topic's colour, so it is checked on its own below.
         if (info.primaryButton) assert.equal(info.primaryButton, theme[owner] || 'rgb(36, 91, 219)');
+        if (suffix === 'contact/') {
+          // The button colour transitions, so wait for it to settle on the topic colour.
+          const panelColour = (colour) =>
+            page.waitForFunction(
+              (expected) =>
+                getComputedStyle(document.querySelector('[data-contact-panel] .btn-primary')).backgroundColor ===
+                expected,
+              colour,
+              { timeout: 3000 }
+            );
+          await panelColour(theme.workbuddy);
+          await page.locator('label:has(input[value="model-services"])').click();
+          await panelColour(theme['model-services']);
+          await page.locator('label:has(input[value="workbuddy"])').click();
+          await panelColour(theme.workbuddy);
+          // Park the pointer so the next page is not read in a hover state.
+          await page.mouse.move(0, 0);
+        }
         if (!suffix) {
           // Both hero actions sit on the first screen at every width with a usable tap size.
           const actions = await page.evaluate(() =>
