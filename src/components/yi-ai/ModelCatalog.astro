@@ -1,0 +1,63 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { modelCatalog, modelLinks } from '../../data/model-catalog';
+import { withBase, type Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const x = modelCatalog[lang];
+const zhUI = lang === 'zh';
+---
+
+{/* Round 48: the model catalog in CCG API purple, laid out like WorkBuddy's pricing panel. */}
+<section id="models" class="section mc-section" aria-labelledby="models-title">
+  <div class="container">
+    <div class="mc-panel" data-reveal>
+      <header class="mc-head">
+        <p class="mc-mark">
+          <img src={withBase('/partners/ccg-api.svg')} alt="" width="28" height="28" />
+          <span class="mono">CCG API</span>
+          <span class="mc-label">{x.label}</span>
+        </p>
+        <h2 id="models-title" class="mc-title">
+          {x.title[0]}<em>{x.title[1]}</em>
+        </h2>
+        <p class="mc-lead">{x.lead}</p>
+      </header>
+      <ul class="mc-families">
+        {
+          x.families.map((family) => (
+            <li class="mc-family">
+              <h3>
+                {family.name}
+                <span>{family.maker}</span>
+              </h3>
+              <ul class="mc-models">
+                {family.models.map((model) => (
+                  <li>
+                    <code>{model}</code>
+                  </li>
+                ))}
+              </ul>
+              <p class="mc-tags">
+                {family.tags.map((tag) => (
+                  <span>{tag}</span>
+                ))}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mc-foot">
+        <a class="btn btn-primary" href={modelLinks.catalog} target="_blank" rel="noopener noreferrer">
+          {zhUI ? '打开模型广场' : 'Open the catalog'}
+          <ArrowUpRight size={17} />
+          <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+        </a>
+        <p class="mc-note">{x.note}</p>
+      </div>
+    </div>
+  </div>
+</section>

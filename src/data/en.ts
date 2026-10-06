@@ -160,7 +160,7 @@ export const en: SiteCopy = {
       short: 'Model APIs · Direct supply channels',
       title: 'Model APIs and supply',
       intro:
-        'Developers can see models and prices and connect directly. Enterprise volume, monthly billing and supply partnerships are handled separately.',
+        'Claude, GPT, Gemini, DeepSeek, Qwen and other leading models behind one API key. Developers sign up and connect; enterprise volume and referral partnerships are agreed separately.',
       audience: 'Developers · Enterprise customers · Supply partners',
       summary: 'Model API access, enterprise billing and supply-channel cooperation.',
       scenarios: [

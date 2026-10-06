@@ -82,7 +82,10 @@ export async function testEnhancements(base, routes) {
 
       for (const service of ['workbuddy', 'model-services', 'infrastructure']) {
         await page.goto(`${base}/zh/${service}/`, { waitUntil: 'networkidle' });
-        assert.equal(await page.locator('.subnav a').count(), service === 'workbuddy' ? 5 : 3);
+        assert.equal(
+          await page.locator('.subnav a').count(),
+          { workbuddy: 5, 'model-services': 6, infrastructure: 3 }[service]
+        );
         await page.locator('.subnav a[href="#process"]').click();
         await page.waitForFunction(() => {
           const top = document.getElementById('process').getBoundingClientRect().top;

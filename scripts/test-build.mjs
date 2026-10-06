@@ -124,9 +124,24 @@ for (const file of html) {
     assert.equal(
       // Round 41: subnav items carry no numbers.
       ((text.match(/<nav class="subnav"[\s\S]*?<\/nav>/) || [''])[0].match(/<a href="#[a-z]+">/g) || []).length,
-      wb ? 5 : 3,
+      wb ? 5 : file.includes('/model-services/') ? 6 : 3,
       `${file}: chapters in the subnav`
     );
+    // Round 48: the model page carries the catalog, access and billing, and the ways to work together.
+    const ms = file.includes('/model-services/');
+    assert.equal(
+      text.includes('id="models"') && text.includes('id="access"') && text.includes('id="partners"'),
+      ms,
+      `${file}: model chapters only on the model page`
+    );
+    if (ms)
+      assert(
+        (text.match(/class="mc-family"/g) || []).length === 12 &&
+          text.includes('https://ccg-cli.online/models/') &&
+          text.includes('https://ccg-cli.online/account/agent/') &&
+          !/packyapi|codex\+\+|柏拉图|svip|黄昏星/.test(text),
+        `${file}: model catalog, links or channel names`
+      );
     assert.equal(text.includes('id="editions"'), wb, `${file}: WorkBuddy editions only on its page`);
     // Round 35: official list prices with source and check date; round 36: Enterprise only (three editions).
     if (wb)
@@ -141,7 +156,11 @@ for (const file of html) {
           (text.match(/<li data-row="\d"[^>]*><svg[^>]*lucide-check/g) || []).length === 8,
         `${file}: official WorkBuddy Enterprise prices with source and date`
       );
-    assert(!/id="(?:access|forms)"|data-cost-estimator/.test(text), `${file}: removed explainers stay removed`);
+    // Round 48: the model page brings back an access chapter (base URL, formats, billing); the rest stay removed.
+    assert(
+      !(ms ? /id="forms"|data-cost-estimator/ : /id="(?:access|forms)"|data-cost-estimator/).test(text),
+      `${file}: removed explainers stay removed`
+    );
     assert(/href="[^"]*\/templates\/(?:zh|en)\/[a-z-]+\.txt" download/.test(text), `${file}: brief download`);
   }
   // Round 40: every page but contact carries the resident contact button; the closing contact card is gone.

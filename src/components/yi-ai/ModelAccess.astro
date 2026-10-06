@@ -1,0 +1,69 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { modelAccess, modelLinks } from '../../data/model-catalog';
+import type { Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const x = modelAccess[lang];
+const zhUI = lang === 'zh';
+---
+
+{/* Round 48: the base URL, the three request formats and how usage is billed, side by side. */}
+<section id="access" class="section section-tint" aria-labelledby="access-title">
+  <div class="container">
+    <h2 id="access-title" class="section-title" data-reveal>{x.title}</h2>
+    <div class="ma-grid" data-reveal>
+      <div class="ma-card">
+        <p class="ma-label">{x.baseLabel}</p>
+        <p class="ma-base"><code>{modelLinks.baseUrl}</code></p>
+        <ul class="ma-endpoints">
+          {
+            x.endpoints.map((item) => (
+              <li>
+                <strong>{item.name}</strong>
+                <code>{item.path}</code>
+                <span>{item.scope}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="ma-label">{x.toolsLabel}</p>
+        <p class="ma-tools">
+          {x.tools.map((tool) => <span>{tool}</span>)}
+          <a href={modelLinks.docs} target="_blank" rel="noopener noreferrer">
+            {x.toolsNote}
+            <ArrowUpRight size={14} />
+            <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+          </a>
+        </p>
+      </div>
+      <div class="ma-card">
+        <h3 class="ma-billing-title">{x.billingTitle}</h3>
+        <dl class="ma-billing">
+          {
+            x.billing.map(([term, text]) => (
+              <div>
+                <dt>{term}</dt>
+                <dd>{text}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="ma-links">
+          {
+            x.links.map((link) => (
+              <a href={link.url} target="_blank" rel="noopener noreferrer">
+                {link.label}
+                <ArrowUpRight size={14} />
+                <span class="sr-only">{zhUI ? '（新窗口）' : '(new window)'}</span>
+              </a>
+            ))
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

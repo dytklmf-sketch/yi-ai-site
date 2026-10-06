@@ -142,7 +142,8 @@ export const zh: SiteCopy = {
       seoTitle: '模型 API 接入与供应合作',
       short: '模型 API · 直接合作供应渠道',
       title: '模型 API 与供应合作',
-      intro: '个人开发者可直接查看模型和价格并接入；企业用量、月结和供应合作单独洽谈。',
+      intro:
+        '聚合 Claude、GPT、Gemini、DeepSeek、通义千问等主流模型，一个 Key 即可调用。开发者自助接入，企业用量与分销合作单独洽谈。',
       audience: '开发者 · 企业用量客户 · 供应合作伙伴',
       summary: '模型 API 接入、企业用量结算与供应渠道合作。',
       scenarios: [

@@ -9,11 +9,15 @@ import ServiceSample from '../../components/yi-ai/ServiceSample.astro';
 import PageHero from '../../components/yi-ai/PageHero.astro';
 import WorkBuddyEditions from '../../components/yi-ai/WorkBuddyEditions.astro';
 import WorkBuddyCompare from '../../components/yi-ai/WorkBuddyCompare.astro';
+import ModelCatalog from '../../components/yi-ai/ModelCatalog.astro';
+import ModelAccess from '../../components/yi-ai/ModelAccess.astro';
+import ModelPartners from '../../components/yi-ai/ModelPartners.astro';
 import { getGuides } from '../../data/routes';
 import { editorial } from '../../data/editorial';
 import { serviceDetails } from '../../data/service-details';
 import { refinement } from '../../data/refinement';
 import { serviceBriefs, workbuddyCompare, workbuddyEditions } from '../../data/workbuddy-editions';
+import { modelAccess, modelCatalog, modelPartners } from '../../data/model-catalog';
 import { home } from '../../data/home';
 import {
   pageSlugs,
@@ -44,8 +48,9 @@ const r = refinement[lang];
 const h = home[lang];
 const guides = service ? (await getGuides(lang)).filter(({ data }) => data.service === service) : [];
 const zhUI = lang === 'zh';
-// Page order: (WorkBuddy only) Enterprise pricing and the personal/Enterprise comparison first, then use cases,
-// process, guides.
+// Page order: (WorkBuddy only) Enterprise pricing and the personal/Enterprise comparison first; (model services
+// only, round 48) the catalog and access/billing first and the ways to work together after the use cases; then
+// process and guides.
 const chapters: [string, string][] = [
   ...(service === 'workbuddy'
     ? ([
@@ -53,7 +58,14 @@ const chapters: [string, string][] = [
         ['compare', workbuddyCompare[lang].title],
       ] as [string, string][])
     : []),
+  ...(service === 'model-services'
+    ? ([
+        ['models', modelCatalog[lang].label],
+        ['access', modelAccess[lang].title],
+      ] as [string, string][])
+    : []),
   ['fit', r.serviceContents.fit],
+  ...(service === 'model-services' ? ([['partners', modelPartners[lang].title]] as [string, string][]) : []),
   ['process', r.serviceContents.process],
   ['guides', r.serviceContents.guides],
 ];
@@ -124,6 +136,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
 
         {service === 'workbuddy' && <WorkBuddyEditions lang={lang} />}
         {service === 'workbuddy' && <WorkBuddyCompare lang={lang} />}
+        {service === 'model-services' && <ModelCatalog lang={lang} />}
+        {service === 'model-services' && <ModelAccess lang={lang} />}
 
         {detail && (
           <section id="fit" class="section">
@@ -181,6 +195,8 @@ const briefFile = service ? serviceBriefs[lang][service] : undefined;
             </div>
           </section>
         )}
+
+        {service === 'model-services' && <ModelPartners lang={lang} />}
 
         {detail && (
           <section id="process" class="section section-tint">
