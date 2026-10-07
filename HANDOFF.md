@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 63 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 64 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第六十三轮）
+## 当前版本（第六十四轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第六十三轮（中转站图标改为「金字塔塔尖」四切面菱形，易AI 用深紫方块版，见 `docs/rounds/63-ccg-logo-apex.md`）
+- 当前轮次：第六十四轮（按站长在对照页选出的审美偏好，精修圆润版四象限星，见 `docs/rounds/64-ccg-logo-refined.md`）
 - 线上发布：`release-20261007041549`，commit `b40f575`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十三轮只换图片，跑快速检查
+- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十四轮只换图片，跑快速检查
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
@@ -64,7 +64,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - **用官方 WorkBuddy 标志**：图标 + 官方字标 `public/partners/workbuddy-wordmark.svg`（深色）/ `workbuddy-wordmark-white.svg`
   （白色，页首示例窗口用），不要用打字拼出来的「WorkBuddy」字样代替。
 - 业务流程里不写具体用量示例（如「2000 万 tokens」）；联系入口是每页右下角常驻「联系我们」按钮（联系页除外）。
-- 站长要求（第五十九、六十轮）：设计类任务自己判断、自己打磨到满意再交付，不要把几个方案丢给站长挑；不必拘泥于原有造型，要大胆、有顶级设计水准；站长偏好整体对称的几何美学（第六十一轮）。
+- 站长要求（第五十九、六十轮）：设计类任务自己判断、自己打磨到满意再交付，不要把几个方案丢给站长挑；不必拘泥于原有造型，要大胆、有顶级设计水准；站长偏好整体对称的几何美学（第六十一轮）；第六十四轮在对照页里选的喜欢：OpenRouter、硅基流动、Fireworks、New API、Hyperbolic、Nebius、Friendli、Parasail——扁平单色、基本几何形拼成、圆润。
 - 站长要求（第五十七轮）：动效要克制——不要扫光、闪亮或明显的位移与旋转；卡片只做轻微淡入与很淡的指针光。
 - 站长要求（第五十四轮）：机房一律写「自建机房」（第五十三轮曾改为「一手机房资源」，站长要求改回）；不写设备、数量、地区或 SLA。
 - 站长要求（第五十一轮）：模型服务相关页面不写「是否厂商官方授权 / 是否直供」之类的说明；WorkBuddy 的授权证书照旧展示。
@@ -112,7 +112,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - 文章 `src/content/guides/{zh,en}/`；路由清单 `src/data/routes.ts`
 - 样式 `src/styles/site.css`；交互 `src/scripts/{interactions,contact}.ts`
 - 静态素材与字体 `public/`；品牌源文件 `assets/`；测试与发布脚本 `scripts/`（`test-build`、`test-browser`、`test-enhancements`、`quick-check`、`deploy-ccg.sh`）
-- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，无底座主标，第六十三轮为四切面「金字塔塔尖」）；易AI `public/partners/ccg-api.svg` 是同一符号的深紫方块版（第六十二轮起两者不同文件）；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
+- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，无底座 #6d4aff 圆润四象限星）；易AI `public/partners/ccg-api.svg` 是同一符号的紫色方块白标版（第六十二轮起两者不同文件）；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
 - 线上 nginx：`/etc/nginx/snippets/yi-ai-site.conf`（路由）与 `yi-ai-site-headers.conf`（安全头/CSP）
 
 ## 审查提示
