@@ -21,3 +21,7 @@
 
 - 中转站线上 `logo.svg` 与新文件逐字节一致；白底、黑底、导航栏、16–170px 与上一版并排截图核对。
 - 易AI：`pnpm build`、`pnpm test`、`pnpm test:quick /zh/model-services/ /zh/ /zh/contact/` 通过（只换图片文件）。
+
+## 定稿
+
+- 站长回复「可以了」，确认为中转站图标定稿；临时审美对照页 `/var/www/docs/logo-board.html` 已从服务器删除（访问返回 404）。

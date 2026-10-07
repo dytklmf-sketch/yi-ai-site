@@ -112,7 +112,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - 文章 `src/content/guides/{zh,en}/`；路由清单 `src/data/routes.ts`
 - 样式 `src/styles/site.css`；交互 `src/scripts/{interactions,contact}.ts`
 - 静态素材与字体 `public/`；品牌源文件 `assets/`；测试与发布脚本 `scripts/`（`test-build`、`test-browser`、`test-enhancements`、`quick-check`、`deploy-ccg.sh`）
-- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，站长选定的「同心 C」，第六十七轮起深色背景）；易AI `public/partners/ccg-api.svg` 与它是同一个文件；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
+- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，站长确认的定稿「同心 C」：深色背景、白色外圈、青到淡紫渐变内圈、青色中心点）；易AI `public/partners/ccg-api.svg` 与它是同一个文件；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
 - 线上 nginx：`/etc/nginx/snippets/yi-ai-site.conf`（路由）与 `yi-ai-site-headers.conf`（安全头/CSP）
 
 ## 审查提示
