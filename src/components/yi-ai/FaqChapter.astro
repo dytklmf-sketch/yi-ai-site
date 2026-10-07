@@ -23,9 +23,13 @@ const grouped = services.flatMap((service) => t.faq.filter((item) => item.servic
 const items = full ? grouped : services.map((service) => grouped.find((item) => item.service === service)!);
 ---
 
-<section class="section faq-band" id="faq" aria-labelledby="faq-title">
-  <div class="container faq-layout">
-    <div class="faq-aside" data-reveal>
+{
+  /* Round 78: on the home page the three questions sit in one row under the title, and the block reveals as one (the
+    title row alone is too short for WebKit to catch reliably); the FAQ page keeps the side column. */
+}
+<section class:list={['section faq-band', { 'faq-home': !full }]} id="faq" aria-labelledby="faq-title">
+  <div class="container faq-layout" data-reveal={full ? undefined : ''}>
+    <div class="faq-aside" data-reveal={full ? '' : undefined}>
       <h2 id="faq-title" class="section-title">{t.faqTitle}</h2>
       {
         full && (
@@ -57,7 +61,7 @@ const items = full ? grouped : services.map((service) => grouped.find((item) => 
       }
       <a class="text-link" href={inquiryPath(lang)}>{t.primary}<ArrowUpRight size={16} /></a>
     </div>
-    <div class="faq-list" data-reveal>
+    <div class="faq-list" data-reveal={full ? '' : undefined}>
       {
         items.map((item) => (
           <details data-service={item.service}>

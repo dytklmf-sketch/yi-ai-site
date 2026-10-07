@@ -1638,6 +1638,37 @@ main:focus {
 .disclosure-content {
   padding: 0 1.25rem 1.125rem 2.9rem;
 }
+/* Round 78: home shows one question per service, so the title and links run across the top and the three cards
+   share one row. */
+.faq-home .faq-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+}
+.faq-home .faq-aside {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.75rem;
+}
+.faq-home .faq-aside .section-title {
+  margin-right: auto;
+}
+.faq-home .faq-aside .text-link {
+  margin-top: 0;
+}
+.faq-home .faq-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+/* Closed cards share a height; an opened one grows on its own without stretching the others. */
+.faq-home .faq-list:not(:has(details[open])) {
+  align-items: stretch;
+}
+@media (min-width: 1024px) {
+  .faq-home .faq-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 .disclosure-content p {
   color: var(--muted);
   font-size: 0.9375rem;
@@ -5727,7 +5758,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 }
 
-/* Round 53: infrastructure detail — three ways to deploy (Easy AI's self-built data center in the middle) and a
+/* Round 53: infrastructure detail — three ways to deploy and a
    sizing table, in the page blue with the shared card light. */
 .io-options {
   display: grid;
@@ -5745,18 +5776,10 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: clamp(1.25rem, 2.4vw, 1.625rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background: #fff;
-  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 40%);
-}
-.io-ours {
-  border-color: var(--cobalt-300);
   background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 4px no-repeat,
-    radial-gradient(20rem 10rem at 100% 0, rgb(var(--accent-rgb) / 10%), transparent 70%),
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
     #fff;
-  box-shadow:
-    0 0 0 1px rgb(var(--accent-rgb) / 12%),
-    0 1.5rem 2.75rem -1.75rem rgb(var(--accent-rgb) / 60%);
+  box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 40%);
 }
 .io-head {
   display: grid;
@@ -5768,14 +5791,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   margin: 0;
   color: var(--ink);
   font-size: 1.1875rem;
-}
-.io-badge {
-  padding: 0.125rem 0.625rem;
-  border-radius: 999px;
-  background: var(--cobalt);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
 }
 .io-head p {
   grid-column: 1 / -1;
@@ -5805,12 +5820,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   color: var(--ink);
   font-size: 0.9063rem;
   line-height: 1.55;
-}
-.io-ours .io-rows dt {
-  color: var(--cobalt);
-}
-.io-option .text-link {
-  margin-top: auto;
 }
 .io-note {
   margin: 1.25rem 0 0;
@@ -5885,12 +5894,6 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 @media (prefers-reduced-motion: no-preference) {
   .reveal-ready .io-options.is-in .io-option {
     animation: card-rise 0.5s calc(var(--i, 0) * 80ms + 0.1s) var(--ease) both;
-  }
-}
-@media (min-width: 1081px) {
-  .io-ours {
-    margin-block: -0.5rem;
-    padding-block: calc(clamp(1.25rem, 2.4vw, 1.625rem) + 0.5rem);
   }
 }
 @media (max-width: 1080px) {

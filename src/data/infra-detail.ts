@@ -6,13 +6,13 @@ import type { Lang } from './yi-ai';
  * confirmed per request. The sizing figures follow the
  * self-hosted-llm-sizing guide (weights = parameters × bytes per parameter, plus 10–20% runtime headroom).
  */
-type Option = { name: string; who: string; ours?: boolean; rows: [string, string][] };
-type Options = { title: string; badge: string; options: Option[]; note: string };
+type Option = { name: string; who: string; rows: [string, string][] };
+// Round 78: the three ways are shown as equals; no badge or highlight on the data-center option.
+type Options = { title: string; options: Option[]; note: string };
 
 export const infraOptions: Record<Lang, Options> = {
   zh: {
     title: '部署方式对比',
-    badge: '易AI 提供',
     options: [
       {
         name: '公有云 GPU',
@@ -26,8 +26,7 @@ export const infraOptions: Record<Lang, Options> = {
       },
       {
         name: '自建机房资源',
-        who: '易AI 自建机房，按工作负载匹配',
-        ours: true,
+        who: '按工作负载匹配机房资源',
         rows: [
           ['适合', '长期运行的推理服务、按周期的训练与微调'],
           ['起步', '按配置与周期确认资源'],
@@ -50,7 +49,6 @@ export const infraOptions: Record<Lang, Options> = {
   },
   en: {
     title: 'Ways to deploy',
-    badge: 'From Easy AI',
     options: [
       {
         name: 'Public cloud GPUs',
@@ -64,8 +62,7 @@ export const infraOptions: Record<Lang, Options> = {
       },
       {
         name: 'Self-built data center',
-        who: 'Easy AI’s own data center, matched to the workload',
-        ours: true,
+        who: 'Data-center resources matched to the workload',
         rows: [
           ['Suits', 'Long-running inference and periodic training or fine-tuning'],
           ['Start', 'Resources confirmed by configuration and duration'],

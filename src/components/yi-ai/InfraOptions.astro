@@ -1,19 +1,17 @@
 ---
-import { ArrowRight } from '@lucide/astro';
 import { infraOptions } from '../../data/infra-detail';
-import { inquiryPath, type Lang } from '../../data/yi-ai';
+import type { Lang } from '../../data/yi-ai';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const x = infraOptions[lang];
-const zhUI = lang === 'zh';
 ---
 
 {
-  /* Round 53: three ways to get compute side by side; the middle card is what Easy AI offers — its self-built data-center
-    resources — lifted and outlined in the page blue. Same light as the other service cards. */
+  /* Round 53: three ways to get compute side by side, with the same light as the other service cards. Round 78: the
+    data-center option is no longer badged or highlighted; the three read as equals. */
 }
 <section id="options" class="section" aria-labelledby="options-title">
   <div class="container">
@@ -21,10 +19,9 @@ const zhUI = lang === 'zh';
     <ul class="io-options" data-reveal>
       {
         x.options.map((option, i) => (
-          <li class:list={['io-option', 'glow-card', { 'io-ours': option.ours }]} style={`--i:${i}`} data-glow>
+          <li class="io-option glow-card" style={`--i:${i}`} data-glow>
             <header class="io-head">
               <h3>{option.name}</h3>
-              {option.ours && <span class="io-badge">{x.badge}</span>}
               <p>{option.who}</p>
             </header>
             <dl class="io-rows">
@@ -35,12 +32,6 @@ const zhUI = lang === 'zh';
                 </div>
               ))}
             </dl>
-            {option.ours && (
-              <a class="text-link" href={inquiryPath(lang, 'infrastructure')}>
-                {zhUI ? '咨询机房资源' : 'Ask about resources'}
-                <ArrowRight size={16} />
-              </a>
-            )}
           </li>
         ))
       }

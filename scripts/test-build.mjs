@@ -117,11 +117,12 @@ for (const file of html) {
       assert(text.includes('class="service-sample sample-window request-sheet"'), `${file}: request sheet missing`);
     assert(!text.includes('id="scope"') && !text.includes('id="brief"'), `${file}: scope and brief merged`);
     assert.equal((text.match(/class="scenario-icon"/g) || []).length, 4, `${file}: four scenario cards`);
-    // Round 53: infrastructure shows three ways to deploy (one marked as Easy AI's) and the sizing table.
+    // Round 53: infrastructure shows three ways to deploy and the sizing table; round 78: none badged or highlighted.
     if (file.includes('/infrastructure/'))
       assert(
         (text.match(/class="io-option /g) || []).length === 3 &&
-          (text.match(/io-ours/g) || []).length === 1 &&
+          !text.includes('io-ours') &&
+          !text.includes('io-badge') &&
           (text.match(/<tr>/g) || []).length >= 5 &&
           text.includes('self-hosted-llm-sizing'),
         `${file}: ways to deploy and sizing`
