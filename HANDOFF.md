@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 62 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 63 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第六十二轮）
+## 当前版本（第六十三轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第六十二轮（调研 36 家同行后，中转站图标定为无底座单色四象限星，易AI 用方块版，见 `docs/rounds/62-ccg-logo-peers.md`）
+- 当前轮次：第六十三轮（中转站图标改为「金字塔塔尖」四切面菱形，易AI 用深紫方块版，见 `docs/rounds/63-ccg-logo-apex.md`）
 - 线上发布：`release-20261007040950`，commit `d2d2019`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十二轮只换图片，跑快速检查
+- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十三轮只换图片，跑快速检查
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
@@ -112,7 +112,7 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - 文章 `src/content/guides/{zh,en}/`；路由清单 `src/data/routes.ts`
 - 样式 `src/styles/site.css`；交互 `src/scripts/{interactions,contact}.ts`
 - 静态素材与字体 `public/`；品牌源文件 `assets/`；测试与发布脚本 `scripts/`（`test-build`、`test-browser`、`test-enhancements`、`quick-check`、`deploy-ccg.sh`）
-- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，无底座单色主标）；易AI `public/partners/ccg-api.svg` 是同一符号的紫色方块版（第六十二轮起两者不同文件）；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
+- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，无底座主标，第六十三轮为四切面「金字塔塔尖」）；易AI `public/partners/ccg-api.svg` 是同一符号的深紫方块版（第六十二轮起两者不同文件）；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
 - 线上 nginx：`/etc/nginx/snippets/yi-ai-site.conf`（路由）与 `yi-ai-site-headers.conf`（安全头/CSP）
 
 ## 审查提示
