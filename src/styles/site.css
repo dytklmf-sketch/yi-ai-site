@@ -2210,15 +2210,28 @@ main > section:first-child + section {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
 }
+/* Round 77: the use cases and the scope panel start and end on the same line; whichever is shorter stretches (the
+   card rows, or the scope panel's white box). */
 .split-fit {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: clamp(2rem, 4.5vw, 4.5rem);
+  align-items: stretch;
+  margin-top: 2rem;
+}
+.split-fit .scope-panel {
+  display: flex;
+  flex-direction: column;
+}
+.split-fit .scope-grid {
+  flex: 1 1 auto;
+}
+.split-fit .boundary-note {
+  flex: none;
 }
 /* Use cases: one panel split into four cells, each with its own icon. */
 .scenario-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 2rem;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 1.5rem;
@@ -2767,6 +2780,15 @@ main > section:first-child + section {
   font-size: 0.8125em;
   line-height: 1.8;
   white-space: pre;
+}
+/* Round 77: the stage text grows with the screen but the window stops at 44rem, so on wide screens the code
+   outgrew it and showed a scrollbar. The font now also stays under 1/37 of the window width, which fits the longest
+   line (54 monospace characters plus padding); phones keep the 11px floor and scroll as before. */
+.api-card {
+  container-type: inline-size;
+}
+.api-card .api-code {
+  font-size: clamp(0.6875rem, 100cqi / 37, 0.8125em);
 }
 .api-code:focus-visible {
   outline-color: rgb(var(--hi));
@@ -4172,7 +4194,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 
   /* Guides */
-  .chapters .split-even .section-title {
+  .chapters #fit .section-title {
     font-size: clamp(1.75rem, min(3.2vw, 5.6vh), 2.75rem);
   }
   .chapters .scope-col {
@@ -4189,7 +4211,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
     margin-top: clamp(0.5rem, 1.6vh, 1rem);
     padding-block: clamp(0.5rem, 1.6vh, 0.875rem);
   }
-  .chapters .scenario-grid,
+  .chapters .split-fit,
   .chapters .step-cards {
     margin-top: var(--chapter-gap);
   }
@@ -5326,6 +5348,17 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .ma-billing {
   display: grid;
   margin: 0;
+}
+/* Round 77: on wide screens the billing rows share the card's height evenly, each centred, so the card fills to
+   line up with the access card beside it instead of leaving a gap above the links. */
+@media (min-width: 1081px) {
+  .ma-billing {
+    flex: 1;
+    grid-auto-rows: 1fr;
+  }
+  .ma-billing div {
+    align-content: center;
+  }
 }
 .ma-billing div {
   display: grid;

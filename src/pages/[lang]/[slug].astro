@@ -158,11 +158,12 @@ const heroMarks: Record<Service, string> = {
 
         {detail && (
           <section id="fit" class="section">
-            <div class="container split split-even split-fit">
-              <div class="fit-copy">
-                <h2 class="section-title" data-reveal>
-                  {r.serviceContents.fit}
-                </h2>
+            {/* Round 77: the title spans the section so the use cases and the scope panel share a top and bottom. */}
+            <div class="container">
+              <h2 class="section-title" data-reveal>
+                {r.serviceContents.fit}
+              </h2>
+              <div class="split split-even split-fit">
                 <ul class="scenario-grid" data-reveal>
                   {page.scenarios.map((item, i) => {
                     const Icon = scenarioIcons[service][i];
@@ -177,39 +178,39 @@ const heroMarks: Record<Service, string> = {
                     );
                   })}
                 </ul>
-              </div>
-              <div class="scope-panel glow-card" data-reveal data-glow>
-                <h3 class="scope-panel-title">{e.scope}</h3>
-                <div class="scope-grid">
-                  <div class="scope-col scope-yes">
-                    <h4>{e.included}</h4>
-                    <ul>
-                      {detail.discuss.map((item) => (
-                        <li>
-                          <Check size={16} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                <div class="scope-panel glow-card" data-reveal data-glow>
+                  <h3 class="scope-panel-title">{e.scope}</h3>
+                  <div class="scope-grid">
+                    <div class="scope-col scope-yes">
+                      <h4>{e.included}</h4>
+                      <ul>
+                        {detail.discuss.map((item) => (
+                          <li>
+                            <Check size={16} />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div class="scope-col scope-confirm">
+                      <h4>{e.excluded}</h4>
+                      <ul>
+                        {detail.confirm.map((item) => (
+                          <li>
+                            <CircleDashed size={16} />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <div class="scope-col scope-confirm">
-                    <h4>{e.excluded}</h4>
-                    <ul>
-                      {detail.confirm.map((item) => (
-                        <li>
-                          <CircleDashed size={16} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {page.boundary && (
+                    <p class="boundary-note">
+                      <CircleAlert size={18} />
+                      <span>{page.boundary}</span>
+                    </p>
+                  )}
                 </div>
-                {page.boundary && (
-                  <p class="boundary-note">
-                    <CircleAlert size={18} />
-                    <span>{page.boundary}</span>
-                  </p>
-                )}
               </div>
             </div>
           </section>
