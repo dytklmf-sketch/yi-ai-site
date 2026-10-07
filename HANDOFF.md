@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
 - 当前轮次：第七十七轮（页首代码卡去掉大屏横向滚动条、计费卡与适用场景左右对齐，见 `docs/rounds/77-align-cards.md`）
-- 线上发布：`release-20261007143055`，commit `b44aacc`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261007151506`，commit `8b4fdc8`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十七轮（见 `docs/rounds/77-align-cards.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
