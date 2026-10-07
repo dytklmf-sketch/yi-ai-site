@@ -1,14 +1,14 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 67 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 68 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第六十七轮）
+## 当前版本（第六十八轮）
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第六十七轮（「同心 C」换深色背景，内弧改实色淡紫，见 `docs/rounds/67-ccg-logo-dark-tile.md`）
+- 当前轮次：第六十八轮（「同心 C」内圈重做：变细、张口放大、青到淡紫渐变，见 `docs/rounds/68-ccg-logo-inner-c.md`）
 - 线上发布：`release-20261007043709`，commit `714e8df`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
-- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十七轮只换图片，跑快速检查
+- 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十八轮只换图片，跑快速检查
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
 
