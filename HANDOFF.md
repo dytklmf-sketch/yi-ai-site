@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
 - 当前轮次：第六十七轮（「同心 C」换深色背景，内弧改实色淡紫，见 `docs/rounds/67-ccg-logo-dark-tile.md`）
-- 线上发布：`release-20261007043302`，commit `bdb7cd4`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261007043709`，commit `714e8df`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十七轮只换图片，跑快速检查
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
