@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
 - 当前轮次：第六十二轮（调研 36 家同行后，中转站图标定为无底座单色四象限星，易AI 用方块版，见 `docs/rounds/62-ccg-logo-peers.md`）
-- 线上发布：`release-20261007040417`，commit `35e7ea6`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261007040950`，commit `d2d2019`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第五十七轮，通过（见 `docs/rounds/57-calmer-motion.md`）；第五十八至六十二轮只换图片，跑快速检查
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
