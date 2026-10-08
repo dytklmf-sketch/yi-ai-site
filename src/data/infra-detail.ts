@@ -3,8 +3,7 @@ import type { Lang } from './yi-ai';
 /**
  * Round 53: the infrastructure page in the model page's level of detail; round 54 keeps the site's wording, the
  * self-built data center (owner's call). Nothing here names equipment, quantities, regions or SLAs; those are
- * confirmed per request. The sizing figures follow the
- * self-hosted-llm-sizing guide (weights = parameters × bytes per parameter, plus 10–20% runtime headroom).
+ * confirmed per request.
  */
 type Option = { name: string; who: string; rows: [string, string][] };
 // Round 78: the three ways are shown as equals; no badge or highlight on the data-center option.
@@ -94,38 +93,63 @@ type Sizing = {
   guide: { label: string; slug: string };
 };
 
+// Round 79: customers mostly deploy the large open MoE models, so the table lists those (largest first) and folds
+// everything up to 70B into one row. Parameters and weight formats are from each model's official Hugging Face card;
+// weight sizes are the published checkpoint files. The fit column is weights plus about 20% for KV cache and headroom,
+// against 8-GPU machines by memory class (80 / 141 / 192 / 288 GB per GPU); classes name no product or stock.
 export const infraSizing: Record<Lang, Sizing> = {
   zh: {
     title: '选型参考',
-    lead: '开源模型推理的显存粗估，用来提需求时定一个起点；实际配置以实测为准。',
-    head: ['模型规模', 'BF16 权重', 'INT4 权重', '低并发推理参考'],
+    lead: '主流开源大模型私有化推理的显存粗估，按官方发布的权重计算，用来提需求时定一个起点；实际配置以实测为准。',
+    head: ['模型', '总参数 / 激活参数', '官方权重', '推理部署参考'],
     rows: [
-      ['7B–8B', '约 16 GB', '约 5 GB', '单卡 24 GB 级'],
-      ['14B', '约 28 GB', '约 8 GB', '单卡 48 GB 级；INT4 可用 24 GB 级'],
-      ['32B', '约 64 GB', '约 16 GB', '单卡 80 GB 级；INT4 可用 24–48 GB 级'],
-      ['70B', '约 140 GB', '约 35 GB', '2 张 80 GB 级；INT4 可用单卡 48–80 GB 级'],
+      ['Kimi K3', '2.8T / 104B', 'MXFP4，约 1.56 TB', '单机 8 张 288 GB 级；或 2 台 8 张 141 GB 级'],
+      ['Qwen3.8-2.4T', '2.45T / 95B', 'FP8，约 2.5 TB', '2 台 8 张 192 GB 级起；长上下文建议 288 GB 级'],
+      ['DeepSeek-V4-Pro', '1.6T / 49B', 'FP4 + FP8，约 865 GB', '单机 8 张 141 GB 级起；长上下文建议 192 GB 级'],
+      ['GLM-5.2', '753B（MoE）', 'FP8，约 761 GB', '单机 8 张 141 GB 级；或 2 台 8 张 80 GB 级'],
+      ['Qwen3.5-397B', '397B / 17B', 'FP8，约 406 GB', '单机 8 张 80 GB 级'],
+      ['DeepSeek-V4-Flash', '284B / 13B', 'FP4 + FP8，约 160 GB', '4 张 80 GB 级；或 2 张 141 GB 级'],
+      ['70B 及以下', '稠密模型', 'BF16 每 10 亿参数约 2 GB', '1–2 张 80 GB 级；INT4 量化后可单卡'],
     ],
     notes: [
-      '另需 KV 缓存与 10%–20% 运行余量，并发和上下文越长，需要越多。',
-      '全量微调通常是推理的数倍；LoRA 等轻量微调介于两者之间。',
-      '档位只表示显存量级，不代表现货型号。',
+      'MoE 模型按总参数占显存：激活参数只决定每个 token 的计算量，全部专家都要放进显存。',
+      '另需 KV 缓存与 10%–20% 运行余量；这些模型支持百万级上下文，并发和上下文越长，需要越多，可能要多一台。',
+      '档位只表示单卡显存量级，不代表现货型号。',
     ],
     guide: { label: '私有化部署开源模型：显存怎么估', slug: 'self-hosted-llm-sizing' },
   },
   en: {
     title: 'Sizing guide',
-    lead: 'Rough GPU memory for open-source model inference, a starting point for a request; measure on the target hardware.',
-    head: ['Model size', 'BF16 weights', 'INT4 weights', 'Low-concurrency inference'],
+    lead: 'Rough GPU memory for serving the leading open models in-house, from their official weights. A starting point for a request; measure on the target hardware.',
+    head: ['Model', 'Total / active parameters', 'Official weights', 'Inference deployment'],
     rows: [
-      ['7B–8B', '~16 GB', '~5 GB', 'One 24 GB-class GPU'],
-      ['14B', '~28 GB', '~8 GB', 'One 48 GB-class GPU; INT4 fits 24 GB'],
-      ['32B', '~64 GB', '~16 GB', 'One 80 GB-class GPU; INT4 fits 24–48 GB'],
-      ['70B', '~140 GB', '~35 GB', 'Two 80 GB-class GPUs; INT4 fits one 48–80 GB'],
+      ['Kimi K3', '2.8T / 104B', 'MXFP4, ~1.56 TB', 'One server of 8 × 288 GB-class; or two of 8 × 141 GB-class'],
+      [
+        'Qwen3.8-2.4T',
+        '2.45T / 95B',
+        'FP8, ~2.5 TB',
+        'From two servers of 8 × 192 GB-class; 288 GB-class for long context',
+      ],
+      [
+        'DeepSeek-V4-Pro',
+        '1.6T / 49B',
+        'FP4 + FP8, ~865 GB',
+        'From one server of 8 × 141 GB-class; 192 GB-class for long context',
+      ],
+      ['GLM-5.2', '753B (MoE)', 'FP8, ~761 GB', 'One server of 8 × 141 GB-class; or two of 8 × 80 GB-class'],
+      ['Qwen3.5-397B', '397B / 17B', 'FP8, ~406 GB', 'One server of 8 × 80 GB-class'],
+      ['DeepSeek-V4-Flash', '284B / 13B', 'FP4 + FP8, ~160 GB', 'Four 80 GB-class GPUs; or two 141 GB-class'],
+      [
+        '70B and smaller',
+        'Dense models',
+        'BF16, ~2 GB per billion parameters',
+        'One or two 80 GB-class GPUs; one with INT4',
+      ],
     ],
     notes: [
-      'Add KV cache and 10–20% headroom; more concurrency and longer context need more.',
-      'Full fine-tuning usually needs several times inference; LoRA-style tuning sits in between.',
-      'Classes describe memory size only, not specific models in stock.',
+      'MoE models need memory for all parameters: the active count sets compute per token, but every expert must be loaded.',
+      'Add KV cache and 10–20% headroom. These models take million-token context; more concurrency and longer context need more, possibly another server.',
+      'Classes describe memory per GPU only, not specific models in stock.',
     ],
     guide: { label: 'Sizing GPU memory for a self-hosted model', slug: 'self-hosted-llm-sizing' },
   },
