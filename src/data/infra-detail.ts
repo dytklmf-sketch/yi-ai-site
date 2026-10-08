@@ -84,72 +84,113 @@ export const infraOptions: Record<Lang, Options> = {
   },
 };
 
+type SizingRow = [string, string, string, string];
 type Sizing = {
   title: string;
   lead: string;
   head: [string, string, string, string];
-  rows: [string, string, string, string][];
+  groups: { label: string; rows: SizingRow[] }[];
   notes: string[];
   guide: { label: string; slug: string };
 };
 
-// Round 79: customers mostly deploy the large open MoE models, so the table lists those (largest first) and folds
-// everything up to 70B into one row. Parameters and weight formats are from each model's official Hugging Face card;
-// weight sizes are the published checkpoint files. The fit column is weights plus about 20% for KV cache and headroom,
-// against 8-GPU machines by memory class (80 / 141 / 192 / 288 GB per GPU); classes name no product or stock.
+// Round 79: customers mostly deploy the large open models, so the table lists those; round 80: the strongest open
+// model from each maker (DeepSeek: V4-Pro-0813 is the largest; V4.1 is only open as Flash), plus video generation.
+// Parameters and formats are from each model's official Hugging Face card; weight sizes are the sum of the
+// checkpoint files in the repo (for MiniMax-H3, one mode's transformer, text encoder and VAEs). The fit column is
+// weights plus about 20% for KV cache and headroom, against 8-GPU machines by memory class (80 / 141 / 192 / 288 GB
+// per GPU); classes name no product or stock.
 export const infraSizing: Record<Lang, Sizing> = {
   zh: {
     title: '选型参考',
-    lead: '主流开源大模型私有化推理的显存粗估，按官方发布的权重计算，用来提需求时定一个起点；实际配置以实测为准。',
+    lead: '各家最新开源大模型私有化推理的显存粗估，按官方发布的权重计算，用来提需求时定一个起点；实际配置以实测为准。',
     head: ['模型', '总参数 / 激活参数', '官方权重', '推理部署参考'],
-    rows: [
-      ['Kimi K3', '2.8T / 104B', 'MXFP4，约 1.56 TB', '单机 8 张 288 GB 级；或 2 台 8 张 141 GB 级'],
-      ['Qwen3.8-2.4T', '2.45T / 95B', 'FP8，约 2.5 TB', '2 台 8 张 192 GB 级起；长上下文建议 288 GB 级'],
-      ['DeepSeek-V4-Pro', '1.6T / 49B', 'FP4 + FP8，约 865 GB', '单机 8 张 141 GB 级起；长上下文建议 192 GB 级'],
-      ['GLM-5.2', '753B（MoE）', 'FP8，约 761 GB', '单机 8 张 141 GB 级；或 2 台 8 张 80 GB 级'],
-      ['Qwen3.5-397B', '397B / 17B', 'FP8，约 406 GB', '单机 8 张 80 GB 级'],
-      ['DeepSeek-V4-Flash', '284B / 13B', 'FP4 + FP8，约 160 GB', '4 张 80 GB 级；或 2 张 141 GB 级'],
-      ['70B 及以下', '稠密模型', 'BF16 每 10 亿参数约 2 GB', '1–2 张 80 GB 级；INT4 量化后可单卡'],
+    groups: [
+      {
+        label: '大语言模型',
+        rows: [
+          ['Kimi K3', '2.8T / 104B', 'MXFP4，约 1.56 TB', '单机 8 张 288 GB 级；或 2 台 8 张 141 GB 级'],
+          ['Qwen3.8-2.4T', '2.45T / 95B', 'FP8，约 2.5 TB', '2 台 8 张 192 GB 级起；长上下文建议 288 GB 级'],
+          [
+            'DeepSeek-V4-Pro-0813',
+            '1.6T / 49B',
+            'FP4 + FP8，约 893 GB',
+            '单机 8 张 141 GB 级起；长上下文建议 192 GB 级',
+          ],
+          ['GLM-5.3', '753B（MoE）', 'FP8，约 756 GB', '单机 8 张 141 GB 级；或 2 台 8 张 80 GB 级'],
+          ['DeepSeek-V4.1-Flash', '552B / 16B', 'FP4 + FP8，约 510 GB', '单机 8 张 141 GB 级；8 张 80 GB 级偏紧'],
+          ['MiniMax-M3', '428B / 23B', 'MXFP8，约 444 GB', '单机 8 张 80 GB 级；BF16 版需 8 张 141 GB 级'],
+        ],
+      },
+      {
+        label: '视频生成模型',
+        rows: [['MiniMax-H3', '33B 稠密', 'BF16，整套约 144 GB', '官方示例 4 卡部署；建议 4 张 80 GB 级起']],
+      },
+      {
+        label: '中小模型',
+        rows: [['70B 及以下', '稠密模型', 'BF16 每 10 亿参数约 2 GB', '1–2 张 80 GB 级；INT4 量化后可单卡']],
+      },
     ],
     notes: [
       'MoE 模型按总参数占显存：激活参数只决定每个 token 的计算量，全部专家都要放进显存。',
-      '另需 KV 缓存与 10%–20% 运行余量；这些模型支持百万级上下文，并发和上下文越长，需要越多，可能要多一台。',
-      '档位只表示单卡显存量级，不代表现货型号。',
+      '另需 KV 缓存与 10%–20% 运行余量；这些大语言模型支持百万级上下文，并发和上下文越长，需要越多，可能要多一台。',
+      '视频模型的显存与耗时随分辨率、时长和并发增长；H3 整套含主干、文本编码器与视频解码器。档位只表示单卡显存量级，不代表现货型号。',
     ],
     guide: { label: '私有化部署开源模型：显存怎么估', slug: 'self-hosted-llm-sizing' },
   },
   en: {
     title: 'Sizing guide',
-    lead: 'Rough GPU memory for serving the leading open models in-house, from their official weights. A starting point for a request; measure on the target hardware.',
+    lead: 'Rough GPU memory for serving each maker’s latest open models in-house, from their official weights. A starting point for a request; measure on the target hardware.',
     head: ['Model', 'Total / active parameters', 'Official weights', 'Inference deployment'],
-    rows: [
-      ['Kimi K3', '2.8T / 104B', 'MXFP4, ~1.56 TB', 'One server of 8 × 288 GB-class; or two of 8 × 141 GB-class'],
-      [
-        'Qwen3.8-2.4T',
-        '2.45T / 95B',
-        'FP8, ~2.5 TB',
-        'From two servers of 8 × 192 GB-class; 288 GB-class for long context',
-      ],
-      [
-        'DeepSeek-V4-Pro',
-        '1.6T / 49B',
-        'FP4 + FP8, ~865 GB',
-        'From one server of 8 × 141 GB-class; 192 GB-class for long context',
-      ],
-      ['GLM-5.2', '753B (MoE)', 'FP8, ~761 GB', 'One server of 8 × 141 GB-class; or two of 8 × 80 GB-class'],
-      ['Qwen3.5-397B', '397B / 17B', 'FP8, ~406 GB', 'One server of 8 × 80 GB-class'],
-      ['DeepSeek-V4-Flash', '284B / 13B', 'FP4 + FP8, ~160 GB', 'Four 80 GB-class GPUs; or two 141 GB-class'],
-      [
-        '70B and smaller',
-        'Dense models',
-        'BF16, ~2 GB per billion parameters',
-        'One or two 80 GB-class GPUs; one with INT4',
-      ],
+    groups: [
+      {
+        label: 'Language models',
+        rows: [
+          ['Kimi K3', '2.8T / 104B', 'MXFP4, ~1.56 TB', 'One server of 8 × 288 GB-class; or two of 8 × 141 GB-class'],
+          [
+            'Qwen3.8-2.4T',
+            '2.45T / 95B',
+            'FP8, ~2.5 TB',
+            'From two servers of 8 × 192 GB-class; 288 GB-class for long context',
+          ],
+          [
+            'DeepSeek-V4-Pro-0813',
+            '1.6T / 49B',
+            'FP4 + FP8, ~893 GB',
+            'From one server of 8 × 141 GB-class; 192 GB-class for long context',
+          ],
+          ['GLM-5.3', '753B (MoE)', 'FP8, ~756 GB', 'One server of 8 × 141 GB-class; or two of 8 × 80 GB-class'],
+          [
+            'DeepSeek-V4.1-Flash',
+            '552B / 16B',
+            'FP4 + FP8, ~510 GB',
+            'One server of 8 × 141 GB-class; 8 × 80 GB-class is tight',
+          ],
+          ['MiniMax-M3', '428B / 23B', 'MXFP8, ~444 GB', 'One server of 8 × 80 GB-class; BF16 needs 8 × 141 GB-class'],
+        ],
+      },
+      {
+        label: 'Video generation',
+        rows: [
+          ['MiniMax-H3', '33B dense', 'BF16, ~144 GB in all', 'Official example on 4 GPUs; from four 80 GB-class'],
+        ],
+      },
+      {
+        label: 'Smaller models',
+        rows: [
+          [
+            '70B and smaller',
+            'Dense models',
+            'BF16, ~2 GB per billion parameters',
+            'One or two 80 GB-class GPUs; one with INT4',
+          ],
+        ],
+      },
     ],
     notes: [
       'MoE models need memory for all parameters: the active count sets compute per token, but every expert must be loaded.',
-      'Add KV cache and 10–20% headroom. These models take million-token context; more concurrency and longer context need more, possibly another server.',
-      'Classes describe memory per GPU only, not specific models in stock.',
+      'Add KV cache and 10–20% headroom. These language models take million-token context; more concurrency and longer context need more, possibly another server.',
+      'Video models need more memory and time as resolution, length and concurrency grow; H3’s total covers the transformer, text encoder and video decoder. Classes describe memory per GPU only, not specific models in stock.',
     ],
     guide: { label: 'Sizing GPU memory for a self-hosted model', slug: 'self-hosted-llm-sizing' },
   },

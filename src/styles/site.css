@@ -5882,6 +5882,28 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .is-table tbody tr:hover {
   background: rgb(var(--accent-rgb) / 5%);
 }
+/* Round 80: a label row above each group of models; rows are tighter so the longer table stays on one screen. */
+@media (min-width: 721px) {
+  .is-table tbody td,
+  .is-table tbody th {
+    padding-block: 0.625rem;
+  }
+}
+.is-table tbody tr.is-group,
+.is-table tbody tr.is-group:hover {
+  background: none;
+}
+.is-table tr.is-group th {
+  padding-top: 0.875rem;
+  padding-bottom: 0.25rem;
+  color: var(--cobalt-600);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.is-table tbody:first-of-type tr.is-group th {
+  padding-top: 0.625rem;
+}
 .is-notes {
   display: grid;
   gap: 0.25rem;

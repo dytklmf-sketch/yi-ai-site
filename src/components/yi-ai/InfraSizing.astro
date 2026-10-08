@@ -10,7 +10,10 @@ const { lang } = Astro.props;
 const x = infraSizing[lang];
 ---
 
-{/* Round 53: rough GPU memory by model size, one lit card; on phones each row becomes a small card (data-label). */}
+{
+  /* Round 53: rough GPU memory by model size, one lit card; on phones each row becomes a small card (data-label). Round
+    80: rows come in groups (language, video, smaller), each a tbody under a label row. */
+}
 <section id="sizing" class="section section-tint" aria-labelledby="sizing-title">
   <div class="container">
     <h2 id="sizing-title" class="section-title" data-reveal>{x.title}</h2>
@@ -22,18 +25,25 @@ const x = infraSizing[lang];
             {x.head.map((cell) => <th scope="col">{cell}</th>)}
           </tr>
         </thead>
-        <tbody>
-          {
-            x.rows.map(([size, bf16, int4, fit]) => (
-              <tr>
-                <th scope="row">{size}</th>
-                <td data-label={x.head[1]}>{bf16}</td>
-                <td data-label={x.head[2]}>{int4}</td>
-                <td data-label={x.head[3]}>{fit}</td>
+        {
+          x.groups.map((group) => (
+            <tbody>
+              <tr class="is-group">
+                <th colspan="4" scope="colgroup">
+                  {group.label}
+                </th>
               </tr>
-            ))
-          }
-        </tbody>
+              {group.rows.map(([model, params, weights, fit]) => (
+                <tr>
+                  <th scope="row">{model}</th>
+                  <td data-label={x.head[1]}>{params}</td>
+                  <td data-label={x.head[2]}>{weights}</td>
+                  <td data-label={x.head[3]}>{fit}</td>
+                </tr>
+              ))}
+            </tbody>
+          ))
+        }
       </table>
       <ul class="is-notes">
         {x.notes.map((note) => <li>{note}</li>)}

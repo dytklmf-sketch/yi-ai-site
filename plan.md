@@ -214,6 +214,10 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 基础设施「选型参考」改为 Kimi K3、DeepSeek-V4、GLM-5.2、Qwen 等主流大模型的权重与部署参考，按官方模型卡与权重文件大小计算。详见 `docs/rounds/79-large-model-sizing.md`。
 
+## 已完成：第八十轮（2026-10-08）
+
+选型参考换成各家最新最强开源模型（GLM-5.3、DeepSeek-V4-Pro-0813 与 V4.1-Flash、MiniMax-M3 等），并新增视频生成模型 MiniMax-H3。详见 `docs/rounds/80-latest-models-and-video.md`。
+
 ## UI 待办
 
 - [ ] 手机首页约 7200px（第二十九轮 7892→7595；第三十三轮 FAQ 移出后 7654→7233）。再缩短需要删减真实内容（首页 FAQ、合作伙伴或咨询面板），需站长决定。
