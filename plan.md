@@ -220,7 +220,7 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 ## 已完成：第八十一轮（2026-10-09）
 
-网站迁到新服务器 189.24.79.181（香港，宝塔 nginx），生产域名改为 https://www.yeeeai.com/，新发布脚本 `scripts/deploy.sh`；Cloudflare 接入与证书待站长改 NS 后完成。详见 `docs/rounds/81-new-server-and-domain.md`。
+网站迁到新服务器 189.24.79.181（香港，宝塔 nginx），生产域名改为 https://www.yeeeai.com/，新发布脚本 `scripts/deploy.sh`；已接入 Cloudflare 并签发证书。详见 `docs/rounds/81-new-server-and-domain.md`。
 
 ## UI 待办
 
@@ -230,7 +230,8 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 ## 待站长决定或提供
 
-- [ ] Cloudflare 接入 yeeeai.com（改 NS、灰云解析到 189.24.79.181），之后签证书、改橙云 + Full (strict)。
+- [x] Cloudflare 接入 yeeeai.com、Let's Encrypt 证书（第八十一轮）。
+- [ ] Cloudflare SSL/TLS 设为 Full (strict)（站长在面板操作）。
 - [ ] 新域名可用后，旧地址 https://ccg-cli.online/yi_ai/ 301 到 https://www.yeeeai.com/。
 
 - [ ] 站长确认卡通版图标后，删除临时对照页 `/var/www/docs/logo-cartoon.html`。

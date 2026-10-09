@@ -33,6 +33,28 @@
     接入 Cloudflare 并解析到本机后改用 Let's Encrypt。
 - 文档：README、AGENTS、LAUNCH_CHECKLIST、HANDOFF 改为新服务器、新域名与新路径；`site-indexing.mjs`、`test-build.mjs` 注释同步。
 
+## 上线（同日）
+
+- 站长在 Cloudflare 添加 yeeeai.com，NS 改为 `newt.ns.cloudflare.com` / `reza.ns.cloudflare.com`，`@` 与 `www` 已代理（橙云）。
+- 经 Cloudflare 的 HTTP 验证可达；`certbot certonly --webroot` 签发 Let's Encrypt 证书（`www.yeeeai.com`、`yeeeai.com`，
+  `/etc/letsencrypt/live/yeeeai.com/`），`yi-ai-site-ssl.conf` 改指该证书，删除自签占位；`certbot renew --dry-run` 成功，
+  续期后由 `/etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh` 重载宝塔 nginx。未登记邮箱，不会收到到期提醒（自动续期）。
+- 经 Cloudflare 访问：`http://` 与 `yeeeai.com` 均 301 到 `https://www.yeeeai.com/`，`/` 302 到 `/zh/`，各页 200、404 正常，
+  安全头与 CSP 正常。待站长把 Cloudflare SSL/TLS 模式设为 Full (strict)。
+- 部署脚本最后打 tag 时新服务器缺 git 身份而失败（发布本身已切换且检查通过）：仓库内设置 `user.name dayday-api`、
+  `user.email dayday@ccg.local`，补打 `release-20261009174222`。
+
+## 新服务器上的完整浏览器测试
+
+- 新服务器只有 2 核，完整测试里几处固定等待不够：手机菜单滑出（300ms）、首页滚动后顶栏变实色（200ms）、
+  WebKit 录屏时逐屏滚动（160ms，录屏编码占满 CPU）。网站本身无问题，单独复现都正常。
+- `test-browser.mjs`：菜单对齐检查前等待菜单动画结束。`test-enhancements.mjs`：CPU ≤ 2 核时 `settle` 与录屏滚动等待放大 3 倍，
+  顶栏实色检查改为等待条件成立。
+
+- 第五次重跑时 WebKit 录屏进程因内存不足被系统杀掉（OOM，服务器无 swap）；新增 2 GB `/swapfile`（写入 `/etc/fstab`）。
+- 站长随后要求停止测试、不要压测服务器：已停止测试与预览进程。上面两处测试脚本的等待调整**未在新服务器上跑通验证**，
+  以后需要完整浏览器测试时在其他机器上跑。
+
 ## 测试
 
 - 新服务器上 `pnpm check`、`pnpm build`、`pnpm test` 通过；`pnpm build:production` + `pnpm test:production` 通过
@@ -41,7 +63,7 @@
 
 ## 遗留（待站长）
 
-- Cloudflare：添加域名、改 NS、先灰云解析 `@` 与 `www` 到 189.24.79.181；之后由 agent 签 Let's Encrypt 证书，再改橙云 + Full (strict)。
+- Cloudflare SSL/TLS 模式设为 Full (strict)，打开 Always Use HTTPS、最低 TLS 1.2（站长在面板操作）。
 - 旧地址 https://ccg-cli.online/yi_ai/ 在新域名可用后 301 到 https://www.yeeeai.com/（待站长确认）。
 - GitHub 推送仍需站长提供新 token（第 77–81 轮未推）。
 - 安全提醒（未擅自处理）：新服务器 root 密码曾出现在对话里，建议站长修改并考虑只用密钥登录；宝塔面板 8889 对公网开放，建议限制来源 IP。

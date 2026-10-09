@@ -394,6 +394,15 @@ try {
     await page.goto(`${base}/zh/workbuddy/`, { waitUntil: 'networkidle' });
     await page.locator('.mobile-menu summary').click();
     await page.waitForTimeout(300);
+    // Round 81: on the smaller 2-core server the sheet's slide can still be running after 300ms; wait for it to land.
+    await page
+      .waitForFunction(() =>
+        document
+          .querySelector('.mobile-sheet')
+          .getAnimations()
+          .every((animation) => animation.playState !== 'running')
+      )
+      .catch(() => {});
     const alignment = await page.evaluate(() => ({
       headerBottom: document.querySelector('.site-header').getBoundingClientRect().bottom,
       menuTop: document.querySelector('.mobile-sheet').getBoundingClientRect().top,

@@ -1,8 +1,11 @@
+import os from 'node:os';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { launchBrowser } from './browser.mjs';
 
-const settle = (page, ms = 120) => page.waitForTimeout(ms);
+// Round 81: the site's server has 2 cores, where WebKit runs transitions late under load; stretch the fixed waits there.
+const slow = os.cpus().length <= 2 ? 3 : 1;
+const settle = (page, ms = 120) => page.waitForTimeout(ms * slow);
 const scrollToElement = (page, selector, block = 'start') =>
   page.locator(selector).evaluate((el, block) => el.scrollIntoView({ block, behavior: 'instant' }), block);
 
@@ -115,6 +118,9 @@ export async function testEnhancements(base, routes) {
       assert.equal(await header.evaluate((el) => el.classList.contains('is-solid')), false);
       await scrollToElement(page, '#services');
       await settle(page, 200);
+      await header
+        .evaluate((el) => new Promise((done) => (el.classList.contains('is-solid') ? done() : setTimeout(done, 1500))))
+        .catch(() => {});
       assert.equal(await header.evaluate((el) => el.classList.contains('is-solid')), true);
       assert.equal(await page.locator('.service-column:visible').count(), 3, 'All three services visible at once');
       // Round 28: only the hero fills the first screen; every other section takes its content height, so none of
@@ -360,13 +366,13 @@ export async function testEnhancements(base, routes) {
       // Read the whole page like a visitor, one screen at a time.
       for (let y = 0; y < (await motion.evaluate(() => document.documentElement.scrollHeight)); y += 640) {
         await motion.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
-        await motion.waitForTimeout(160);
+        await motion.waitForTimeout(160 * slow);
       }
       // IntersectionObserver callbacks can lag while the video encoder holds the main thread, so wait for
       // every reveal to land before checking that none of them fades back out.
       await motion
         .waitForFunction(() => document.querySelectorAll('[data-reveal]:not(.is-in)').length === 0, undefined, {
-          timeout: 4000,
+          timeout: 4000 * slow,
         })
         .catch(() => {});
       const hiddenAfterReveal = await motion.evaluate(

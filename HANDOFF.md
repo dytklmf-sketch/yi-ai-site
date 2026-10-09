@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起；DNS 接入 Cloudflare 前旧地址 https://ccg-cli.online/yi_ai/ 仍在服务）
 - 当前轮次：第八十一轮（迁到新服务器 189.24.79.181 与域名 www.yeeeai.com，见 `docs/rounds/81-new-server-and-domain.md`）
-- 线上发布：`release-20261008031224`，commit `2f729a9`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261009174222`，commit `00232e7`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
@@ -27,6 +27,12 @@
 - 习惯做法：在本地克隆（remote 指向 `root@189.24.79.181:/root/yi-ai-site`）里编辑，推到临时分支，服务器上
   `git merge --ff-only`，再在服务器上 format、构建、测试、提交、发布。也可以直接在服务器上改。
 - 提交身份 `dayday-api <dayday@ccg.local>`；提交信息用文件传（`git commit -F`），避免 ssh 引号问题。
+
+### 新服务器上的测试（站长要求，第八十一轮）
+
+- **不要在新服务器 189.24.79.181 上跑 `pnpm test:browser` 或 `pnpm test:quick`**：服务器只有 2 核 2 GB，站长明确不许压测它。
+  每轮在服务器上只跑轻量的 `pnpm check`、`pnpm build`、`pnpm test`（与发布脚本里的 `test:production`）。
+- 需要浏览器测试时，在其他机器（本地克隆或 CI）上跑；Playwright 浏览器虽已装在服务器上，不要在这里启动。
 
 ### 每轮流程
 
