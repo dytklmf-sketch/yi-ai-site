@@ -8,7 +8,7 @@ block this iteration.
 
 - [x] Owner-approved hosting destination: https://ccg-cli.online/yi_ai/ (subpath on the CCG domain).
 - [x] Move to a dedicated domain: https://www.yeeeai.com/ (round 81; `SITE_ORIGIN` updated, own server).
-- [ ] Redirect https://ccg-cli.online/yi_ai/ to the new domain once it is live (owner to confirm).
+- [x] https://ccg-cli.online/yi_ai/ redirects (301, same path) to https://www.yeeeai.com/ (round 81).
 - [ ] Confirmed business/legal identity and required publication details.
 - [ ] Business approval of authorization wording, supply descriptions and service boundaries.
 - [ ] Final Chinese/English review and source-link checks from the deployment network.

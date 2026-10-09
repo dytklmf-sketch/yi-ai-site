@@ -61,9 +61,16 @@
   （42 页，indexable at https://www.yeeeai.com/，canonical / sitemap / robots 正确）。
 - `nginx -t` 通过。
 
+## 旧地址跳转与 GitHub
+
+- 站长确认后，旧服务器 `/etc/nginx/snippets/yi-ai-site.conf` 改为：`/yi_ai` 与 `/yi_ai/<路径>` 一律 301 到
+  `https://www.yeeeai.com/<路径>`（保留查询参数）；原配置备份 `/root/backups/yi-ai-site.conf.before-redirect-20261009`，
+  `/var/www/yi_ai` 与 `yi-ai-site-headers.conf` 未删除。`nginx -t` 通过后 reload；中转站首页与模型广场不受影响。
+- 用站长提供的 token 推送 `main`（`7ac109f` → `63826d4`，快进）与缺少的 release 标签；token 只经 ssh 标准输入进入
+  `/dev/shm` 临时 askpass，推送后删除，未写入 git 配置或 remote URL。
+
 ## 遗留（待站长）
 
 - Cloudflare SSL/TLS 模式设为 Full (strict)，打开 Always Use HTTPS、最低 TLS 1.2（站长在面板操作）。
-- 旧地址 https://ccg-cli.online/yi_ai/ 在新域名可用后 301 到 https://www.yeeeai.com/（待站长确认）。
-- GitHub 推送仍需站长提供新 token（第 77–81 轮未推）。
+- 站长在对话里发的 classic token 建议用完后到 GitHub 设置里删除，下次换只授权本仓库的 fine-grained token。
 - 安全提醒（未擅自处理）：新服务器 root 密码曾出现在对话里，建议站长修改并考虑只用密钥登录；宝塔面板 8889 对公网开放，建议限制来源 IP。

@@ -5,7 +5,7 @@
 
 ## 当前版本（第八十一轮）
 
-- 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起；DNS 接入 Cloudflare 前旧地址 https://ccg-cli.online/yi_ai/ 仍在服务）
+- 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
 - 当前轮次：第八十一轮（迁到新服务器 189.24.79.181 与域名 www.yeeeai.com，见 `docs/rounds/81-new-server-and-domain.md`）
 - 线上发布：`release-20261009174222`，commit `00232e7`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）

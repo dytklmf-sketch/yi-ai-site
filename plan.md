@@ -232,7 +232,7 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 - [x] Cloudflare 接入 yeeeai.com、Let's Encrypt 证书（第八十一轮）。
 - [ ] Cloudflare SSL/TLS 设为 Full (strict)（站长在面板操作）。
-- [ ] 新域名可用后，旧地址 https://ccg-cli.online/yi_ai/ 301 到 https://www.yeeeai.com/。
+- [x] 旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到 https://www.yeeeai.com/（第八十一轮）。
 
 - [ ] 站长确认卡通版图标后，删除临时对照页 `/var/www/docs/logo-cartoon.html`。
 
