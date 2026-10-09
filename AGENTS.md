@@ -62,7 +62,7 @@ directory in the final response. Preserve prior evidence and exclude credentials
 ## Security and Brand
 
 Plain builds stay `noindex` previews. Only the approved production build
-(`pnpm build:production`, https://ccg-cli.online/yi_ai/) has canonical URLs, a sitemap
+(`pnpm build:production`, https://www.yeeeai.com/) has canonical URLs, a sitemap
 and indexing; route every internal URL through `withBase()`. Use local fonts/assets and no third-party tracking.
 Use 易AI in Chinese and `Easy AI` in English.
 CCG API is a product, not the site identity; copy names it `CCG API`, never bare `CCG` (the ccg-cli.online domain and CCG nginx are infrastructure, not copy). Do not restore the removed model screenshot.

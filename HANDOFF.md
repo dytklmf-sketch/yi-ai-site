@@ -1,12 +1,12 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 80 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 81 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第八十轮）
+## 当前版本（第八十一轮）
 
-- 品牌：易AI / Easy AI；线上：**https://ccg-cli.online/yi_ai/**（站长授权允许收录）
-- 当前轮次：第八十轮（选型参考用各家最新最强模型并加视频模型，见 `docs/rounds/80-latest-models-and-video.md`）
+- 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起；DNS 接入 Cloudflare 前旧地址 https://ccg-cli.online/yi_ai/ 仍在服务）
+- 当前轮次：第八十一轮（迁到新服务器 189.24.79.181 与域名 www.yeeeai.com，见 `docs/rounds/81-new-server-and-domain.md`）
 - 线上发布：`release-20261008031224`，commit `2f729a9`；`https://ccg-cli.online/yi_ai/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
@@ -16,13 +16,15 @@
 
 ### 访问与仓库
 
-- 服务器 `root@38.22.92.196`，本机已配置免密 SSH（密钥登录）。工作目录 `/root/yi-ai-site`，Node 在 `/root/.local/node/bin`
-  （命令前 `export PATH=/root/.local/node/bin:$PATH`），包管理 pnpm。
+- **第八十一轮起网站迁到新服务器** `root@189.24.79.181`（香港，Debian 12，2 核 2 GB，装有宝塔面板），本机已配置免密 SSH。
+  工作目录 `/root/yi-ai-site`，Node 在 `/root/.local/node/bin`（命令前 `export PATH=/root/.local/node/bin:$PATH`），包管理 pnpm；
+  字体工具 `/root/.venvs/fonts`、字体源 `/root/font-source` 与旧服务器相同。域名 `www.yeeeai.com`（`yeeeai.com` 跳转到 www），DNS 在 Cloudflare。
+- 旧服务器 `root@38.22.92.196` 只剩中转站（CCG API，`ccg-cli.online`）；其上 `/root/yi-ai-site` 停在第八十轮，不再在那里改网站。
 - GitHub：`dytklmf-sketch/yi-ai-site`（公开，网站源码）；`dytklmf-sketch/yi-ai-billing`（私有，账单系统，与本站无关）。
 - 推送 GitHub 需要站长提供的 token。**token 不写进服务器 git config、remote URL、文件或文档**；做法是临时 askpass 脚本从
   stdin 读入、推送完立即删除。之前会话里出现过的 classic token 已建议站长到 https://github.com/settings/tokens 删除，
   新 agent 不要再使用旧 token，需要推送时向站长要新的（最好是只授权本仓库的 fine-grained token）。
-- 习惯做法：在本地克隆（remote 指向 `root@38.22.92.196:/root/yi-ai-site`）里编辑，推到临时分支，服务器上
+- 习惯做法：在本地克隆（remote 指向 `root@189.24.79.181:/root/yi-ai-site`）里编辑，推到临时分支，服务器上
   `git merge --ff-only`，再在服务器上 format、构建、测试、提交、发布。也可以直接在服务器上改。
 - 提交身份 `dayday-api <dayday@ccg.local>`；提交信息用文件传（`git commit -F`），避免 ssh 引号问题。
 
@@ -46,8 +48,8 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 ```
 
 **完整测试运行期间不要重新构建 `dist`**：资源 hash 变化会让正在跑的测试失败（第四十五轮踩过）。
-后台跑时用日志末尾的 `exit=` 判断结束，不要用 `pgrep -f`（会匹配到自己的 ssh 命令）。4. 工作区干净后 `scripts/deploy-ccg.sh`（生产构建、打 tag `release-<时间戳>`、逐页检查 sitemap、失败自动回滚）；
-需要时 `scripts/deploy-ccg.sh --rollback`。5. 推送 GitHub（见上方 token 规则），回复站长线上链接与测试结果。
+后台跑时用日志末尾的 `exit=` 判断结束，不要用 `pgrep -f`（会匹配到自己的 ssh 命令）。4. 工作区干净后 `scripts/deploy.sh`（生产构建、打 tag `release-<时间戳>`、逐页检查 sitemap、失败自动回滚）；
+需要时 `scripts/deploy.sh --rollback`。5. 推送 GitHub（见上方 token 规则），回复站长线上链接与测试结果。
 
 ### 站长的偏好（多轮反馈总结，测试会拦截其中一部分）
 
@@ -92,8 +94,8 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 
 ## 其他仍有效的约定
 
-- 发布：`scripts/deploy-ccg.sh` 要求工作区干净，写 `version.json`、打 tag，只保留最近 5 个发布目录。
-- CSP：唯一内联脚本是布局里的 `js` class 片段，nginx 用 sha256 放行；改它必须同步 `/etc/nginx/snippets/yi-ai-site-headers.conf`
+- 发布：`scripts/deploy.sh` 要求工作区干净，写 `version.json`、打 tag，只保留最近 5 个发布目录。
+- CSP：唯一内联脚本是布局里的 `js` class 片段，nginx 用 sha256 放行；改它必须同步新服务器 `/www/server/nginx/conf/yi-ai-site-headers.conf`
   （`test-build.mjs` 断言 hash 不变）。`style-src` 允许内联。
 - CI：`.github/workflows/ci.yml` 在推送和 PR 时跑 check、build、test 与浏览器测试。
 - 指南 12 对（中英同 `pairKey`），每篇需要 2–4 条 `keyPoints`；需求单在 `public/templates/{zh,en}/`（UTF-8 BOM + CRLF）。
@@ -111,10 +113,12 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - 文案 `src/data/{home,zh,en,editorial,service-details,workbuddy-editions}.ts`；品牌与联系 `src/data/yi-ai.ts`
 - 文章 `src/content/guides/{zh,en}/`；路由清单 `src/data/routes.ts`
 - 样式 `src/styles/site.css`；交互 `src/scripts/{interactions,contact}.ts`
-- 静态素材与字体 `public/`；品牌源文件 `assets/`；测试与发布脚本 `scripts/`（`test-build`、`test-browser`、`test-enhancements`、`quick-check`、`deploy-ccg.sh`）
-- 中转站导航：样式在 `/var/www/html/assets/ccg-nav.css`（`/assets/` 一年 immutable 缓存，改样式必须同时改各页面引用的 `?v=` 版本号）；第七十六轮把图标调到 32px 并追加覆盖规则。
-- 中转站图标：`/var/www/html/logo.svg`（中转站全站引用，站长确认的定稿「同心 C」：深色底、白色外弧与淡紫内弧带立体厚度、中心一只眼睛、右上两颗黄色小星，第七十五轮起加粗为站长选定的「更圆更胖」；第七十三轮笑脸已被站长否定）；易AI `public/partners/ccg-api.svg` 与它是同一个文件；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
-- 线上 nginx：`/etc/nginx/snippets/yi-ai-site.conf`（路由）与 `yi-ai-site-headers.conf`（安全头/CSP）
+- 静态素材与字体 `public/`；品牌源文件 `assets/`；测试与发布脚本 `scripts/`（`test-build`、`test-browser`、`test-enhancements`、`quick-check`、`deploy.sh`）
+- 中转站导航（旧服务器 38.22.92.196）：样式在 `/var/www/html/assets/ccg-nav.css`（`/assets/` 一年 immutable 缓存，改样式必须同时改各页面引用的 `?v=` 版本号）；第七十六轮把图标调到 32px 并追加覆盖规则。
+- 中转站图标（旧服务器）：`/var/www/html/logo.svg`（中转站全站引用，站长确认的定稿「同心 C」：深色底、白色外弧与淡紫内弧带立体厚度、中心一只眼睛、右上两颗黄色小星，第七十五轮起加粗为站长选定的「更圆更胖」；第七十三轮笑脸已被站长否定）；易AI `public/partners/ccg-api.svg` 与它是同一个文件；第五十八轮前的旧图标备份在 `/var/www/html/logo.svg.bak-before-redesign-20261007`。
+- 线上 nginx（新服务器，宝塔 nginx 1.26）：站点 `/www/server/panel/vhost/nginx/yeeeai.com.conf`（不经宝塔站点列表管理，勿在面板里重复添加该域名）、
+  安全头/CSP `/www/server/nginx/conf/yi-ai-site-headers.conf`、证书 `/www/server/nginx/conf/yi-ai-site-ssl.conf`；发布目录
+  `/www/wwwroot/yeeeai.com/current` → `releases/`；ACME 验证目录 `/www/wwwroot/yeeeai.com/acme`。
 
 ## 审查提示
 
@@ -129,6 +133,6 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 - 不恢复模型广场截图，不伪造客户案例、授权文件、机房照片、二维码、价格、SLA 或售后承诺。
 - 只有 `pnpm build:production` 去掉 noindex、生成 canonical 与 sitemap。
 - 不购买域名或服务；不删除服务器上未确认的文件（第三十轮清理只删了确认过的旧副本，归档在 `/root/backups/cleanup-20261005.tar.gz`）。
-- 对 CCG nginx 的改动仅限 `/yi_ai` include 与两个 snippet；不动其他路由和根 `robots.txt`。
+- 对旧服务器 CCG nginx 的改动仅限 `/yi_ai` include 与两个 snippet；不动其他路由和根 `robots.txt`。新服务器上只动易AI 自己的三个 nginx 文件，不改宝塔面板其他设置。
 - 凭据只放环境变量，不进源码、文档或提交；不运行付费生图脚本。
 - 站长明确不做「安全与收尾」类任务（改 root 密码等）——可以提醒，不要擅自做。

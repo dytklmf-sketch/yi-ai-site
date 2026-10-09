@@ -161,26 +161,29 @@ A plain `pnpm build` is a local preview: every page has `noindex, nofollow`,
 `robots.txt` disallows crawling, `_headers` adds a noindex header and there is no
 sitemap or canonical URL.
 
-The owner approved publication at **https://ccg-cli.online/yi_ai/** (2026-09-30).
-`SITE_ORIGIN` and `SITE_BASE` switch the build to production (see
-`scripts/site-indexing.mjs`): every internal URL gets the `/yi_ai` prefix through
-`withBase()` in `src/data/yi-ai.ts`, pages carry absolute canonical, `og:url`,
+The site is published at **https://www.yeeeai.com/** (round 81; from 2026-09-30 to
+round 80 it lived at https://ccg-cli.online/yi_ai/). `SITE_ORIGIN` (and `SITE_BASE`, only
+for a subpath) switch the build to production (see `scripts/site-indexing.mjs`): every
+internal URL goes through `withBase()` in `src/data/yi-ai.ts`, pages carry absolute canonical, `og:url`,
 `og:image` and `hreflang` (with `x-default`) links, and `sitemap.xml` lists all 26
 routes with language alternates. The entry page and 404 stay noindex.
 
 ```sh
-pnpm build:production   # SITE_ORIGIN=https://ccg-cli.online SITE_BASE=/yi_ai
+pnpm build:production   # SITE_ORIGIN=https://www.yeeeai.com
 pnpm test:production    # production assertions
-scripts/deploy-ccg.sh   # build, test and publish on this server
-scripts/deploy-ccg.sh --rollback
+scripts/deploy.sh       # build, test and publish on this server
+scripts/deploy.sh --rollback
 ```
 
-The server's nginx serves `/var/www/yi_ai` (a symlink to a timestamped directory
-in `/var/www/releases/`) through `/etc/nginx/snippets/yi-ai-site.conf`, included
-once in the `ccg-cli.online` HTTPS server. Browser tests run against the root
-preview build, so run `pnpm build` again after a production build before local
-testing. Crawlers only read `robots.txt` at the origin root, which belongs to CCG;
-submit `https://ccg-cli.online/yi_ai/sitemap.xml` in search consoles instead.
+The server (189.24.79.181, Hong Kong, BT panel nginx 1.26) serves
+`/www/wwwroot/yeeeai.com/current` (a symlink to a timestamped directory in
+`releases/`) through `/www/server/panel/vhost/nginx/yeeeai.com.conf`; `yeeeai.com` and
+HTTP redirect to `https://www.yeeeai.com/`. Security headers and CSP are in
+`/www/server/nginx/conf/yi-ai-site-headers.conf`, certificates in
+`/www/server/nginx/conf/yi-ai-site-ssl.conf`. DNS is on Cloudflare. Browser tests run
+against the root preview build, so run `pnpm build` again after a production build
+before local testing. The site owns the origin root, so `robots.txt` points crawlers
+at `https://www.yeeeai.com/sitemap.xml`.
 GEO visibility and search inclusion are not guaranteed by the site implementation.
 
 See `plan.md` for status (earlier rounds: `docs/history/`) and `LAUNCH_CHECKLIST.md` for deliberately

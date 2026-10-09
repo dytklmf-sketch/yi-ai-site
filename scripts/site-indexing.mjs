@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 // A plain build is a noindex preview. A production build sets the real origin and optional subpath, e.g.
-// SITE_ORIGIN=https://ccg-cli.online SITE_BASE=/yi_ai — which enables canonical URLs, a sitemap and indexing.
+// SITE_ORIGIN=https://www.yeeeai.com (SITE_BASE only for a subpath) — which enables canonical URLs, a sitemap and indexing.
 export const site = process.env.SITE_ORIGIN || undefined;
 export const base = process.env.SITE_BASE || undefined;
 

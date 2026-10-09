@@ -218,6 +218,10 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 
 选型参考换成各家最新最强开源模型（GLM-5.3、DeepSeek-V4-Pro-0813 与 V4.1-Flash、MiniMax-M3 等），并新增视频生成模型 MiniMax-H3。详见 `docs/rounds/80-latest-models-and-video.md`。
 
+## 已完成：第八十一轮（2026-10-09）
+
+网站迁到新服务器 189.24.79.181（香港，宝塔 nginx），生产域名改为 https://www.yeeeai.com/，新发布脚本 `scripts/deploy.sh`；Cloudflare 接入与证书待站长改 NS 后完成。详见 `docs/rounds/81-new-server-and-domain.md`。
+
 ## UI 待办
 
 - [ ] 手机首页约 7200px（第二十九轮 7892→7595；第三十三轮 FAQ 移出后 7654→7233）。再缩短需要删减真实内容（首页 FAQ、合作伙伴或咨询面板），需站长决定。
@@ -225,6 +229,9 @@ WorkBuddy 官方字标；企业版卡改浅色细边与品牌绿对勾；VS 改�
 - [ ] 第五十二轮审查列出、站长未选的三项：首页卡片统一风格并修小问题（合作伙伴 7 个 logo 在 4 列里空一格、首页常见问题已在第七十八轮改为一行）；首页 / 关于页模型服务卡文案更新为聚合与分销。基础设施页已在第五十三轮做详细。
 
 ## 待站长决定或提供
+
+- [ ] Cloudflare 接入 yeeeai.com（改 NS、灰云解析到 189.24.79.181），之后签证书、改橙云 + Full (strict)。
+- [ ] 新域名可用后，旧地址 https://ccg-cli.online/yi_ai/ 301 到 https://www.yeeeai.com/。
 
 - [ ] 站长确认卡通版图标后，删除临时对照页 `/var/www/docs/logo-cartoon.html`。
 

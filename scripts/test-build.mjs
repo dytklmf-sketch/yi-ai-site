@@ -3,7 +3,7 @@ import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 
-// sha256 of the `js` class snippet in YiAiLayout; mirrored in /etc/nginx/snippets/yi-ai-site-headers.conf.
+// sha256 of the `js` class snippet in YiAiLayout; mirrored in /www/server/nginx/conf/yi-ai-site-headers.conf on the server.
 const inlineScriptHash = 'sa2BD07tH4oO53uT1B5vNSLM2+gcrREM4WTXttKp6oU=';
 
 async function walk(dir) {
