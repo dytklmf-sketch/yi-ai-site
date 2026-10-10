@@ -694,7 +694,7 @@ main:focus {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(40% 50% at 72% 42%, rgb(var(--accent-rgb) / 32%), transparent 70%),
+    radial-gradient(40% 50% at 72% 50%, rgb(var(--accent-rgb) / 32%), transparent 70%),
     radial-gradient(30% 30% at 10% 0%, rgb(var(--accent-rgb) / 16%), transparent 70%),
     linear-gradient(180deg, transparent 60%, rgb(12 20 40 / 90%));
 }
@@ -745,7 +745,7 @@ main:focus {
 .hero-visual {
   position: relative;
   margin: 0;
-  padding: 1.75rem 1.25rem 1rem;
+  padding: 1.5rem 1.25rem;
 }
 .hero-visual figcaption {
   margin-top: 0.5rem;
@@ -818,6 +818,19 @@ main:focus {
 }
 .label-tag {
   font-size: 1rem;
+}
+/* Round 82: the wide hero stack is drawn on a wider canvas, so its labels are set larger to read at the same size. */
+.stack-wide .label-name {
+  font-size: 1.875rem;
+}
+.stack-wide .label-tag {
+  font-size: 1.375rem;
+}
+.stack-dark.stack-wide .label-tag {
+  fill: rgb(200 212 240 / 80%);
+}
+:lang(en) .stack-wide .label-tag {
+  font-size: 1.0625rem;
 }
 
 .stack-dark .stop-top-a {
@@ -3047,23 +3060,56 @@ main > section:first-child + section {
   right: 0;
   left: auto;
 }
-/* Home hero: the rings sit behind the stack, which gets the same corner brackets. */
-.hero:not(.about-hero) .hud-rings {
-  --ring: min(54rem, 100vh, 120vw);
-  --ring-x: 71%;
-  --ring-y: 50%;
-  opacity: 0.75;
-}
+/* Home hero: since round 82 the stack has its own orbit centred on it (the page-background rings used to cross the
+   headline, and the corner brackets clashed with the orbit). The floor fades in instead of starting at a hard line. */
 .hero:not(.about-hero) .hud-floor {
   height: 26%;
   opacity: 0.8;
+  mask-image: linear-gradient(180deg, transparent, #000 80%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 80%);
 }
-.hero-visual .hud-corner {
-  border-color: rgb(126 162 245 / 70%);
+.hero:not(.about-hero) .hud-floor::after {
+  display: none;
 }
-.hero-visual .hud-tag {
-  top: -0.375rem;
-  right: 2rem;
+.hero-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 112%;
+  height: auto;
+  aspect-ratio: 1;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-orbit * {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.orbit-outer {
+  stroke: rgb(94 200 230 / 30%);
+  stroke-width: 1.25;
+}
+.orbit-dash {
+  stroke: rgb(126 162 245 / 24%);
+  stroke-dasharray: 2 10;
+}
+.orbit-ticks line {
+  stroke: rgb(126 162 245 / 30%);
+}
+.orbit-axis {
+  stroke-width: 1.5;
+}
+.hero-orbit .orbit-node {
+  fill: var(--night);
+  stroke: rgb(143 176 255 / 80%);
+  stroke-width: 1.25;
+}
+@media (min-width: 1081px) {
+  .hero-visual figcaption {
+    display: none;
+  }
 }
 .about-lockup {
   display: flex;
@@ -3976,6 +4022,11 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
     opacity: 0;
   }
 }
+@keyframes orbit-in {
+  from {
+    opacity: 0;
+  }
+}
 @keyframes ring-in {
   from {
     opacity: 0;
@@ -4094,6 +4145,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .js .hud-corner {
     animation: corner-in 0.9s 0.5s var(--ease) both;
   }
+  .js .hero-orbit {
+    animation: orbit-in 1.4s 0.2s var(--ease) both;
+  }
   .js .beam-pulse {
     /* Two passes after entry, then rest: no continuous looping motion (BRAND.md). */
     animation: beam 3.6s 1.4s cubic-bezier(0.45, 0, 0.55, 1) 2 both;
@@ -4180,9 +4234,11 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   }
 
   /* Hero */
+  /* Round 82: the copy and the stack centre in the screen below the header (they used to sit at the top). */
   .chapters > .hero {
     min-height: 100svh;
-    padding: calc(var(--header-h) + clamp(1.5rem, 5vh, 5rem)) 0 clamp(1.25rem, 4vh, 3.5rem);
+    justify-content: center;
+    padding: calc(var(--header-h) + clamp(1.5rem, 4vh, 3rem)) 0 clamp(1.5rem, 4vh, 3rem);
   }
   .chapters .hero-title {
     font-size: clamp(2.25rem, min(5.4vw, 8.4vh), 4.875rem);
@@ -4356,13 +4412,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .hud-tag {
     display: none;
   }
-  /* Single column: the ring has to follow the stack, which now sits under the copy instead of beside it. Measured
-     across this band the plates centre at 72-76% of the hero height, so 73% frames them; the smaller diameter keeps
-     the arc around the stack rather than trailing off behind the headline. */
-  .hero:not(.about-hero) .hud-rings {
-    --ring: min(34rem, 58vh, 130vw);
-    --ring-x: 50%;
-    --ring-y: 73%;
+  /* Single column: the orbit follows the stack under the copy, at a smaller diameter. */
+  .hero-orbit {
+    width: min(112%, 24rem);
   }
   .hero-layout,
   .faq-layout,

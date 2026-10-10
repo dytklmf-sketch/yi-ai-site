@@ -51,7 +51,7 @@ for (const route of routes) {
     assert(!/<time\b/.test(text), `${route.path}: no visible update date`);
   }
 }
-assert.match(await readFile('dist/404.html', 'utf8'), /<title>页面未找到/);
+assert.match(await readFile('dist/404.html', 'utf8'), /<title>易AI｜页面未找到/);
 for (const file of html) {
   const text = await readFile(file, 'utf8');
   // The nginx CSP allows exactly one inline script by hash; anything else inline would be blocked in production.

@@ -239,7 +239,8 @@ try {
           assert.equal(details.schema.about.name, name);
           assert.equal(details.schema.alternateName, lang === 'zh' ? 'Easy AI' : '易AI');
           assert(!/\beasyai\b/i.test(details.brandText), 'Visible English brand must be Easy AI');
-          assert(details.title.endsWith(`| ${name}`));
+          // Round 82: the brand leads the title (owner's call).
+          assert(details.title.startsWith(lang === 'zh' ? `${name}｜` : `${name} | `), `Brand first: ${details.title}`);
           assert.deepEqual(details.alternates, [
             { lang: 'zh-CN', href: `/zh/${suffix}` },
             { lang: 'en', href: `/en/${suffix}` },

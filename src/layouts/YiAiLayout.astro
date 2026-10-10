@@ -43,6 +43,8 @@ const description = route?.description ?? Astro.props.description;
 const t = lang === 'zh' ? zh : en;
 const e = editorial[lang];
 const brand = brandName(lang);
+// Round 82: the brand leads the tab and share titles (owner's call), e.g. 「易AI｜常见问题」.
+const fullTitle = lang === 'zh' ? `${brand}｜${title}` : `${brand} | ${title}`;
 const labels = {
   home: t.nav.home,
   workbuddy: t.nav.workbuddy,
@@ -92,7 +94,7 @@ const zhUI = lang === 'zh';
       )
     }
     <meta name="description" content={description} />
-    <meta property="og:title" content={`${title} | ${brand}`} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:site_name" content={brand} />
@@ -101,7 +103,7 @@ const zhUI = lang === 'zh';
     <meta property="og:image" content={absolute(shareImage(lang, slug, article))} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${title} | ${brand}`} />
+    <meta property="og:image:alt" content={fullTitle} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href={withBase('/brand/favicon.svg?v=whale-a')} type="image/svg+xml" />
     <link rel="preload" href={withBase('/fonts/manrope-latin.woff2')} as="font" type="font/woff2" crossorigin />
@@ -113,7 +115,7 @@ const zhUI = lang === 'zh';
     <link rel="alternate" hreflang="zh-CN" href={absolute(alternatePath('zh'))} />
     <link rel="alternate" hreflang="en" href={absolute(alternatePath('en'))} />
     {indexable && <link rel="alternate" hreflang="x-default" href={absolute(alternatePath('zh'))} />}
-    <title>{title} | {brand}</title>
+    <title>{fullTitle}</title>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
     {
       structuredData && (

@@ -5,7 +5,7 @@ export const zh: SiteCopy = {
   otherLanguage: 'EN',
   heroHeadline: '为企业提供 AI 应用与算力：选型、接入与交付',
   heroIntro:
-    '易AI 专注 WorkBuddy 代理采购、模型 API 接入与自建机房资源，围绕企业的用量与合规要求，完成选型、接入与交付，让 AI 易懂、易用、易落地。',
+    'WorkBuddy 企业版代理采购、模型 API 接入、自建机房算力，由易AI 一家对接，按企业的人数、用量和合规要求出方案，让 AI 易懂、易用、易落地。',
   primary: '咨询合作',
   secondary: '了解服务',
   explore: '了解这项服务',

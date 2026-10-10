@@ -14,7 +14,9 @@ const h = home[lang];
 
 // Isometric slab geometry. Each slab's artwork is drawn on a flat 100x100 square
 // and projected with matrix(2 1 -2 1 cx top), so every layer shares one grid.
-const cx = 250;
+// Round 82: the labelled stack sits in the middle of an 860-wide canvas with each layer's name on the left and its
+// tag on the right, so the drawing is mirror-balanced; the unlabelled one keeps its narrow canvas around x = 250.
+const cx = labels ? 430 : 250;
 const w = 190;
 const half = 95;
 const depth = 18;
@@ -53,7 +55,7 @@ const drawOrder = [...services].reverse();
 
 <svg
   class:list={['stack', 'stack-dark', { 'stack-labelled': labels }, className]}
-  viewBox={labels ? '0 0 700 570' : '40 0 420 570'}
+  viewBox={labels ? '0 0 860 570' : '40 0 420 570'}
   data-stack
   data-active={active}
   aria-hidden="true"
@@ -135,12 +137,14 @@ const drawOrder = [...services].reverse();
           <ellipse class="slab-core" cx={cx} cy={cy} rx="16" ry="8" />
           {labels && (
             <g class="slab-label">
-              <line x1={cx + w + 6} y1={cy} x2={cx + w + 30} y2={cy} />
-              <circle cx={cx + w + 32} cy={cy} r="2.5" />
-              <text x={cx + w + 44} y={cy - 4} class="label-name">
+              <line x1={cx - w - 6} y1={cy} x2={cx - w - 30} y2={cy} />
+              <circle cx={cx - w - 32} cy={cy} r="2.5" />
+              <text x={cx - w - 44} y={cy + 10} class="label-name" text-anchor="end">
                 {h.layers[service].name}
               </text>
-              <text x={cx + w + 44} y={cy + 22} class="label-tag">
+              <line x1={cx + w + 6} y1={cy} x2={cx + w + 30} y2={cy} />
+              <circle cx={cx + w + 32} cy={cy} r="2.5" />
+              <text x={cx + w + 44} y={cy + 7} class="label-tag">
                 {h.layers[service].tag}
               </text>
             </g>

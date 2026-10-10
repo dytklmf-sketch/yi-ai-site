@@ -11,7 +11,7 @@ export const en: SiteCopy = {
   otherLanguage: '中文',
   heroHeadline: 'Enterprise AI applications and compute, delivered end to end',
   heroIntro:
-    'Easy AI works on WorkBuddy procurement, model API access and self-built data-center resources, handling selection, integration and delivery, so AI is easy to understand, use and put to work.',
+    'WorkBuddy Enterprise procurement, model API access and self-built data-center compute through one partner, so AI is easy to understand, use and put to work.',
   primary: 'Talk to us',
   secondary: 'Explore our services',
   explore: 'Explore this service',
