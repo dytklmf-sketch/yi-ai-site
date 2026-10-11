@@ -353,11 +353,12 @@ export async function testEnhancements(base, routes) {
         duration: getComputedStyle(el).animationDuration,
       }));
       assert.equal(initial.animation, 'enter');
-      // Round 84 (owner's call): the hero's three scenes take turns on an endless 18s cycle.
-      const cycle = await motion
-        .locator('.hero-scenes .scene-compute')
+      // Round 86 (owner's call): the hero's compute field moves continuously.
+      const field = await motion
+        .locator('.hero-matrix .matrix-column rect')
+        .first()
         .evaluate((el) => [getComputedStyle(el).animationName, getComputedStyle(el).animationIterationCount]);
-      assert.deepEqual(cycle, ['scene-cycle', 'infinite'], 'Hero scenes rotate');
+      assert.deepEqual(field, ['matrix-rise', 'infinite'], 'Hero compute field moves');
       await motion.waitForTimeout(1600);
       const final = await motion.locator('.hero-title').evaluate((el) => ({
         transform: getComputedStyle(el).transform,

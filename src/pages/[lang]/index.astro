@@ -1,7 +1,7 @@
 ---
 import { ArrowDown, ArrowUpRight, ArrowRight, BadgeCheck } from '@lucide/astro';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
-import HeroScenes from '../../components/yi-ai/HeroScenes.astro';
+import HeroMatrix from '../../components/yi-ai/HeroMatrix.astro';
 import ServiceColumns from '../../components/yi-ai/ServiceColumns.astro';
 import GuideList from '../../components/yi-ai/GuideList.astro';
 import FaqChapter from '../../components/yi-ai/FaqChapter.astro';
@@ -58,9 +58,9 @@ const guides = (await getGuides(lang)).filter(({ data }) => homeGuides.has(data.
           <ArrowRight size={14} />
         </a>
       </div>
-      {/* Round 84: three animated scenes (applications, models, compute) in turn, names in a row underneath. */}
+      {/* Round 86: the compute field, animated, with the three layer names in a row underneath. */}
       <figure class="hero-visual">
-        <HeroScenes lang={lang} />
+        <HeroMatrix lang={lang} />
       </figure>
     </div>
   </section>

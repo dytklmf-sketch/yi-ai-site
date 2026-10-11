@@ -1,0 +1,102 @@
+---
+import { home } from '../../data/home';
+import type { Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const h = home[lang];
+
+// Round 86: the home hero shows one scene, the compute field the owner chose from the comparison board (round 84's
+// three rotating scenes were withdrawn). An 11x11 field of light columns on an isometric floor; a ripple runs out
+// from the centre and the middle glows. The three layer names sit in a row underneath, never over the art. Pure CSS;
+// reduced motion leaves the field still.
+const cx = 320;
+const cy = 300;
+const step = 24; // half the column spacing along x; y is half of it (isometric)
+const n = 5; // indices -5..5
+const range = Array.from({ length: n * 2 + 1 }, (_, k) => k - n);
+const maxR = Math.hypot(n, n);
+const columns = range
+  .flatMap((i) =>
+    range.map((j) => {
+      const r = Math.hypot(i, j);
+      const height = Math.round(44 + Math.max(0, 1 - r / maxR) ** 1.2 * 190);
+      return {
+        x: cx + (i - j) * step,
+        y: cy + (i + j) * (step / 2),
+        height,
+        delay: -(r * 0.3).toFixed(2),
+        opacity: (0.32 + 0.68 * (1 - r / maxR)).toFixed(2),
+      };
+    })
+  )
+  .sort((a, b) => a.y - b.y || a.x - b.x);
+// Floor rhombus and grid lines along both isometric axes.
+const corner = (i: number, j: number) => [cx + (i - j) * step, cy + (i + j) * (step / 2)];
+const floor = [
+  corner(-n - 0.75, -n - 0.75),
+  corner(n + 0.75, -n - 0.75),
+  corner(n + 0.75, n + 0.75),
+  corner(-n - 0.75, n + 0.75),
+]
+  .map(([x, y]) => `${x},${y}`)
+  .join(' ');
+const gridLines = range.flatMap((k) => [
+  [corner(k, -n - 0.75), corner(k, n + 0.75)],
+  [corner(-n - 0.75, k), corner(n + 0.75, k)],
+]);
+const layers = [
+  { key: 'workbuddy', ...h.layers.workbuddy },
+  { key: 'model-services', ...h.layers['model-services'] },
+  { key: 'infrastructure', ...h.layers.infrastructure },
+] as const;
+---
+
+<div class="hero-matrix">
+  <svg class="matrix" viewBox="0 0 640 460" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="matrix-column" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f2f7ff"></stop>
+        <stop offset="0.12" stop-color="#9cc2ff"></stop>
+        <stop offset="0.55" stop-color="#3f7cf0" stop-opacity="0.75"></stop>
+        <stop offset="1" stop-color="#2050c8" stop-opacity="0.08"></stop>
+      </linearGradient>
+      <radialGradient id="matrix-glow">
+        <stop offset="0" stop-color="#3d7bff" stop-opacity="0.5"></stop>
+        <stop offset="0.55" stop-color="#2a5fe0" stop-opacity="0.16"></stop>
+        <stop offset="1" stop-color="#2a5fe0" stop-opacity="0"></stop>
+      </radialGradient>
+      <radialGradient id="matrix-halo">
+        <stop offset="0" stop-color="#9cc2ff" stop-opacity="0.32"></stop>
+        <stop offset="1" stop-color="#9cc2ff" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+    <ellipse cx={cx} cy={cy} rx="320" ry="175" fill="url(#matrix-glow)"></ellipse>
+    <ellipse class="matrix-halo" cx={cx} cy={cy - 120} rx="150" ry="150" fill="url(#matrix-halo)"></ellipse>
+    <polygon class="matrix-floor" points={floor}></polygon>
+    <g class="matrix-grid">
+      {gridLines.map(([[x1, y1], [x2, y2]]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
+    </g>
+    {
+      columns.map(({ x, y, height, delay, opacity }) => (
+        <g class="matrix-column" style={`--d:${delay}s;--h:${height}`} opacity={opacity}>
+          <rect x={x - 4.5} y={y - height} width="9" height={height} rx="2" fill="url(#matrix-column)" />
+          <ellipse class="matrix-cap" cx={x} cy={y - height} rx="5.5" ry="2.75" />
+          <ellipse class="matrix-foot" cx={x} cy={y} rx="5" ry="2.5" />
+        </g>
+      ))
+    }
+  </svg>
+  <ul class="matrix-layers">
+    {
+      layers.map((layer) => (
+        <li data-layer={layer.key}>
+          <strong>{layer.name}</strong>
+          <span>{layer.tag}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

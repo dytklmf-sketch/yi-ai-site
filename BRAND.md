@@ -103,7 +103,7 @@ The header lockup is static. The hero shows the isometric three-layer illustrati
 not the logo; its copy and illustration enter once, and the illustration's light
 beam runs a finite two cycles, then stops. Never animate individual paths or distort
 the silhouette. Reduced-motion preferences remove entrance and page transitions.
-Do not add continuous floating, spinning, parallax or other looping brand motion. Exception (round 84, owner's request): the home hero's three rotating scenes, which stop under reduced motion.
+Do not add continuous floating, spinning, parallax or other looping brand motion. Exception (owner's request, rounds 84–86): the home hero's moving compute field, which stops under reduced motion.
 
 ## Image Generation and Cleanup
 
