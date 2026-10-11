@@ -72,9 +72,10 @@ const orbitTicks = Array.from({ length: 72 }, (_, i) => i * 5);
             </linearGradient>
           </defs>
           <circle class="orbit-outer" cx="400" cy="400" r="390"></circle>
-          <circle class="orbit-dash" cx="400" cy="400" r="336"></circle>
-          <circle class="orbit-inner" cx="400" cy="400" r="286"></circle>
-          {/* Round 83: four lit arcs on the outer ring, one per diagonal. */}
+          {
+            /* Round 83: four lit arcs on the outer ring, one per diagonal. Round 91: the inner rings are gone so the labels
+          sit on clear background. */
+          }
           {
             [45, 135, 225, 315].map((angle) => (
               <path class="orbit-arc" d="M 400 10 A 390 390 0 0 1 532 33" transform={`rotate(${angle - 10} 400 400)`} />

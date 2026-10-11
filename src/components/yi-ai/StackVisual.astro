@@ -20,6 +20,9 @@ const h = home[lang];
 // through the layers; the canvas grows to 680 tall for the stage.
 const cx = labels ? 430 : 250;
 const stageY = 600;
+// Round 91: the label rows pull a third of the way towards the middle layer, where the hero orbit (now centred on
+// the stack) is widest, so no text runs over the ring or its ticks.
+const labelY = (cy: number) => Math.round(275 + (cy - 275) * 0.66);
 const stageRings = [
   { rx: 380, ry: 120, cls: 'stage-ring stage-ring-outer' },
   { rx: 300, ry: 95, cls: 'stage-ring' },
@@ -177,14 +180,14 @@ const drawOrder = [...services].reverse();
           <ellipse class="slab-core" cx={cx} cy={cy} rx="16" ry="8" />
           {labels && (
             <g class="slab-label">
-              <line x1={cx - w - 6} y1={cy} x2={cx - w - 30} y2={cy} />
-              <circle cx={cx - w - 32} cy={cy} r="2.5" />
-              <text x={cx - w - 44} y={cy + 10} class="label-name" text-anchor="end">
+              <line x1={cx - w - 6} y1={cy} x2={cx - w - 20} y2={labelY(cy)} />
+              <circle cx={cx - w - 22} cy={labelY(cy)} r="2.5" />
+              <text x={cx - w - 30} y={labelY(cy) + 10} class="label-name" text-anchor="end">
                 {h.layers[service].name}
               </text>
-              <line x1={cx + w + 6} y1={cy} x2={cx + w + 30} y2={cy} />
-              <circle cx={cx + w + 32} cy={cy} r="2.5" />
-              <text x={cx + w + 44} y={cy + 7} class="label-tag">
+              <line x1={cx + w + 6} y1={cy} x2={cx + w + 20} y2={labelY(cy)} />
+              <circle cx={cx + w + 22} cy={labelY(cy)} r="2.5" />
+              <text x={cx + w + 30} y={labelY(cy) + 7} class="label-tag">
                 {h.layers[service].tag}
               </text>
             </g>

@@ -820,17 +820,20 @@ main:focus {
   font-size: 1rem;
 }
 /* Round 82: the wide hero stack is drawn on a wider canvas, so its labels are set larger to read at the same size. */
+/* Round 91: px inside the SVG are canvas units, so the labels scale with the drawing. In rem they grew with the
+   root font size on large screens and ran over the hero orbit. */
 .stack-wide .label-name {
-  font-size: 1.875rem;
+  font-size: 28px;
 }
 .stack-wide .label-tag {
-  font-size: 1.375rem;
+  font-size: 17px;
+  font-weight: 500;
 }
 .stack-dark.stack-wide .label-tag {
-  fill: rgb(200 212 240 / 80%);
+  fill: rgb(214 225 248 / 92%);
 }
 :lang(en) .stack-wide .label-tag {
-  font-size: 1.0625rem;
+  font-size: 14px;
 }
 
 .stack-dark .stop-top-a {
@@ -3073,7 +3076,9 @@ main > section:first-child + section {
 }
 .hero-orbit {
   position: absolute;
-  top: 50%;
+  /* Round 91: centred on the stack's middle layer (y 275 of the 680-tall canvas) rather than on the whole figure, so
+     the label rows sit where the ring is widest; the stage below stays inside the ring. */
+  top: calc(1.5rem + (100% - 3rem) * 0.4044);
   left: 50%;
   z-index: -1;
   width: 108%;
@@ -3091,18 +3096,11 @@ main > section:first-child + section {
   stroke: rgb(94 200 230 / 30%);
   stroke-width: 1.25;
 }
-.orbit-dash {
-  stroke: rgb(126 162 245 / 24%);
-  stroke-dasharray: 2 10;
-}
 .orbit-ticks line {
   stroke: rgb(126 162 245 / 30%);
 }
 .orbit-axis {
   stroke-width: 1.5;
-}
-.orbit-inner {
-  stroke: rgb(126 162 245 / 14%);
 }
 .orbit-arc {
   stroke: rgb(143 176 255 / 75%);
