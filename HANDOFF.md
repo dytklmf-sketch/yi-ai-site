@@ -1,12 +1,12 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 82 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 83 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第八十二轮）
+## 当前版本（第八十三轮）
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
-- 当前轮次：第八十二轮（首页首屏居中与右侧对称、标题品牌在前，见 `docs/rounds/82-home-hero-balance.md`）
+- 当前轮次：第八十三轮（首页首屏右侧更宏大，见 `docs/rounds/83-grander-hero-visual.md`）
 - 线上发布：`release-20261011014527`，commit `9b4d718`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
@@ -33,6 +33,7 @@
 - **不要在新服务器 189.24.79.181 上跑 `pnpm test:browser` 或 `pnpm test:quick`**：服务器只有 2 核 2 GB，站长明确不许压测它。
   每轮在服务器上只跑轻量的 `pnpm check`、`pnpm build`、`pnpm test`（与发布脚本里的 `test:production`）。
 - 需要浏览器测试时，在其他机器（本地克隆或 CI）上跑；Playwright 浏览器虽已装在服务器上，不要在这里启动。
+- 第八十三轮起站长要求本机也不做大规模测试：只跑 `check` / `build` / `test`，最多几张截图，上线后站长自己看。
 - 本机（agent 所在机器）有一份克隆 `~/yi-ai-site-local`（remote 指向新服务器）与 Node、Playwright，可在那里改代码、截图和跑浏览器测试，
   再推到服务器临时分支、`git merge --ff-only` 后在服务器上发布。
 

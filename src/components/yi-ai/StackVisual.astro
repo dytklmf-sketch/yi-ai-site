@@ -16,7 +16,15 @@ const h = home[lang];
 // and projected with matrix(2 1 -2 1 cx top), so every layer shares one grid.
 // Round 82: the labelled stack sits in the middle of an 860-wide canvas with each layer's name on the left and its
 // tag on the right, so the drawing is mirror-balanced; the unlabelled one keeps its narrow canvas around x = 250.
+// Round 83: the labelled (hero) stack also stands on a lit stage of perspective rings, with a column of light
+// through the layers; the canvas grows to 680 tall for the stage.
 const cx = labels ? 430 : 250;
+const stageY = 600;
+const stageRings = [
+  { rx: 380, ry: 120, cls: 'stage-ring stage-ring-outer' },
+  { rx: 300, ry: 95, cls: 'stage-ring' },
+  { rx: 215, ry: 68, cls: 'stage-ring stage-ring-inner' },
+];
 const w = 190;
 const half = 95;
 const depth = 18;
@@ -55,7 +63,7 @@ const drawOrder = [...services].reverse();
 
 <svg
   class:list={['stack', 'stack-dark', { 'stack-labelled': labels }, className]}
-  viewBox={labels ? '0 0 860 570' : '40 0 420 570'}
+  viewBox={labels ? '0 0 860 680' : '40 0 420 570'}
   data-stack
   data-active={active}
   aria-hidden="true"
@@ -75,7 +83,39 @@ const drawOrder = [...services].reverse();
       <stop offset="0" stop-color="#4f82ff" stop-opacity="0.55"></stop>
       <stop offset="1" stop-color="#4f82ff" stop-opacity="0"></stop>
     </radialGradient>
+    {
+      labels && (
+        <>
+          <radialGradient id={`${id}-pillar`}>
+            <stop offset="0" stop-color="#9dbbff" stop-opacity="0.55" />
+            <stop offset="0.45" stop-color="#4f82ff" stop-opacity="0.22" />
+            <stop offset="1" stop-color="#4f82ff" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id={`${id}-stage`}>
+            <stop offset="0" stop-color="#6f9bff" stop-opacity="0.5" />
+            <stop offset="0.6" stop-color="#2f5fe0" stop-opacity="0.16" />
+            <stop offset="1" stop-color="#2f5fe0" stop-opacity="0" />
+          </radialGradient>
+        </>
+      )
+    }
   </defs>
+
+  {
+    labels && (
+      <g class="stack-stage">
+        <ellipse class="stage-glow" cx={cx} cy={stageY} rx="400" ry="130" fill={`url(#${id}-stage)`} />
+        {stageRings.map(({ rx, ry, cls }) => (
+          <ellipse class={cls} cx={cx} cy={stageY} rx={rx} ry={ry} />
+        ))}
+        {[0, 90, 180, 270].map((angle) => {
+          const a = (angle * Math.PI) / 180;
+          return <circle class="stage-node" cx={cx + 380 * Math.cos(a)} cy={stageY + 120 * Math.sin(a)} r="3.5" />;
+        })}
+        <ellipse class="stage-pillar" cx={cx} cy="330" rx="120" ry="340" fill={`url(#${id}-pillar)`} />
+      </g>
+    )
+  }
 
   <ellipse class="stack-halo" cx={cx} cy="300" rx={labels ? 260 : 210} ry="240" fill={`url(#${id}-glow)`}></ellipse>
 

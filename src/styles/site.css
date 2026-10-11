@@ -3076,7 +3076,7 @@ main > section:first-child + section {
   top: 50%;
   left: 50%;
   z-index: -1;
-  width: 112%;
+  width: 108%;
   height: auto;
   aspect-ratio: 1;
   overflow: visible;
@@ -3100,6 +3100,31 @@ main > section:first-child + section {
 }
 .orbit-axis {
   stroke-width: 1.5;
+}
+.orbit-inner {
+  stroke: rgb(126 162 245 / 14%);
+}
+.orbit-arc {
+  stroke: rgb(143 176 255 / 75%);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+/* Round 83: the hero stack's stage and light column. */
+.stage-ring {
+  fill: none;
+  stroke: rgb(126 162 245 / 38%);
+  stroke-width: 1.25;
+}
+.stage-ring-outer {
+  stroke: rgb(94 200 230 / 30%);
+  stroke-dasharray: 3 9;
+}
+.stage-ring-inner {
+  stroke: rgb(157 187 255 / 60%);
+  stroke-width: 1.5;
+}
+.stage-node {
+  fill: #9dbbff;
 }
 .hero-orbit .orbit-node {
   fill: var(--night);
@@ -4249,9 +4274,11 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   .chapters .hero-actions {
     margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
   }
+  /* Round 83: the stack is bigger — it may run into the page margin on the right and take up to 86% of the height. */
   .chapters .hero-visual {
-    width: min(100%, 66vh);
+    width: min(100% + clamp(2rem, 7vw, 9rem), 86vh);
     justify-self: center;
+    margin-right: calc(-1 * clamp(2rem, 7vw, 9rem) / 2);
   }
   /* Services: the title runs on one line so the three columns get the height. */
   .chapters .layers .section-title {
