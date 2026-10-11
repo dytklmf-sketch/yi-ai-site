@@ -1,7 +1,7 @@
 ---
 import { ArrowDown, ArrowUpRight, ArrowRight, BadgeCheck } from '@lucide/astro';
 import YiAiLayout from '../../layouts/YiAiLayout.astro';
-import HeroMatrix from '../../components/yi-ai/HeroMatrix.astro';
+import StackVisual from '../../components/yi-ai/StackVisual.astro';
 import ServiceColumns from '../../components/yi-ai/ServiceColumns.astro';
 import GuideList from '../../components/yi-ai/GuideList.astro';
 import FaqChapter from '../../components/yi-ai/FaqChapter.astro';
@@ -26,6 +26,8 @@ const e = editorial[lang];
 // Round 43: the service pages' compact list on home too — each service's featured guide plus the one-page brief.
 const homeGuides = new Set([...Object.values(featuredGuides), 'enterprise-ai-needs-checklist']);
 const guides = (await getGuides(lang)).filter(({ data }) => homeGuides.has(data.pairKey));
+// Round 82: tick marks every 5° on the hero orbit, longer every 30°.
+const orbitTicks = Array.from({ length: 72 }, (_, i) => i * 5);
 ---
 
 <YiAiLayout
@@ -58,9 +60,56 @@ const guides = (await getGuides(lang)).filter(({ data }) => homeGuides.has(data.
           <ArrowRight size={14} />
         </a>
       </div>
-      {/* Round 86: the compute field, animated, with the three layer names in a row underneath. */}
       <figure class="hero-visual">
-        <HeroMatrix lang={lang} />
+        {
+          /* Round 82: the orbit is centred on the stack (it used to sit in the page background and cross the headline). */
+        }
+        <svg class="hero-orbit" viewBox="0 0 800 800" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="orbit-axis" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#7ea2f5" stop-opacity="0"></stop>
+              <stop offset="1" stop-color="#7ea2f5" stop-opacity="0.5"></stop>
+            </linearGradient>
+          </defs>
+          <circle class="orbit-outer" cx="400" cy="400" r="390"></circle>
+          <circle class="orbit-dash" cx="400" cy="400" r="336"></circle>
+          <circle class="orbit-inner" cx="400" cy="400" r="286"></circle>
+          {/* Round 83: four lit arcs on the outer ring, one per diagonal. */}
+          {
+            [45, 135, 225, 315].map((angle) => (
+              <path class="orbit-arc" d="M 400 10 A 390 390 0 0 1 532 33" transform={`rotate(${angle - 10} 400 400)`} />
+            ))
+          }
+          <g class="orbit-ticks">
+            {
+              orbitTicks.map((angle) => (
+                <line
+                  x1="400"
+                  y1={angle % 30 === 0 ? 18 : 24}
+                  x2="400"
+                  y2="32"
+                  transform={`rotate(${angle} 400 400)`}
+                />
+              ))
+            }
+          </g>
+          <line class="orbit-axis" x1="400" y1="40" x2="400" y2="120" stroke="url(#orbit-axis)"></line>
+          <line class="orbit-axis" x1="400" y1="760" x2="400" y2="680" stroke="url(#orbit-axis)"></line>
+          {
+            [
+              [400, 10],
+              [790, 400],
+              [400, 790],
+              [10, 400],
+            ].map(([x, y]) => (
+              <rect class="orbit-node" x={x - 4} y={y - 4} width="8" height="8" transform={`rotate(45 ${x} ${y})`} />
+            ))
+          }
+        </svg>
+        <StackVisual lang={lang} id="hero" class="stack-wide" />
+        <StackVisual lang={lang} id="hero-narrow" labels={false} class="stack-narrow" />
+        {/* Narrow screens only: the unlabelled stack needs the layer names; on desktop the side labels carry them. */}
+        <figcaption class="mono">{h.stackCaption}</figcaption>
       </figure>
     </div>
   </section>

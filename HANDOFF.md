@@ -1,12 +1,12 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 89 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 90 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第八十九轮）
+## 当前版本（第九十轮）
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
-- 当前轮次：第八十九轮（算力矩阵改为立体方块并加密，见 `docs/rounds/89-solid-blocks.md`）
+- 当前轮次：第九十轮（首页首屏回退到第八十三轮圆环版，见 `docs/rounds/90-back-to-round-83.md`）
 - 线上发布：`release-20261011221650`，commit `a7ab529`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）

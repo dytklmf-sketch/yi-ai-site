@@ -353,12 +353,10 @@ export async function testEnhancements(base, routes) {
         duration: getComputedStyle(el).animationDuration,
       }));
       assert.equal(initial.animation, 'enter');
-      // Round 86 (owner's call): the hero's compute field moves continuously.
-      const field = await motion
-        .locator('.hero-matrix .matrix-shaft')
-        .first()
-        .evaluate((el) => [getComputedStyle(el).animationName, getComputedStyle(el).animationIterationCount]);
-      assert.deepEqual(field, ['matrix-wave', 'infinite'], 'Hero compute field moves');
+      const beam = await motion
+        .locator('.hero-visual .stack-wide .beam-pulse')
+        .evaluate((el) => getComputedStyle(el).animationIterationCount);
+      assert.equal(beam, '2', 'Illustration motion ends; nothing loops');
       await motion.waitForTimeout(1600);
       const final = await motion.locator('.hero-title').evaluate((el) => ({
         transform: getComputedStyle(el).transform,
