@@ -756,10 +756,10 @@ main:focus {
 .stack.stack-narrow {
   display: none;
 }
-/* ---------- Home hero compute field (round 88) ----------
-   The compute field as the owner first chose it (comparison board option E): a 9x9 field of light columns on an
-   isometric floor, rising and falling in a wave from the centre. Rounds 86–87's prisms, beacons and extra light were
-   removed ("keep it simple"). The layer names sit in a row underneath, never over the art. Reduced motion: still. */
+/* ---------- Home hero compute field (round 89) ----------
+   The owner's pick from the matrix board, option #2 "solid blocks", made denser: a 9x9 field of square prisms on an
+   isometric floor, rising and falling in a ripple from the centre. The layer names sit in a row underneath, never
+   over the art. Reduced motion: still. */
 .hero-matrix {
   display: grid;
   gap: clamp(0.75rem, 2vh, 1.25rem);
@@ -771,16 +771,15 @@ main:focus {
   overflow: visible;
 }
 .matrix-floor {
-  fill: none;
+  fill: rgb(47 107 255 / 5%);
   stroke: rgb(126 162 245 / 35%);
 }
-.matrix-floor-inner {
-  stroke: rgb(126 162 245 / 18%);
-  stroke-dasharray: 3 7;
-}
-.matrix-column {
+.matrix-shaft {
   transform-box: fill-box;
   transform-origin: 50% 100%;
+}
+.matrix-cap {
+  fill: #eaf1ff;
 }
 .matrix-layers {
   display: grid;
@@ -829,17 +828,30 @@ main:focus {
   font-size: clamp(0.6875rem, 0.75vw, 0.8125rem);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .matrix-column {
-    animation: matrix-wave 3.6s var(--d) ease-in-out infinite;
+  .matrix-shaft {
+    animation: matrix-wave 4.2s var(--d) ease-in-out infinite;
+  }
+  .matrix-cap {
+    animation: matrix-cap 4.2s var(--d) ease-in-out infinite;
   }
 }
 @keyframes matrix-wave {
   0%,
   100% {
-    transform: scaleY(0.45);
+    transform: scaleY(0.55);
   }
   50% {
     transform: scaleY(1);
+  }
+}
+/* The top face rides the block: at scaleY(0.55) the top sits 45% of the block height lower. */
+@keyframes matrix-cap {
+  0%,
+  100% {
+    translate: 0 calc(var(--h) * 0.45px);
+  }
+  50% {
+    translate: 0 0;
   }
 }
 
