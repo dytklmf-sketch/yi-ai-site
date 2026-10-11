@@ -116,6 +116,14 @@ const drawOrder = [...services].reverse();
           return <circle class="stage-node" cx={cx + 380 * Math.cos(a)} cy={stageY + 120 * Math.sin(a)} r="3.5" />;
         })}
         <ellipse class="stage-pillar" cx={cx} cy="330" rx="120" ry="340" fill={`url(#${id}-pillar)`} />
+        {/* Round 92: two ripples spread from the stage and light points rise up the column (motion in site.css). */}
+        <ellipse class="stage-ripple" cx={cx} cy={stageY} rx="215" ry="68" />
+        <ellipse class="stage-ripple stage-ripple-late" cx={cx} cy={stageY} rx="215" ry="68" />
+        <g class="stage-particles">
+          {[0, -14, 12, -6, 9, -11].map((dx, k) => (
+            <circle cx={cx + dx} cy={stageY - 20} r={k % 2 ? 2 : 2.8} style={`--k:${k}`} />
+          ))}
+        </g>
       </g>
     )
   }

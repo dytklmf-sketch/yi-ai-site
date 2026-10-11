@@ -356,7 +356,8 @@ export async function testEnhancements(base, routes) {
       const beam = await motion
         .locator('.hero-visual .stack-wide .beam-pulse')
         .evaluate((el) => getComputedStyle(el).animationIterationCount);
-      assert.equal(beam, '2', 'Illustration motion ends; nothing loops');
+      // Round 92 (owner's call): the hero keeps moving slowly; the beam pulses continuously.
+      assert.equal(beam, 'infinite', 'Hero illustration keeps moving');
       await motion.waitForTimeout(1600);
       const final = await motion.locator('.hero-title').evaluate((el) => ({
         transform: getComputedStyle(el).transform,
