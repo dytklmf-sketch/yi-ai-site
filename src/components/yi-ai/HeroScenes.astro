@@ -1,0 +1,173 @@
+---
+import { home } from '../../data/home';
+import type { Lang } from '../../data/yi-ai';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const h = home[lang];
+
+// Round 84 (owner's idea): the home hero shows one animated scene per layer — applications, models, compute — and
+// cycles through them, six seconds each. The names sit in a row under the art, never on top of it. Pure CSS: the
+// cycle and the scene motion are keyframes, so no script is needed; reduced motion shows the first scene still.
+// Every scene shares one isometric language (a lit floor in perspective) and takes its business page's colour.
+
+// Isometric floor: a rhombus around (300, 260).
+const floor = (cx: number, cy: number, rx: number, ry: number) =>
+  `${cx},${cy - ry} ${cx + rx},${cy} ${cx},${cy + ry} ${cx - rx},${cy}`;
+
+// Applications: a 3x3 field of app cards, drawn back to front.
+const cards = [-1, 0, 1]
+  .flatMap((i) => [-1, 0, 1].map((j) => ({ i, j, x: 300 + (i - j) * 84, y: 262 + (i + j) * 42 })))
+  .sort((a, b) => a.y - b.y);
+const card = (x: number, y: number) => ({
+  top: floor(x, y, 62, 31),
+  left: `${x - 62},${y} ${x},${y + 31} ${x},${y + 39} ${x - 62},${y + 8}`,
+  right: `${x},${y + 31} ${x + 62},${y} ${x + 62},${y + 8} ${x},${y + 39}`,
+});
+// UI lines on each card, drawn on the card plane: from the left corner along the upper-right direction.
+const cardLines = (x: number, y: number) =>
+  [
+    [-40, -4, -10, -19],
+    [-30, 3, 8, -16],
+    [-20, 10, 12, -6],
+  ].map(([x1, y1, x2, y2]) => ({ x1: x + x1, y1: y + y1, x2: x + x2, y2: y + y2 }));
+
+// Models: a layered network, 3-5-5-3 nodes, with pulses on a few edges.
+const columns = [3, 5, 5, 3];
+const colX = [130, 240, 360, 470];
+const nodes = columns.map((count, c) =>
+  Array.from({ length: count }, (_, k) => ({ x: colX[c], y: 250 + (k - (count - 1) / 2) * 62 }))
+);
+const edges = nodes.slice(0, -1).flatMap((col, c) => col.flatMap((a) => nodes[c + 1].map((b) => ({ a, b }))));
+const pulseEdges = edges.filter((_, k) => k % 4 === 1);
+
+// Compute: a 9x9 field of light columns, tallest in the middle, drawn back to front.
+const bars = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
+  .flatMap((i) =>
+    [-4, -3, -2, -1, 0, 1, 2, 3, 4].map((j) => {
+      const height = 54 + (4 - Math.abs(i)) * 13 + (4 - Math.abs(j)) * 13;
+      return {
+        x: 300 + (i - j) * 29,
+        y: 296 + (i + j) * 14.5,
+        height,
+        delay: -(Math.abs(i) + Math.abs(j)) * 0.25,
+        opacity: 0.35 + 0.65 * (1 - (Math.abs(i) + Math.abs(j)) / 8),
+      };
+    })
+  )
+  .sort((a, b) => a.y - b.y);
+
+const scenes = [
+  { key: 'workbuddy', ...h.layers.workbuddy },
+  { key: 'model-services', ...h.layers['model-services'] },
+  { key: 'infrastructure', ...h.layers.infrastructure },
+] as const;
+---
+
+<div class="hero-scenes">
+  <div class="scene-stage" aria-hidden="true">
+    <svg class="scene scene-app" viewBox="0 0 600 440" focusable="false">
+      <defs>
+        <radialGradient id="scene-app-glow">
+          <stop offset="0" stop-color="#12a387" stop-opacity="0.42"></stop>
+          <stop offset="1" stop-color="#12a387" stop-opacity="0"></stop>
+        </radialGradient>
+        <linearGradient id="scene-app-card" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#1c6f62"></stop>
+          <stop offset="1" stop-color="#0b2a2a"></stop>
+        </linearGradient>
+      </defs>
+      <ellipse cx="300" cy="262" rx="300" ry="190" fill="url(#scene-app-glow)"></ellipse>
+      <polygon class="scene-floor" points={floor(300, 262, 286, 143)}></polygon>
+      <polygon class="scene-floor scene-floor-inner" points={floor(300, 262, 220, 110)}></polygon>
+      {
+        cards.map(({ i, j, x, y }) => {
+          const shape = card(x, y);
+          return (
+            <g class="app-card" style={`--d:${(i + j + 2) * 0.35}s`}>
+              <polygon class="app-card-left" points={shape.left} />
+              <polygon class="app-card-right" points={shape.right} />
+              <polygon class="app-card-top" points={shape.top} fill="url(#scene-app-card)" />
+              {cardLines(x, y).map((line) => (
+                <line class="app-card-line" {...line} />
+              ))}
+            </g>
+          );
+        })
+      }
+    </svg>
+    <svg class="scene scene-model" viewBox="0 0 600 440" focusable="false">
+      <defs>
+        <radialGradient id="scene-model-glow">
+          <stop offset="0" stop-color="#7c5cff" stop-opacity="0.45"></stop>
+          <stop offset="1" stop-color="#7c5cff" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <ellipse cx="300" cy="250" rx="300" ry="200" fill="url(#scene-model-glow)"></ellipse>
+      <g class="model-edges">
+        {edges.map(({ a, b }) => <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />)}
+      </g>
+      <g class="model-pulses">
+        {
+          pulseEdges.map(({ a, b }, k) => (
+            <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} pathLength="100" style={`--d:${-((k * 0.37) % 2.4)}s`} />
+          ))
+        }
+      </g>
+      {
+        nodes.map((col, c) =>
+          col.map(({ x, y }, k) => (
+            <g class="model-node" style={`--d:${c * 0.45 + k * 0.08}s`}>
+              <circle class="model-node-halo" cx={x} cy={y} r="15" />
+              <circle class="model-node-core" cx={x} cy={y} r="7" />
+            </g>
+          ))
+        )
+      }
+    </svg>
+    <svg class="scene scene-compute" viewBox="0 0 600 440" focusable="false">
+      <defs>
+        <linearGradient id="scene-compute-bar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e3f3ff"></stop>
+          <stop offset="0.25" stop-color="#7cc8ff"></stop>
+          <stop offset="1" stop-color="#0a76b5" stop-opacity="0.15"></stop>
+        </linearGradient>
+        <radialGradient id="scene-compute-glow">
+          <stop offset="0" stop-color="#1f8fd6" stop-opacity="0.45"></stop>
+          <stop offset="1" stop-color="#1f8fd6" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <ellipse cx="300" cy="296" rx="300" ry="160" fill="url(#scene-compute-glow)"></ellipse>
+      <polygon class="scene-floor" points={floor(300, 296, 282, 141)}></polygon>
+      <polygon class="scene-floor scene-floor-inner" points={floor(300, 296, 220, 110)}></polygon>
+      {
+        bars.map(({ x, y, height, delay, opacity }) => (
+          <rect
+            class="compute-bar"
+            x={x - 5}
+            y={y - height}
+            width="10"
+            height={height}
+            rx="2"
+            fill="url(#scene-compute-bar)"
+            opacity={opacity.toFixed(2)}
+            style={`--d:${delay}s`}
+          />
+        ))
+      }
+    </svg>
+  </div>
+  <ol class="scene-tabs">
+    {
+      scenes.map((scene) => (
+        <li data-scene={scene.key}>
+          <strong>{scene.name}</strong>
+          <span>{scene.tag}</span>
+          <i aria-hidden="true" />
+        </li>
+      ))
+    }
+  </ol>
+</div>

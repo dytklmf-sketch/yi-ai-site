@@ -40,7 +40,7 @@ reading and motion. Add focused regressions to the existing suites, not new
 per-round scripts. Round scope and status live in `plan.md`. Preserve the six
 service section IDs, paired article fragments, the shared topic-aware
 home/contact component and the `data-*` hooks the scripts and tests rely on.
-Keep muted text at 4.5:1 contrast or better; no looping motion.
+Keep muted text at 4.5:1 contrast or better; no looping motion, except the home hero's rotating scenes (round 84, owner's request).
 No coverage percentage is configured; reports stay in `test-results/`.
 
 ## Commits and Reviews
