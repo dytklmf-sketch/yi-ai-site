@@ -779,12 +779,28 @@ main:focus {
   stroke: rgb(125 175 255 / 11%);
   stroke-width: 1;
 }
-.matrix-column rect {
+.matrix-shaft {
   transform-box: fill-box;
   transform-origin: 50% 100%;
 }
 .matrix-cap {
-  fill: #f2f7ff;
+  fill: #eef4ff;
+}
+/* Round 87: three beacon columns in the business colours, with glowing caps and a beam above. */
+.matrix-column[data-palette='green'] .matrix-cap {
+  fill: #d2fff2;
+  filter: drop-shadow(0 0 6px #25c79c);
+}
+.matrix-column[data-palette='violet'] .matrix-cap {
+  fill: #ece5ff;
+  filter: drop-shadow(0 0 6px #9277ff);
+}
+.matrix-column[data-palette='sky'] .matrix-cap {
+  fill: #e3f6ff;
+  filter: drop-shadow(0 0 6px #45b6ff);
+}
+.matrix-beam {
+  opacity: 0.8;
 }
 .matrix-foot {
   fill: rgb(125 175 255 / 35%);
@@ -836,11 +852,17 @@ main:focus {
   font-size: clamp(0.6875rem, 0.75vw, 0.8125rem);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .matrix-column rect {
+  .matrix-shaft {
     animation: matrix-rise 4.2s var(--d) ease-in-out infinite;
   }
-  .matrix-cap {
+  .matrix-top {
     animation: matrix-cap 4.2s var(--d) ease-in-out infinite;
+  }
+  .matrix-beam {
+    animation: matrix-breathe 4.2s var(--d) ease-in-out infinite;
+  }
+  .matrix-pool {
+    animation: matrix-breathe 4.2s ease-in-out infinite;
   }
   .matrix-halo {
     animation: matrix-breathe 4.2s ease-in-out infinite;

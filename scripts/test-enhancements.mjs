@@ -355,7 +355,7 @@ export async function testEnhancements(base, routes) {
       assert.equal(initial.animation, 'enter');
       // Round 86 (owner's call): the hero's compute field moves continuously.
       const field = await motion
-        .locator('.hero-matrix .matrix-column rect')
+        .locator('.hero-matrix .matrix-shaft')
         .first()
         .evaluate((el) => [getComputedStyle(el).animationName, getComputedStyle(el).animationIterationCount]);
       assert.deepEqual(field, ['matrix-rise', 'infinite'], 'Hero compute field moves');
