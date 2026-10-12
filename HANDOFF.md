@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
 - 当前轮次：第九十三轮（合作伙伴图标统一大小、换蚂蚁数字科技，见 `docs/rounds/93-partner-logos.md`）
-- 线上发布：`release-20261012001932`，commit `c1453ea`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261012121619`，commit `1eb700e`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
