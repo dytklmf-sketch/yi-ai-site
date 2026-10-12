@@ -380,7 +380,7 @@ try {
   await page.waitForURL(`${base}/zh/model-services/`);
   // The primary action opens the product in a new tab; enterprise usage stays on this site with its topic.
   const product = page.locator('.page-hero .btn-primary');
-  assert.equal(await product.getAttribute('href'), 'https://ccg-cli.online/models/');
+  assert.equal(await product.getAttribute('href'), 'https://ccg-cli.online/');
   assert.equal(await product.getAttribute('target'), '_blank');
   assert((await product.innerText()).includes('CCG API'));
   await page.locator('.page-hero .btn-outline').click();

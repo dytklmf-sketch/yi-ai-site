@@ -18,9 +18,10 @@ export const workbuddyCredential = {
     en: 'Tencent Cloud WorkBuddy / CodeBuddy authorized partner',
   } satisfies Record<Lang, string>,
 };
+// Round 94: "Open CCG API" goes to the product's home page; the catalog links (model-catalog.ts) keep /models/.
 export const modelProduct = {
   name: 'CCG API',
-  url: 'https://ccg-cli.online/models/',
+  url: 'https://ccg-cli.online/',
 };
 // Every site URL goes through `withBase` so the build can live under a subpath (SITE_BASE).
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
