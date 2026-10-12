@@ -107,17 +107,19 @@ export const home: Record<Lang, HomeCopy> = {
 
 /**
  * Partners named by the owner (2026-10-02), shown as a logo wall. `logo` is a file in `public/partners/`
- * (Wikimedia Commons / Wikipedia files for the four large companies, the official sites for Kuaizi, geolix and
- * NeoGate); `size` is its height in px on desktop, tuned so the marks look equally heavy. `wordmark` sets the name
- * beside an icon-only logo, the way the partner's own site header does. An empty list hides the chapter.
+ * (Wikimedia Commons / Wikipedia files for Tencent and the two carriers, the official sites for Ant Digital
+ * Technologies — antdigital.com's header logo, round 93 — Kuaizi, geolix and NeoGate). Round 93: every file is
+ * trimmed to its artwork, and `size` (height in px on desktop) gives each logo the same area, about 150x36 px
+ * (height = sqrt(5400 / aspect ratio)), so wide and square marks look equally big. NeoGate's icon sits beside its
+ * wordmark, which together take that area. An empty list hides the chapter.
  */
 export const partners: { zh: string; en: string; logo: string; size: number; wordmark?: [string, string] }[] = [
-  { zh: '腾讯', en: 'Tencent', logo: '/partners/tencent.png', size: 21 },
-  { zh: '蚂蚁集团', en: 'Ant Group', logo: '/partners/ant-group.png', size: 34 },
-  { zh: '中国移动', en: 'China Mobile', logo: '/partners/china-mobile.svg', size: 32 },
-  { zh: '中国电信', en: 'China Telecom', logo: '/partners/china-telecom.svg', size: 34 },
-  { zh: '筷子科技', en: 'Kuaizi Technology', logo: '/partners/kuaizi.svg', size: 26 },
-  { zh: 'geolix.ai', en: 'geolix.ai', logo: '/partners/geolix.png', size: 36 },
-  { zh: '广大通', en: 'NeoGate', logo: '/partners/neogate.png', size: 32, wordmark: ['Neo', 'Gate'] },
-  { zh: '大鱼出海', en: 'DAYUSEA', logo: '/partners/dayusea.png', size: 26 },
+  { zh: '腾讯', en: 'Tencent', logo: '/partners/tencent.png', size: 27 },
+  { zh: '蚂蚁数字科技', en: 'Ant Digital Technologies', logo: '/partners/ant-digital.png', size: 32 },
+  { zh: '中国移动', en: 'China Mobile', logo: '/partners/china-mobile.svg', size: 41 },
+  { zh: '中国电信', en: 'China Telecom', logo: '/partners/china-telecom.svg', size: 38 },
+  { zh: '筷子科技', en: 'Kuaizi Technology', logo: '/partners/kuaizi.svg', size: 35 },
+  { zh: 'geolix.ai', en: 'geolix.ai', logo: '/partners/geolix.png', size: 40 },
+  { zh: '广大通', en: 'NeoGate', logo: '/partners/neogate.png', size: 36, wordmark: ['Neo', 'Gate'] },
+  { zh: '大鱼出海', en: 'DAYUSEA', logo: '/partners/dayusea.png', size: 32 },
 ];
