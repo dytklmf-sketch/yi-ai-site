@@ -5422,11 +5422,10 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   flex-direction: column;
   gap: 0.75rem;
   padding: clamp(1.25rem, 2.4vw, 1.75rem);
-  border: 1px solid var(--line);
+  border: 1px solid rgb(var(--accent-rgb) / 16%);
   border-radius: 1.25rem;
-  background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
-    #fff;
+  /* Round 95: card families each get their own accent instead of one shared top bar — here a glow from the corner. */
+  background: radial-gradient(24rem 12rem at 0 0, rgb(var(--accent-rgb) / 10%), transparent 70%), #fff;
   box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
 }
 .ma-label {
@@ -5601,10 +5600,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: clamp(1.25rem, 2.4vw, 1.625rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
-    radial-gradient(18rem 9rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%),
-    #fff;
+  /* Round 95: a tinted head that fades to white. */
+  background: linear-gradient(180deg, var(--pale), var(--pale-2) 3.5rem, #fff 7rem);
   box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
 }
 .mw-head {
@@ -5806,11 +5803,29 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 .step-card {
   border: 1px solid var(--line);
   border-radius: 1.125rem;
-  background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
-    radial-gradient(16rem 8rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%),
-    #fff;
   box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
+}
+/* Round 95: use cases carry a short tab on the left edge, level with the icon, and a glow in the far corner. */
+.scenario-grid li,
+.scenario-grid li:nth-child(odd),
+.scenario-grid li:nth-child(-n + 2),
+.scenario-grid li:hover {
+  background:
+    linear-gradient(180deg, var(--cobalt), var(--cobalt-300)) left 0 top 1.375rem / 3px 2.5rem no-repeat border-box,
+    radial-gradient(16rem 8rem at 100% 100%, rgb(var(--accent-rgb) / 8%), transparent 70%),
+    #fff;
+}
+/* Round 95: process steps are plain, with a short centred line along the bottom that widens on hover. */
+.step-card {
+  background:
+    linear-gradient(90deg, var(--cobalt-300), var(--cobalt), var(--cobalt-300)) 50% 100% / 3rem 3px no-repeat border-box,
+    #fff;
+  transition: background-size 0.4s var(--ease);
+}
+.step-card:hover {
+  background-size:
+    calc(100% - 3rem) 3px,
+    auto;
 }
 .scenario-grid li {
   padding: 1.25rem 1.375rem 1.375rem;
@@ -5826,8 +5841,17 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 .scope-panel {
   border-color: var(--line);
+  /* Round 95: four corner brackets in the page colour, set in from the rounded corners. */
+  --bracket: linear-gradient(var(--cobalt), var(--cobalt));
   background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
+    var(--bracket) left 0.875rem top 0.875rem / 1.125rem 2px no-repeat,
+    var(--bracket) left 0.875rem top 0.875rem / 2px 1.125rem no-repeat,
+    var(--bracket) right 0.875rem top 0.875rem / 1.125rem 2px no-repeat,
+    var(--bracket) right 0.875rem top 0.875rem / 2px 1.125rem no-repeat,
+    var(--bracket) left 0.875rem bottom 0.875rem / 1.125rem 2px no-repeat,
+    var(--bracket) left 0.875rem bottom 0.875rem / 2px 1.125rem no-repeat,
+    var(--bracket) right 0.875rem bottom 0.875rem / 1.125rem 2px no-repeat,
+    var(--bracket) right 0.875rem bottom 0.875rem / 2px 1.125rem no-repeat,
     var(--tint);
 }
 .step-cards {
@@ -5925,8 +5949,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: clamp(1.25rem, 2.4vw, 1.625rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
+  /* Round 95: the bar runs along the bottom here. */
   background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) bottom / 100% 3px no-repeat border-box,
     #fff;
   box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 40%);
 }
@@ -5982,9 +6007,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   padding: clamp(1.25rem, 2.6vw, 2rem);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 3px no-repeat,
-    #fff;
+  /* Round 95: the table carries the card; only a faint glow in the corner. */
+  background: radial-gradient(28rem 10rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%), #fff;
   box-shadow: 0 1rem 2rem -1.75rem rgb(var(--accent-rgb) / 45%);
 }
 .is-lead {
@@ -6143,8 +6167,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 .contact-panel {
   border-radius: 1.5rem;
+  /* Round 95: the bar is placed from the border edge; from the padding edge it left a 1px white line above it. */
   background:
-    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 4px no-repeat,
+    linear-gradient(90deg, var(--cobalt), var(--cobalt-300)) top / 100% 4px no-repeat border-box,
     radial-gradient(30rem 14rem at 100% 0, rgb(var(--accent-rgb) / 7%), transparent 70%),
     var(--paper);
   box-shadow: 0 1.5rem 3rem -2.25rem rgb(var(--accent-rgb) / 50%);
