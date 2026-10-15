@@ -3237,7 +3237,8 @@ main > section:first-child + section {
   border-radius: 62.4375rem;
 }
 
-/* Services: three hexagon nodes on one connecting line, as in the film's hub shot. */
+/* Services: one card per service. Round 98: each card takes its service's colour (green / purple / blue, as on the
+   service pages and the contact panel), with the icon and the layer tag on one row above the title. */
 .hub {
   position: relative;
 }
@@ -3248,43 +3249,39 @@ main > section:first-child + section {
 }
 .capability-card {
   align-items: flex-start;
-  background: radial-gradient(70% 50% at 50% 0, var(--pale-2), transparent 70%), var(--paper);
+  background: linear-gradient(180deg, var(--pale-2) 0, var(--paper) 8.5rem);
+}
+.capability-head {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 .hub-node {
   position: relative;
   z-index: 2;
   display: grid;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3.25rem;
+  height: 3.25rem;
   place-items: center;
-  align-self: center;
-  border-radius: 1rem;
-  background: linear-gradient(140deg, #245bdb, #5a8cf6);
+  border-radius: 0.9375rem;
+  background: linear-gradient(140deg, var(--cobalt-600), var(--cobalt) 55%, rgb(var(--accent-rgb) / 70%));
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 22%),
     0 0.625rem 1.25rem -0.625rem rgb(var(--accent-rgb) / 45%);
   color: #fff;
   transition: transform 0.45s var(--ease);
 }
-.capability-card[data-service='model-services'] .hub-node {
-  background: linear-gradient(150deg, #0d1834, #2a55c7);
-}
-.capability-card[data-service='infrastructure'] .hub-node {
-  background: linear-gradient(150deg, #1a2130, #4a5a7c);
-}
 .capability-card:hover .hub-node {
   transform: scale(1.08);
 }
-.capability-meta {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
+.capability-card .service-card-layer {
+  border-color: var(--cobalt-200);
+  color: var(--cobalt);
 }
 .capability-card h3 {
-  margin-top: 0.5rem;
+  margin-top: 1.375rem;
   font-size: 1.4375rem;
 }
 .capability-card p {
@@ -3296,7 +3293,8 @@ main > section:first-child + section {
   margin-top: 1.5rem;
 }
 
-/* Brand and product: two cards on the same footing, each with a night stage for its mark. */
+/* Brand and product: two cards on the same footing, each with a stage for its mark. Round 98: the stages are light
+   (the owner's rule: light panels, no black blocks); the product card takes model services' purple. */
 .brand-pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3324,11 +3322,12 @@ main > section:first-child + section {
   height: clamp(9.5rem, 24vh, 13rem);
   place-items: center;
   overflow: hidden;
+  border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(50% 70% at 50% 50%, rgb(var(--accent-rgb) / 30%), transparent 75%),
-    linear-gradient(rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
-    linear-gradient(90deg, rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
-    var(--night);
+    radial-gradient(50% 70% at 50% 50%, rgb(var(--accent-rgb) / 12%), transparent 75%),
+    linear-gradient(rgb(var(--accent-rgb) / 7%) 1px, transparent 1px) center / 2.25rem 2.25rem,
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 7%) 1px, transparent 1px) center / 2.25rem 2.25rem,
+    linear-gradient(180deg, var(--pale-2), var(--paper));
   isolation: isolate;
 }
 .brand-stage::before,
@@ -3337,7 +3336,7 @@ main > section:first-child + section {
   position: absolute;
   width: 1rem;
   height: 1rem;
-  border: 0 solid var(--cobalt-300);
+  border: 0 solid rgb(var(--accent-rgb) / 55%);
 }
 .brand-stage::before {
   top: 1rem;
@@ -3352,20 +3351,21 @@ main > section:first-child + section {
 .brand-ring {
   position: absolute;
   z-index: -1;
-  width: clamp(12rem, 30vh, 16rem);
+  /* Smaller than the stage's height so the ring shows whole on the light stage. */
+  width: clamp(8rem, 20vh, 11rem);
   aspect-ratio: 1;
-  border: 1px solid rgb(94 200 230 / 30%);
+  border: 1px solid rgb(var(--accent-rgb) / 26%);
   border-radius: 50%;
   box-shadow:
-    0 0 0 1.75rem rgb(126 162 245 / 5%),
-    inset 0 0 2rem rgb(var(--accent-rgb) / 25%);
+    0 0 0 1.75rem rgb(var(--accent-rgb) / 4%),
+    inset 0 0 2rem rgb(var(--accent-rgb) / 10%);
   transition: transform 0.8s var(--ease);
 }
 .brand-ring::before {
   content: '';
   position: absolute;
   inset: 1.25rem;
-  border: 1px dashed rgb(126 162 245 / 30%);
+  border: 1px dashed rgb(var(--accent-rgb) / 28%);
   border-radius: 50%;
 }
 .brand-card:hover .brand-ring {
@@ -3375,7 +3375,7 @@ main > section:first-child + section {
   position: absolute;
   top: 1.0625rem;
   left: 2.5rem;
-  color: #8fb0ff;
+  color: var(--cobalt);
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
 }
@@ -3389,21 +3389,22 @@ main > section:first-child + section {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #fff;
+  color: var(--ink);
   font-size: clamp(1.75rem, 5vh, 2.5rem);
   font-weight: 600;
   line-height: 1;
 }
 .brand-lockup .about-whale {
   width: 1.6em;
+  filter: drop-shadow(0 0.375rem 0.75rem rgb(47 107 255 / 25%));
 }
 .brand-lockup img {
   width: 1.6em;
   height: 1.6em;
   border-radius: 0.3em;
   box-shadow:
-    0 0 0 1px rgb(126 162 245 / 35%),
-    0 0 1.5rem rgb(94 200 230 / 30%);
+    0 0 0 1px rgb(var(--accent-rgb) / 20%),
+    0 0.5rem 1.25rem -0.25rem rgb(var(--accent-rgb) / 35%);
 }
 .brand-lockup-name.mono {
   font-size: 0.86em;
@@ -6176,7 +6177,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 /* Round 56: the contact page. The panel and the service links take each service's own colour (same values as
    body[data-theme]); with :has the panel follows the chosen topic without any script. */
 .contact-panel:has(input[value='workbuddy']:checked),
-.service-links a[data-theme-service='workbuddy'] {
+.service-links a[data-theme-service='workbuddy'],
+.capability-card[data-service='workbuddy'] {
   --cobalt: #097a64;
   --cobalt-600: #06614f;
   --cobalt-300: #66e0c4;
@@ -6186,7 +6188,9 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   --accent-rgb: 9 122 100;
 }
 .contact-panel:has(input[value='model-services']:checked),
-.service-links a[data-theme-service='model-services'] {
+.service-links a[data-theme-service='model-services'],
+.capability-card[data-service='model-services'],
+.brand-card-product {
   --cobalt: #5b3fd6;
   --cobalt-600: #4a2fc0;
   --cobalt-300: #b7aaff;
@@ -6196,7 +6200,8 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
   --accent-rgb: 91 63 214;
 }
 .contact-panel:has(input[value='infrastructure']:checked),
-.service-links a[data-theme-service='infrastructure'] {
+.service-links a[data-theme-service='infrastructure'],
+.capability-card[data-service='infrastructure'] {
   --cobalt: #0a76b5;
   --cobalt-600: #08639a;
   --cobalt-300: #7dcffa;

@@ -84,10 +84,11 @@ const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
           {
             services.map((service, i) => (
               <a class="capability-card" href={pathFor(lang, service)} data-service={service} style={`--d:${i}`}>
-                <span class="hub-node" aria-hidden="true">
-                  <ServiceIcon service={service} size={24} />
-                </span>
-                <span class="capability-meta">
+                <span class="service-art" aria-hidden="true" />
+                <span class="capability-head">
+                  <span class="hub-node" aria-hidden="true">
+                    <ServiceIcon service={service} size={24} />
+                  </span>
                   <span class="service-card-layer">{h.layers[service].name}</span>
                 </span>
                 <h3>{t.services[service].label}</h3>
@@ -137,7 +138,7 @@ const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
             </a>
           </div>
         </article>
-        <article class="brand-card" data-reveal style="--d:1">
+        <article class="brand-card brand-card-product" data-reveal style="--d:1">
           <div class="brand-stage" aria-hidden="true">
             <span class="brand-ring"></span>
             <span class="brand-stage-tag mono">PRODUCT</span>
