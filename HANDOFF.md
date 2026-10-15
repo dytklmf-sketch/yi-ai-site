@@ -1,12 +1,12 @@
 # 易AI 官网移交清单
 
 接手的 AI 或开发者先读本文件，再读 `plan.md`（当前待办）、`AGENTS.md`（构建与测试规则）和 `README.md`。
-每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 96 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
+每轮的详细记录在 `docs/rounds/NN-主题.md`（最新第 97 轮）；第 7–26 轮历史在 `docs/history/`，新轮次不再追加到那里。
 
-## 当前版本（第九十六轮）
+## 当前版本（第九十七轮）
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
-- 当前轮次：第九十六轮（手机首页首屏收进一屏，见 `docs/rounds/96-mobile-hero.md`）
+- 当前轮次：第九十七轮（Cloudflare 边缘缓存网页、发布后自动清缓存，见 `docs/rounds/97-edge-cache.md`；上一轮手机首页首屏见 `docs/rounds/96-mobile-hero.md`）
 - 线上发布：`release-20261015132126`，commit `fc041e6`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
@@ -104,6 +104,9 @@ PREVIEW_URL=http://127.0.0.1:4322 pnpm test:browser                             
 ## 其他仍有效的约定
 
 - 发布：`scripts/deploy.sh` 要求工作区干净，写 `version.json`、打 tag，只保留最近 5 个发布目录。
+- Cloudflare 缓存（第九十七轮）：缓存规则让 `www.yeeeai.com` 的网页在边缘缓存 1 天；`scripts/deploy.sh` 发布和 `--rollback` 后自动清缓存，
+  单独清用 `scripts/deploy.sh --purge`。区域 ID 与 token 在服务器 `/root/.config/cloudflare/yeeeai.env`（仅 root 可读，站长同意存放，不进仓库）。
+  改了 nginx 头或 CSP 后要手动 `--purge`，否则边缘会继续给旧响应。
 - CSP：唯一内联脚本是布局里的 `js` class 片段，nginx 用 sha256 放行；改它必须同步新服务器 `/www/server/nginx/conf/yi-ai-site-headers.conf`
   （`test-build.mjs` 断言 hash 不变）。`style-src` 允许内联。
 - CI：`.github/workflows/ci.yml` 在推送和 PR 时跑 check、build、test 与浏览器测试。

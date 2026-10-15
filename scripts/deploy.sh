@@ -4,9 +4,12 @@
 # timestamped release, so switching the link publishes or rolls back without reloading nginx.
 #   scripts/deploy.sh             build, test and publish a new release
 #   scripts/deploy.sh --rollback  point the link at the previous release
+#   scripts/deploy.sh --purge     only purge the Cloudflare cache
 # Each release is built from a clean, committed tree, records its commit in version.json and gets a
 # `release-<timestamp>` Git tag. Every sitemap route is checked after the switch; any failure rolls back.
 # The checks go to this server directly (curl --resolve), so they work whatever DNS or Cloudflare is doing.
+# Cloudflare caches the pages at the edge (round 96), so a publish or rollback ends by purging that cache. The zone ID
+# and an API token are read from a root-only file outside the repo (CF_ENV_FILE); without it the purge is skipped.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export PATH="/root/.local/node/bin:$PATH" # Non-interactive shells do not load the profile that adds node.
@@ -16,6 +19,28 @@ link=$root/current
 host=www.yeeeai.com
 origin=https://$host
 keep=5
+cf_env=${CF_ENV_FILE:-/root/.config/cloudflare/yeeeai.env}
+
+# A failed purge does not undo the publish: the edge copy expires within a day, and the purge can be rerun by hand.
+purge_cdn() {
+  local zone token
+  [[ -r "$cf_env" ]] || { echo "Cloudflare cache not purged: $cf_env is missing" >&2; return 0; }
+  zone=$(sed -n 's/^CF_ZONE_ID=//p' "$cf_env")
+  token=$(sed -n 's/^CF_API_TOKEN=//p' "$cf_env")
+  # The token goes in on stdin so it never shows in the process list.
+  if printf 'Authorization: Bearer %s\n' "$token" |
+    curl -fsS -m 20 -o /dev/null -H @- -H 'Content-Type: application/json' --data '{"purge_everything":true}' \
+      "https://api.cloudflare.com/client/v4/zones/$zone/purge_cache"; then
+    echo "Purged the Cloudflare cache"
+  else
+    echo "Cloudflare cache purge FAILED; rerun: scripts/deploy.sh --purge" >&2
+  fi
+}
+
+if [[ "${1:-}" == "--purge" ]]; then
+  purge_cdn
+  exit 0
+fi
 
 if [[ "${1:-}" == "--rollback" ]]; then
   current=$(readlink -f "$link")
@@ -23,6 +48,7 @@ if [[ "${1:-}" == "--rollback" ]]; then
   [[ -n "$previous" && "$previous" != "$current" ]] || { echo "No previous release" >&2; exit 1; }
   ln -sfn "$previous" "$link"
   echo "Rolled back to $previous"
+  purge_cdn
   exit 0
 fi
 
@@ -60,4 +86,5 @@ ls -d "$releases"/yi-ai-site-* | sort | head -n -"$keep" | while read -r old; do
   [[ "$old" == "$target" ]] || rm -rf "$old"
 done
 echo "Published $target ($commit), tagged release-$stamp"
+purge_cdn
 echo "Run 'pnpm build' again before local preview tests; dist now holds the production build."

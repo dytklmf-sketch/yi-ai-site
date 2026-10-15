@@ -180,7 +180,8 @@ The server (189.24.79.181, Hong Kong, BT panel nginx 1.26) serves
 `releases/`) through `/www/server/panel/vhost/nginx/yeeeai.com.conf`; `yeeeai.com` and
 HTTP redirect to `https://www.yeeeai.com/`. Security headers and CSP are in
 `/www/server/nginx/conf/yi-ai-site-headers.conf`, certificates in
-`/www/server/nginx/conf/yi-ai-site-ssl.conf`. DNS is on Cloudflare. Browser tests run
+`/www/server/nginx/conf/yi-ai-site-ssl.conf`. DNS is on Cloudflare, which caches the pages at the edge for a
+day; `scripts/deploy.sh` purges that cache after each publish or rollback (`--purge` alone). Browser tests run
 against the root preview build, so run `pnpm build` again after a production build
 before local testing. The site owns the origin root, so `robots.txt` points crawlers
 at `https://www.yeeeai.com/sitemap.xml`.
