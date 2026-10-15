@@ -3293,8 +3293,7 @@ main > section:first-child + section {
   margin-top: 1.5rem;
 }
 
-/* Brand and product: two cards on the same footing, each with a stage for its mark. Round 98: the stages are light
-   (the owner's rule: light panels, no black blocks); the product card takes model services' purple. */
+/* Brand and product: two cards on the same footing, each with a night stage for its mark. */
 .brand-pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3322,12 +3321,11 @@ main > section:first-child + section {
   height: clamp(9.5rem, 24vh, 13rem);
   place-items: center;
   overflow: hidden;
-  border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(50% 70% at 50% 50%, rgb(var(--accent-rgb) / 12%), transparent 75%),
-    linear-gradient(rgb(var(--accent-rgb) / 7%) 1px, transparent 1px) center / 2.25rem 2.25rem,
-    linear-gradient(90deg, rgb(var(--accent-rgb) / 7%) 1px, transparent 1px) center / 2.25rem 2.25rem,
-    linear-gradient(180deg, var(--pale-2), var(--paper));
+    radial-gradient(50% 70% at 50% 50%, rgb(var(--accent-rgb) / 30%), transparent 75%),
+    linear-gradient(rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
+    linear-gradient(90deg, rgb(126 162 245 / 9%) 1px, transparent 1px) center / 2.25rem 2.25rem,
+    var(--night);
   isolation: isolate;
 }
 .brand-stage::before,
@@ -3336,7 +3334,7 @@ main > section:first-child + section {
   position: absolute;
   width: 1rem;
   height: 1rem;
-  border: 0 solid rgb(var(--accent-rgb) / 55%);
+  border: 0 solid var(--cobalt-300);
 }
 .brand-stage::before {
   top: 1rem;
@@ -3351,21 +3349,20 @@ main > section:first-child + section {
 .brand-ring {
   position: absolute;
   z-index: -1;
-  /* Smaller than the stage's height so the ring shows whole on the light stage. */
-  width: clamp(8rem, 20vh, 11rem);
+  width: clamp(12rem, 30vh, 16rem);
   aspect-ratio: 1;
-  border: 1px solid rgb(var(--accent-rgb) / 26%);
+  border: 1px solid rgb(94 200 230 / 30%);
   border-radius: 50%;
   box-shadow:
-    0 0 0 1.75rem rgb(var(--accent-rgb) / 4%),
-    inset 0 0 2rem rgb(var(--accent-rgb) / 10%);
+    0 0 0 1.75rem rgb(126 162 245 / 5%),
+    inset 0 0 2rem rgb(var(--accent-rgb) / 25%);
   transition: transform 0.8s var(--ease);
 }
 .brand-ring::before {
   content: '';
   position: absolute;
   inset: 1.25rem;
-  border: 1px dashed rgb(var(--accent-rgb) / 28%);
+  border: 1px dashed rgb(126 162 245 / 30%);
   border-radius: 50%;
 }
 .brand-card:hover .brand-ring {
@@ -3375,7 +3372,7 @@ main > section:first-child + section {
   position: absolute;
   top: 1.0625rem;
   left: 2.5rem;
-  color: var(--cobalt);
+  color: #8fb0ff;
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
 }
@@ -3389,22 +3386,21 @@ main > section:first-child + section {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--ink);
+  color: #fff;
   font-size: clamp(1.75rem, 5vh, 2.5rem);
   font-weight: 600;
   line-height: 1;
 }
 .brand-lockup .about-whale {
   width: 1.6em;
-  filter: drop-shadow(0 0.375rem 0.75rem rgb(47 107 255 / 25%));
 }
 .brand-lockup img {
   width: 1.6em;
   height: 1.6em;
   border-radius: 0.3em;
   box-shadow:
-    0 0 0 1px rgb(var(--accent-rgb) / 20%),
-    0 0.5rem 1.25rem -0.25rem rgb(var(--accent-rgb) / 35%);
+    0 0 0 1px rgb(126 162 245 / 35%),
+    0 0 1.5rem rgb(94 200 230 / 30%);
 }
 .brand-lockup-name.mono {
   font-size: 0.86em;
@@ -6189,8 +6185,7 @@ main:has(> .cta-band:last-child) + .site-footer .footer-lead .btn {
 }
 .contact-panel:has(input[value='model-services']:checked),
 .service-links a[data-theme-service='model-services'],
-.capability-card[data-service='model-services'],
-.brand-card-product {
+.capability-card[data-service='model-services'] {
   --cobalt: #5b3fd6;
   --cobalt-600: #4a2fc0;
   --cobalt-300: #b7aaff;
