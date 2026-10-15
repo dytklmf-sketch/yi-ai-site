@@ -10,6 +10,7 @@
 # The checks go to this server directly (curl --resolve), so they work whatever DNS or Cloudflare is doing.
 # Cloudflare caches the pages at the edge (round 96), so a publish or rollback ends by purging that cache. The zone ID
 # and an API token are read from a root-only file outside the repo (CF_ENV_FILE); without it the purge is skipped.
+# A publish then tells IndexNow (Bing and others) which pages changed; the key file is public/<key>.txt (round 101).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export PATH="/root/.local/node/bin:$PATH" # Non-interactive shells do not load the profile that adds node.
@@ -34,6 +35,21 @@ purge_cdn() {
     echo "Purged the Cloudflare cache"
   else
     echo "Cloudflare cache purge FAILED; rerun: scripts/deploy.sh --purge" >&2
+  fi
+}
+
+# IndexNow takes the sitemap's URLs; the key is public by design. Failure only warns.
+notify_indexnow() {
+  local key urls
+  key=$(basename "$(ls public/*.txt 2>/dev/null | grep -E '/[0-9a-f]{32}\.txt$' | head -1)" .txt)
+  [[ -n "$key" ]] || { echo "IndexNow skipped: no key file in public/" >&2; return 0; }
+  urls=$(grep -o '<loc>[^<]*' "$1/sitemap.xml" | cut -c6- | sed 's/.*/"&"/' | paste -sd, -)
+  if curl -fsS -m 20 -o /dev/null -H 'Content-Type: application/json; charset=utf-8' \
+    --data "{\"host\":\"$host\",\"key\":\"$key\",\"keyLocation\":\"$origin/$key.txt\",\"urlList\":[$urls]}" \
+    https://api.indexnow.org/indexnow; then
+    echo "Sent the sitemap to IndexNow"
+  else
+    echo "IndexNow notification FAILED (search engines will still crawl the sitemap)" >&2
   fi
 }
 
@@ -87,4 +103,5 @@ ls -d "$releases"/yi-ai-site-* | sort | head -n -"$keep" | while read -r old; do
 done
 echo "Published $target ($commit), tagged release-$stamp"
 purge_cdn
+notify_indexnow "$target"
 echo "Run 'pnpm build' again before local preview tests; dist now holds the production build."
