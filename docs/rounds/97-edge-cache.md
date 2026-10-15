@@ -13,7 +13,7 @@
 ## 实际改动
 
 - Cloudflare 区域 `yeeeai.com` 新建缓存规则（`http_request_cache_settings` 阶段，规则集 `308772fe035a44d2956c2c433d0469be`）：
-  - 条件：`http.host eq "www.yeeeai.com"`，排除 `/.well-known/`（证书续期验证）。
+  - 条件：`http.host eq "www.yeeeai.com"`，排除 `/.well-known/`（证书续期验证）；第 102 轮起首页 `/` 也排除（按 User-Agent 给验证程序不同响应）。
   - 边缘缓存：覆盖源站，默认 1 天；404 缓存 5 分钟；5xx 不缓存。
   - 浏览器缓存：遵循源站（网页仍是 `no-cache`，浏览器每次回来确认；`/_astro/` 仍一年）。
 - `scripts/deploy.sh`：新增 `purge_cdn`，发布成功、`--rollback` 后调用 Cloudflare `purge_everything`；`--purge` 单独清缓存。
