@@ -18,6 +18,17 @@ export const workbuddyCredential = {
     en: 'Tencent Cloud WorkBuddy / CodeBuddy authorized partner',
   } satisfies Record<Lang, string>,
 };
+// Round 103: where Easy AI is and whom it serves (owner, 2026-10-17), and who issued the WorkBuddy certificate, in text
+// that search engines and AI assistants can read (the certificate is an image). The operating company stays unnamed.
+export const companyLocation = {
+  zh: '浙江宁波',
+  en: 'Ningbo, Zhejiang',
+  served: { zh: '服务全国企业', en: 'Serving companies across China' } satisfies Record<Lang, string>,
+};
+export const certificateIssuer = {
+  zh: '腾讯云计算（北京）有限责任公司',
+  en: 'Tencent Cloud Computing (Beijing) Co., Ltd.',
+} satisfies Record<Lang, string>;
 // Round 94: "Open CCG API" goes to the product's home page; the catalog links (model-catalog.ts) keep /models/.
 export const modelProduct = {
   name: 'CCG API',

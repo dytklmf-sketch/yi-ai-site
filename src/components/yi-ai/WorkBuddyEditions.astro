@@ -1,7 +1,7 @@
 ---
 import { ArrowUpRight, Check, Download } from '@lucide/astro';
 import { serviceBriefs, workbuddyEditions } from '../../data/workbuddy-editions';
-import { workbuddyCredential } from '../../data/yi-ai';
+import { certificateIssuer, workbuddyCredential } from '../../data/yi-ai';
 import { withBase, type Lang } from '../../data/yi-ai';
 
 interface Props {
@@ -59,8 +59,8 @@ const cert = withBase(workbuddyCredential.certificate);
         <img
           src={cert}
           alt={zhUI
-            ? '腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书'
-            : 'Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate'}
+            ? `腾讯云 WorkBuddy / CodeBuddy 官方授权合作伙伴证书，授权单位：${certificateIssuer.zh}`
+            : `Tencent Cloud WorkBuddy / CodeBuddy authorized-partner certificate, issued by ${certificateIssuer.en}`}
           width="1200"
           height="848"
           loading="lazy"
@@ -71,8 +71,8 @@ const cert = withBase(workbuddyCredential.certificate);
           <span>
             {
               zhUI
-                ? '易AI 通过该授权渠道开展 WorkBuddy 企业版采购。'
-                : 'Easy AI sells WorkBuddy Enterprise through this authorized channel.'
+                ? `授权单位：${certificateIssuer.zh}。易AI 通过该授权渠道开展 WorkBuddy 企业版采购。`
+                : `Issued by ${certificateIssuer.en}. Easy AI sells WorkBuddy Enterprise through this authorized channel.`
             }
           </span>
         </span>

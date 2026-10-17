@@ -190,7 +190,14 @@ for (const file of html) {
   if (/\/(workbuddy|model-services|infrastructure)\/index\.html$/.test(file))
     assert(/class="guide-list"[^]*?(<li>[^]*?){4}<\/ul>/.test(text), `${file}: related guides as a compact list`);
   if (file.endsWith('/faq/index.html')) {
-    assert.equal((text.match(/<details data-service=/g) || []).length, 18, `${file}: six questions per service`);
+    // Round 103: WorkBuddy has two more (the authorization and where Easy AI is), the other services six each.
+    assert.equal(
+      (text.match(/<details data-service="workbuddy"/g) || []).length,
+      8,
+      `${file}: eight WorkBuddy questions`
+    );
+    assert.equal((text.match(/<details data-service=/g) || []).length, 20, `${file}: six questions per other service`);
+    assert(text.includes('"@type":"FAQPage"'), `${file}: FAQPage structured data`);
     assert(text.includes('data-faq-filter'), `${file}: filter by service`);
     assert(!text.includes('CCG'), `${file}: product stays off the FAQ`);
   }

@@ -84,6 +84,18 @@ export const en: SiteCopy = {
         'Enterprise invoices are issued through the Tencent Cloud console. When buying through Easy AI, who issues the invoice and how follows the order agreement.',
     },
     {
+      service: 'workbuddy',
+      question: 'Is Easy AI an authorized Tencent Cloud WorkBuddy partner?',
+      answer:
+        'Yes. Easy AI holds a WorkBuddy / CodeBuddy authorized-partner certificate issued by Tencent Cloud Computing (Beijing) Co., Ltd. It is shown below the editions and prices on the WorkBuddy page, where you can open the full image.',
+    },
+    {
+      service: 'workbuddy',
+      question: 'Where is Easy AI, and can companies elsewhere buy through you?',
+      answer:
+        'Easy AI is based in Ningbo, Zhejiang, and serves companies across China. WorkBuddy Enterprise is activated online, so companies in other cities can buy through Easy AI as well.',
+    },
+    {
       service: 'model-services',
       question: 'Our code uses the OpenAI SDK. What changes when we switch?',
       answer:
@@ -137,11 +149,11 @@ export const en: SiteCopy = {
   services: {
     workbuddy: {
       label: 'Enterprise AI applications',
-      seoTitle: 'WorkBuddy Reseller Procurement and Enterprise AI',
+      seoTitle: 'WorkBuddy Enterprise Reseller and Tencent Cloud Authorized Partner',
       short: 'WorkBuddy reseller · Procurement',
       title: 'WorkBuddy reseller procurement',
       intro:
-        'Easy AI is a WorkBuddy reseller. For team purchases, we confirm editions, pricing, authorization periods and start dates.',
+        'Easy AI is a WorkBuddy reseller and Tencent Cloud authorized partner based in Ningbo, Zhejiang, serving companies across China. For team purchases, we confirm editions, pricing, authorization periods and start dates.',
       audience: 'Procurement teams · Team leaders · IT administrators',
       summary: 'Team purchases of WorkBuddy, priced by seats and period.',
       scenarios: [

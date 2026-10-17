@@ -5,14 +5,27 @@ import PageHero from '../../components/yi-ai/PageHero.astro';
 import { editorial } from '../../data/editorial';
 import { languages } from '../../data/routes';
 import type { Lang } from '../../data/yi-ai';
+import { zh } from '../../data/zh';
+import { en } from '../../data/en';
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
 }
 const lang = Astro.params.lang as Lang;
 const e = editorial[lang];
+// Round 103: the questions as FAQPage data, so search engines and AI assistants can quote the answers directly.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  mainEntity: (lang === 'zh' ? zh : en).faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 ---
 
-<YiAiLayout lang={lang} slug="faq" title={e.faqSeoTitle} description={e.faqIntro}>
+<YiAiLayout lang={lang} slug="faq" title={e.faqSeoTitle} description={e.faqIntro} structuredData={faqSchema}>
   <PageHero lang={lang} crumb={e.faq} title={e.faq} intro={e.faqIntro} compact />
   <FaqChapter lang={lang} full />
 </YiAiLayout>

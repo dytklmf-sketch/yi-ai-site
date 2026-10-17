@@ -4,6 +4,8 @@ import '../styles/font-guides.css';
 import { ArrowUpRight, ArrowRight, Globe, MessageCircle, Mail } from '@lucide/astro';
 import {
   brandName,
+  certificateIssuer,
+  companyLocation,
   contact,
   pathFor,
   inquiryPath,
@@ -12,6 +14,7 @@ import {
   withBase,
   navigationPages,
   services,
+  workbuddyCredential,
   type Lang,
   type SitePage,
   type Service,
@@ -66,15 +69,59 @@ const alternatePath = (locale: Lang) => (article ? articlePath(locale, article) 
 const site = Astro.site;
 const indexable = Boolean(site) && !Astro.props.notFound;
 const absolute = (path: string) => (site ? new URL(path, site).href : path);
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
+// Round 103: the site plus the organization behind it — where it is, whom it serves, what it offers and the WorkBuddy
+// authorization — so search engines and AI assistants can answer "a WorkBuddy reseller in Zhejiang" from the page.
+const organization = {
+  '@type': 'Organization',
+  '@id': `${absolute(pathFor(lang))}#organization`,
   name: brand,
   alternateName: brandName(otherLang),
-  description,
-  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
-  ...(indexable && { url: absolute(pathFor(lang)) }),
-  about: { '@type': 'Brand', name: brand, alternateName: brandName(otherLang) },
+  description: e.aboutIntro,
+  ...(indexable && { url: absolute(pathFor(lang)), logo: absolute(withBase('/brand/logo-symbol.svg')) }),
+  email: contact.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: lang === 'zh' ? '浙江省' : 'Zhejiang',
+    addressLocality: lang === 'zh' ? '宁波市' : 'Ningbo',
+    addressCountry: 'CN',
+  },
+  areaServed: { '@type': 'Country', name: lang === 'zh' ? '中国' : 'China' },
+  knowsAbout: [
+    'WorkBuddy',
+    'CodeBuddy',
+    lang === 'zh' ? '大模型 API' : 'LLM APIs',
+    lang === 'zh' ? '算力' : 'AI compute',
+  ],
+  // The model services pages never mention authorization (owner's rule), not even the WorkBuddy one in hidden data.
+  ...(slug !== 'model-services' &&
+    service !== 'model-services' && {
+      hasCredential: {
+        '@type': 'EducationalOccupationalCredential',
+        name: workbuddyCredential.partner[lang],
+        credentialCategory: lang === 'zh' ? '官方授权合作伙伴' : 'Authorized partner',
+        recognizedBy: { '@type': 'Organization', name: certificateIssuer[lang] },
+      },
+    }),
+  makesOffer: services.map((item) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: t.services[item].label, description: t.services[item].summary },
+    areaServed: { '@type': 'Country', name: lang === 'zh' ? '中国' : 'China' },
+  })),
+};
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: brand,
+      alternateName: brandName(otherLang),
+      description,
+      inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+      ...(indexable && { url: absolute(pathFor(lang)) }),
+      publisher: { '@id': organization['@id'] },
+    },
+    organization,
+  ],
 };
 const logoWidth = lang === 'zh' ? 220.47 : 302.59;
 const zhUI = lang === 'zh';
@@ -243,6 +290,7 @@ const zhUI = lang === 'zh';
                 ))
               }
             </p>
+            <p class="footer-location">{companyLocation[lang]} · {companyLocation.served[lang]}</p>
           </div>
           <nav class="footer-col" aria-label={zhUI ? '业务' : 'Services'}>
             <p class="footer-label">{zhUI ? '业务' : 'Services'}</p>
