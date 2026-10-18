@@ -1,7 +1,7 @@
 ---
 import { ArrowUpRight, Check, Download } from '@lucide/astro';
 import { serviceBriefs, workbuddyEditions } from '../../data/workbuddy-editions';
-import { certificateIssuer, parentCompany, workbuddyCredential } from '../../data/yi-ai';
+import { certificateIssuer, companyLegalName, parentCompany, workbuddyCredential } from '../../data/yi-ai';
 import { withBase, type Lang } from '../../data/yi-ai';
 
 interface Props {
@@ -71,8 +71,8 @@ const cert = withBase(workbuddyCredential.certificate);
           <span>
             {
               zhUI
-                ? `授权单位：${certificateIssuer.zh}；被授权方：${parentCompany.name.zh}（大鱼出海）。易AI 是大鱼出海旗下子公司，负责 WorkBuddy 项目落地实施。`
-                : `Issued by ${certificateIssuer.en} to ${parentCompany.name.en} (DAYUSEA). Easy AI, a DAYUSEA subsidiary, delivers WorkBuddy projects.`
+                ? `授权单位：${certificateIssuer.zh}；被授权方：${parentCompany.name.zh}（大鱼出海）。易AI（${companyLegalName.zh}）是大鱼出海旗下子公司，负责 WorkBuddy 项目落地实施。`
+                : `Issued by ${certificateIssuer.en} to ${parentCompany.name.en} (DAYUSEA). Easy AI (${companyLegalName.en}), a DAYUSEA subsidiary, delivers WorkBuddy projects.`
             }
           </span>
         </span>

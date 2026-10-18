@@ -87,13 +87,13 @@ export const en: SiteCopy = {
       service: 'workbuddy',
       question: 'Is Easy AI an authorized Tencent Cloud WorkBuddy partner?',
       answer:
-        'Easy AI is a subsidiary of DAYUSEA (Zhejiang Dayu Chuhai Technology Co., Ltd.), which holds a WorkBuddy / CodeBuddy authorized-partner certificate issued by Tencent Cloud Computing (Beijing) Co., Ltd. Easy AI focuses on project delivery: WorkBuddy industry solutions, AI scenario deployment and supporting digital delivery. The certificate is shown below the editions and prices on the WorkBuddy page, where you can open the full image.',
+        'Easy AI is operated by Ningbo Yikun Technology Co., Ltd., a subsidiary of DAYUSEA (Zhejiang Dayu Chuhai Technology Co., Ltd.), which holds a WorkBuddy / CodeBuddy authorized-partner certificate issued by Tencent Cloud Computing (Beijing) Co., Ltd. Easy AI focuses on project delivery: WorkBuddy industry solutions, AI scenario deployment and supporting digital delivery. The certificate is shown below the editions and prices on the WorkBuddy page, where you can open the full image.',
     },
     {
       service: 'workbuddy',
       question: 'Where is Easy AI, and can companies elsewhere buy through you?',
       answer:
-        'Easy AI is at No. 777 Zhongguan West Road, Zhenhai District, Ningbo, Zhejiang, and serves companies across China. WorkBuddy Enterprise is activated online, so companies in other cities can buy through Easy AI as well.',
+        'Easy AI (Ningbo Yikun Technology Co., Ltd.) is at No. 777 Zhongguan West Road, Zhenhai District, Ningbo, Zhejiang, and serves companies across China. WorkBuddy Enterprise is activated online, so companies in other cities can buy through Easy AI as well.',
     },
     {
       service: 'model-services',

@@ -6,6 +6,7 @@ import {
   brandName,
   certificateIssuer,
   companyAddress,
+  companyLegalName,
   companyLocation,
   contact,
   pathFor,
@@ -78,6 +79,7 @@ const organization = {
   '@id': `${absolute(pathFor(lang))}#organization`,
   name: brand,
   alternateName: brandName(otherLang),
+  legalName: companyLegalName[lang],
   description: e.aboutIntro,
   ...(indexable && { url: absolute(pathFor(lang)), logo: absolute(withBase('/brand/logo-symbol.svg')) }),
   email: contact.email,
@@ -300,6 +302,8 @@ const zhUI = lang === 'zh';
               }
             </p>
             <p class="footer-location">
+              {companyLegalName[lang]}
+              <br />
               {zhUI ? `${parentCompany.name.zh}旗下` : `A subsidiary of ${parentCompany.name.en}`}
               <br />
               {companyAddress[lang]} · {companyLocation.served[lang]}

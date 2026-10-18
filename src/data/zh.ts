@@ -76,13 +76,13 @@ export const zh: SiteCopy = {
       service: 'workbuddy',
       question: '易AI 是腾讯云 WorkBuddy 官方授权合作伙伴吗？',
       answer:
-        '易AI 是大鱼出海（浙江大鱼出海科技有限公司）旗下子公司。大鱼出海持有腾讯云计算（北京）有限责任公司颁发的 WorkBuddy / CodeBuddy 官方授权合作伙伴证书；易AI 专注项目落地实施，面向企业提供 WorkBuddy 行业方案、AI 场景部署与数字化配套交付服务。证书在 WorkBuddy 页的版本与价格下方，可点开查看原图。',
+        '易AI 的运营主体是宁波易鲲科技有限公司，是大鱼出海（浙江大鱼出海科技有限公司）旗下子公司。大鱼出海持有腾讯云计算（北京）有限责任公司颁发的 WorkBuddy / CodeBuddy 官方授权合作伙伴证书；易AI 专注项目落地实施，面向企业提供 WorkBuddy 行业方案、AI 场景部署与数字化配套交付服务。证书在 WorkBuddy 页的版本与价格下方，可点开查看原图。',
     },
     {
       service: 'workbuddy',
       question: '易AI 在哪里？外地企业可以采购吗？',
       answer:
-        '易AI 位于浙江省宁波市镇海区中官西路777号，服务全国企业。WorkBuddy 企业版在线开通，外地企业同样可以通过易AI 采购。',
+        '易AI（宁波易鲲科技有限公司）位于浙江省宁波市镇海区中官西路777号，服务全国企业。WorkBuddy 企业版在线开通，外地企业同样可以通过易AI 采购。',
     },
     {
       service: 'model-services',
