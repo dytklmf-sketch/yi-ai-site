@@ -25,6 +25,10 @@ import { home } from '../../data/home';
 import {
   pageSlugs,
   services,
+  companyAddress,
+  companyLegalName,
+  companyLocation,
+  parentCompany,
   inquiryPath,
   pathFor,
   modelProduct,
@@ -339,6 +343,47 @@ const heroMarks: Record<Service, string> = {
                     </li>
                   ))}
                 </ol>
+              </div>
+              {/* Round 107: who runs the site and where, beside the contact methods (owner, 2026-10-18). */}
+              <div class="contact-company">
+                <p class="micro-label">{zhUI ? '公司信息' : 'Company'}</p>
+                <dl>
+                  <div>
+                    <dt>{zhUI ? '运营主体' : 'Operator'}</dt>
+                    <dd>{companyLegalName[lang]}</dd>
+                  </div>
+                  <div>
+                    <dt>{zhUI ? '所属' : 'Parent'}</dt>
+                    <dd>
+                      {parentCompany.name[lang]}
+                      <span class="nowrap">
+                        {zhUI ? `（${parentCompany.short.zh}）` : `(${parentCompany.short.en})`}
+                      </span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{zhUI ? '地址' : 'Address'}</dt>
+                    <dd>
+                      <a
+                        class="text-link"
+                        href={`https://uri.amap.com/search?keyword=${encodeURIComponent(companyAddress.zh)}&city=330200&callnative=0`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {companyAddress[lang].slice(0, -4)}
+                        <span class="nowrap">
+                          {companyAddress[lang].slice(-4)}
+                          <ArrowUpRight size={14} />
+                        </span>
+                        <span class="sr-only">{zhUI ? '（在高德地图打开）' : '(opens in Amap)'}</span>
+                      </a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{zhUI ? '服务范围' : 'Service area'}</dt>
+                    <dd>{companyLocation.served[lang]}</dd>
+                  </div>
+                </dl>
               </div>
             </aside>
           </div>

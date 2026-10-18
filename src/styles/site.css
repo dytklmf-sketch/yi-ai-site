@@ -3817,6 +3817,41 @@ main > section:first-child + section {
   color: var(--cobalt);
   transform: translateX(0.1875rem);
 }
+.contact-company {
+  margin-top: 2.25rem;
+}
+.contact-company dl {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+.contact-company dl > div {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.75rem 2px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+[data-lang='en'] .contact-company dl > div {
+  grid-template-columns: 6.25rem minmax(0, 1fr);
+}
+.contact-company dt {
+  color: var(--muted);
+}
+.contact-company dd {
+  color: var(--ink);
+}
+.contact-company dd .text-link {
+  display: inline;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
+}
+.contact-company dd .text-link svg {
+  display: inline;
+  vertical-align: -0.125em;
+}
 .contact-steps ol {
   margin-top: 0.75rem;
   list-style: none;
