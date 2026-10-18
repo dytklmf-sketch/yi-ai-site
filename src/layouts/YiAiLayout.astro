@@ -167,6 +167,10 @@ const zhUI = lang === 'zh';
     <meta property="og:image:alt" content={fullTitle} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href={withBase('/brand/favicon.svg?v=whale-a')} type="image/svg+xml" />
+    <!-- Round 106: square raster icons for search results (Bing asks for /favicon.ico; Google wants a square icon). -->
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={withBase('/brand/icon-192.png')} type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     <link rel="preload" href={withBase('/fonts/manrope-latin.woff2')} as="font" type="font/woff2" crossorigin />
     {
       zhUI && (

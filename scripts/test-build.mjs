@@ -73,6 +73,11 @@ for (const file of html) {
     assert(text.includes('og:image'), `${file}: sharing metadata missing`);
     assert(text.includes('name="description"'), `${file}: description missing`);
     assert(text.includes(`${base}/brand/favicon.svg?v=whale-a`), `${file}: use the current optical favicon`);
+    // Round 106: square raster icons for search results.
+    assert(
+      text.includes(`${base}/favicon.ico`) && text.includes(`${base}/brand/icon-192.png`),
+      `${file}: raster icons`
+    );
   }
   // Round 41: no small two-digit mono numbering (01, 02…) anywhere.
   assert(
