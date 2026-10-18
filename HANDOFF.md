@@ -7,7 +7,7 @@
 
 - 品牌：易AI / Easy AI；线上：**https://www.yeeeai.com/**（第八十一轮起，Cloudflare 代理；旧地址 https://ccg-cli.online/yi_ai/ 按原路径 301 到新域名）
 - 当前轮次：第一百零七轮（联系页侧栏加公司信息，见 `docs/rounds/107-contact-company.md`；第一百零六轮：搜索结果用的方形图标 `/favicon.ico`、`/brand/icon-192.png`、`/apple-touch-icon.png`，见 `docs/rounds/106-raster-icons.md`；第一百零五轮：运营主体宁波易鲲科技有限公司写进页脚、注解、证书文字、常见问题与 `legalName`，见 `docs/rounds/105-legal-name.md`；第一百零四轮：公开母公司关系与地址：易AI 是大鱼出海旗下子公司，关于页注解、全站页脚地址、证书被授权方、结构化数据 `parentOrganization`，见 `docs/rounds/104-parent-company-address.md`；第一百零三轮：GEO：浙江宁波、授权文字版、机构与 FAQPage 结构化数据，见 `docs/rounds/103-geo-location-credential.md`；第一百零二轮：nginx 让百度、谷歌验证程序访问首页不跳转、首页不进边缘缓存，见 `docs/rounds/102-verifier-root.md`；第一百零一轮：百度验证标签、发布后提交 IndexNow，见 `docs/rounds/101-baidu-indexnow.md`；页面 `<head>` 里的 `google-site-verification`、`baidu-site-verification` 和 `public/` 下 32 位十六进制名的 IndexNow 密钥文件都不要删）
-- 线上发布：`release-20261018211939`，commit `e5b0f03`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
+- 线上发布：`release-20261018212916`，commit `123f131`；`https://www.yeeeai.com/version.json` 给出发布目录、commit 与构建时间
 - 最近一次完整浏览器测试：第七十八轮（见 `docs/rounds/78-faq-row-and-equal-options.md`）
 - 构建页面数：42 个静态 HTML（每语言 8 个基础页含常见问题 + 12 篇指南，再加根入口与 404）
 - 站长授权：每轮测试通过后直接上线，并推送 GitHub
