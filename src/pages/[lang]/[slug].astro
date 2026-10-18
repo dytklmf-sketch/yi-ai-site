@@ -28,7 +28,6 @@ import {
   companyAddress,
   companyLegalName,
   companyLocation,
-  parentCompany,
   inquiryPath,
   pathFor,
   modelProduct,
@@ -351,15 +350,6 @@ const heroMarks: Record<Service, string> = {
                   <div>
                     <dt>{zhUI ? '运营主体' : 'Operator'}</dt>
                     <dd>{companyLegalName[lang]}</dd>
-                  </div>
-                  <div>
-                    <dt>{zhUI ? '所属' : 'Parent'}</dt>
-                    <dd>
-                      {parentCompany.name[lang]}
-                      <span class="nowrap">
-                        {zhUI ? `（${parentCompany.short.zh}）` : `(${parentCompany.short.en})`}
-                      </span>
-                    </dd>
                   </div>
                   <div>
                     <dt>{zhUI ? '地址' : 'Address'}</dt>

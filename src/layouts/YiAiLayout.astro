@@ -119,6 +119,34 @@ const organization = {
     areaServed: { '@type': 'Country', name: lang === 'zh' ? '中国' : 'China' },
   })),
 };
+// Round 108: the visible breadcrumb (易AI / page, or 易AI / 资源与指南 / article) as BreadcrumbList; none on the home page.
+const crumbName = (page: SitePage) =>
+  page === 'workbuddy' || page === 'model-services' || page === 'infrastructure'
+    ? t.services[page].label
+    : labels[page];
+const crumbs = Astro.props.notFound
+  ? []
+  : article
+    ? [
+        { name: brand, path: pathFor(lang) },
+        { name: e.resources, path: pathFor(lang, 'resources') },
+        { name: title, path: currentPath },
+      ]
+    : slug
+      ? [
+          { name: brand, path: pathFor(lang) },
+          { name: crumbName(slug), path: currentPath },
+        ]
+      : [];
+const breadcrumb = crumbs.length > 0 && {
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((crumb, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: crumb.name,
+    item: absolute(crumb.path),
+  })),
+};
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -132,6 +160,7 @@ const schema = {
       publisher: { '@id': organization['@id'] },
     },
     organization,
+    ...(breadcrumb ? [breadcrumb] : []),
   ],
 };
 const logoWidth = lang === 'zh' ? 220.47 : 302.59;
