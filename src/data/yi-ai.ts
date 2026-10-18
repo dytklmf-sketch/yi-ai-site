@@ -19,12 +19,29 @@ export const workbuddyCredential = {
   } satisfies Record<Lang, string>,
 };
 // Round 103: where Easy AI is and whom it serves (owner, 2026-10-17), and who issued the WorkBuddy certificate, in text
-// that search engines and AI assistants can read (the certificate is an image). The operating company stays unnamed.
+// that search engines and AI assistants can read (the certificate is an image). Round 104: the owner made the company
+// public (2026-10-18): Easy AI is a subsidiary of DAYUSEA, the certificate holder, and handles project delivery.
 export const companyLocation = {
   zh: '浙江宁波',
   en: 'Ningbo, Zhejiang',
   served: { zh: '服务全国企业', en: 'Serving companies across China' } satisfies Record<Lang, string>,
 };
+export const companyAddress = {
+  zh: '浙江省宁波市镇海区中官西路777号',
+  en: 'No. 777 Zhongguan West Road, Zhenhai District, Ningbo, Zhejiang',
+} satisfies Record<Lang, string>;
+export const parentCompany = {
+  short: { zh: '大鱼出海', en: 'DAYUSEA' } satisfies Record<Lang, string>,
+  name: { zh: '浙江大鱼出海科技有限公司', en: 'Zhejiang Dayu Chuhai Technology Co., Ltd.' } satisfies Record<
+    Lang,
+    string
+  >,
+};
+// The owner's wording for the relationship; it names the authorization, so the model services pages never show it.
+export const companyRelation = {
+  zh: '易AI 是大鱼出海（腾讯 WorkBuddy 官方授权合作伙伴）旗下子公司，专注项目落地实施，面向企业提供 WorkBuddy 行业方案、AI 场景部署与数字化配套交付服务。',
+  en: 'Easy AI is a subsidiary of DAYUSEA (a Tencent WorkBuddy authorized partner) focused on project delivery, providing companies with WorkBuddy industry solutions, AI scenario deployment and supporting digital delivery.',
+} satisfies Record<Lang, string>;
 export const certificateIssuer = {
   zh: '腾讯云计算（北京）有限责任公司',
   en: 'Tencent Cloud Computing (Beijing) Co., Ltd.',

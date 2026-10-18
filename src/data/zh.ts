@@ -76,12 +76,13 @@ export const zh: SiteCopy = {
       service: 'workbuddy',
       question: '易AI 是腾讯云 WorkBuddy 官方授权合作伙伴吗？',
       answer:
-        '是。易AI 持有腾讯云计算（北京）有限责任公司颁发的 WorkBuddy / CodeBuddy 官方授权合作伙伴证书，证书在 WorkBuddy 页的版本与价格下方，可点开查看原图。',
+        '易AI 是大鱼出海（浙江大鱼出海科技有限公司）旗下子公司。大鱼出海持有腾讯云计算（北京）有限责任公司颁发的 WorkBuddy / CodeBuddy 官方授权合作伙伴证书；易AI 专注项目落地实施，面向企业提供 WorkBuddy 行业方案、AI 场景部署与数字化配套交付服务。证书在 WorkBuddy 页的版本与价格下方，可点开查看原图。',
     },
     {
       service: 'workbuddy',
       question: '易AI 在哪里？外地企业可以采购吗？',
-      answer: '易AI 位于浙江宁波，服务全国企业。WorkBuddy 企业版在线开通，外地企业同样可以通过易AI 采购。',
+      answer:
+        '易AI 位于浙江省宁波市镇海区中官西路777号，服务全国企业。WorkBuddy 企业版在线开通，外地企业同样可以通过易AI 采购。',
     },
     {
       service: 'model-services',
@@ -133,11 +134,11 @@ export const zh: SiteCopy = {
   services: {
     workbuddy: {
       label: '企业 AI 应用',
-      seoTitle: 'WorkBuddy 企业版代理采购：腾讯云官方授权合作伙伴',
+      seoTitle: 'WorkBuddy 企业版采购与落地实施：腾讯云官方授权合作伙伴大鱼出海旗下',
       short: 'WorkBuddy 代理 · 采购咨询',
       title: 'WorkBuddy 代理采购',
       intro:
-        '易AI 是 WorkBuddy 代理商、腾讯云官方授权合作伙伴，位于浙江宁波，服务全国企业。团队统一采购可联系我们确认版本、报价、授权期限与开通时间。',
+        '易AI 是大鱼出海（腾讯 WorkBuddy 官方授权合作伙伴）旗下子公司，位于浙江宁波，服务全国企业。团队统一采购可联系我们确认版本、报价、授权期限与开通时间，并提供行业方案与部署落地。',
       audience: '企业采购 · 团队负责人 · IT 管理员',
       summary: '团队统一采购 WorkBuddy，按人数和期限报价。',
       scenarios: [

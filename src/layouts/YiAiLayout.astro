@@ -5,6 +5,7 @@ import { ArrowUpRight, ArrowRight, Globe, MessageCircle, Mail } from '@lucide/as
 import {
   brandName,
   certificateIssuer,
+  companyAddress,
   companyLocation,
   contact,
   pathFor,
@@ -14,6 +15,7 @@ import {
   withBase,
   navigationPages,
   services,
+  parentCompany,
   workbuddyCredential,
   type Lang,
   type SitePage,
@@ -83,6 +85,7 @@ const organization = {
     '@type': 'PostalAddress',
     addressRegion: lang === 'zh' ? '浙江省' : 'Zhejiang',
     addressLocality: lang === 'zh' ? '宁波市' : 'Ningbo',
+    streetAddress: lang === 'zh' ? '镇海区中官西路777号' : 'No. 777 Zhongguan West Road, Zhenhai District',
     addressCountry: 'CN',
   },
   areaServed: { '@type': 'Country', name: lang === 'zh' ? '中国' : 'China' },
@@ -92,16 +95,22 @@ const organization = {
     lang === 'zh' ? '大模型 API' : 'LLM APIs',
     lang === 'zh' ? '算力' : 'AI compute',
   ],
-  // The model services pages never mention authorization (owner's rule), not even the WorkBuddy one in hidden data.
-  ...(slug !== 'model-services' &&
-    service !== 'model-services' && {
-      hasCredential: {
-        '@type': 'EducationalOccupationalCredential',
-        name: workbuddyCredential.partner[lang],
-        credentialCategory: lang === 'zh' ? '官方授权合作伙伴' : 'Authorized partner',
-        recognizedBy: { '@type': 'Organization', name: certificateIssuer[lang] },
-      },
-    }),
+  // Round 104: the certificate belongs to the parent company. The model services pages never mention authorization
+  // (owner's rule), not even the WorkBuddy one in hidden data, so they name the parent without its credential.
+  parentOrganization: {
+    '@type': 'Organization',
+    name: parentCompany.name[lang],
+    alternateName: parentCompany.short[lang],
+    ...(slug !== 'model-services' &&
+      service !== 'model-services' && {
+        hasCredential: {
+          '@type': 'EducationalOccupationalCredential',
+          name: workbuddyCredential.partner[lang],
+          credentialCategory: lang === 'zh' ? '官方授权合作伙伴' : 'Authorized partner',
+          recognizedBy: { '@type': 'Organization', name: certificateIssuer[lang] },
+        },
+      }),
+  },
   makesOffer: services.map((item) => ({
     '@type': 'Offer',
     itemOffered: { '@type': 'Service', name: t.services[item].label, description: t.services[item].summary },
@@ -290,7 +299,11 @@ const zhUI = lang === 'zh';
                 ))
               }
             </p>
-            <p class="footer-location">{companyLocation[lang]} · {companyLocation.served[lang]}</p>
+            <p class="footer-location">
+              {zhUI ? `${parentCompany.name.zh}旗下` : `A subsidiary of ${parentCompany.name.en}`}
+              <br />
+              {companyAddress[lang]} · {companyLocation.served[lang]}
+            </p>
           </div>
           <nav class="footer-col" aria-label={zhUI ? '业务' : 'Services'}>
             <p class="footer-label">{zhUI ? '业务' : 'Services'}</p>

@@ -3,7 +3,16 @@ import YiAiLayout from '../../layouts/YiAiLayout.astro';
 import { ArrowUpRight, ArrowRight } from '@lucide/astro';
 import { editorial } from '../../data/editorial';
 import { home } from '../../data/home';
-import { brandName, modelProduct, pathFor, services, withBase, type Lang } from '../../data/yi-ai';
+import {
+  brandName,
+  companyAddress,
+  companyRelation,
+  modelProduct,
+  pathFor,
+  services,
+  withBase,
+  type Lang,
+} from '../../data/yi-ai';
 import { languages } from '../../data/routes';
 import { zh } from '../../data/zh';
 import { en } from '../../data/en';
@@ -59,6 +68,12 @@ const whale = `--whale:url(${withBase('/brand/logo-symbol.svg')})`;
         )
       }
       <p class="about-intro" data-enter style="--d:3">{e.aboutIntro}</p>
+      <p class="about-note" data-enter style="--d:3">
+        {companyRelation[lang]}
+        <br />
+        {zhUI ? '公司地址：' : 'Address: '}
+        {companyAddress[lang]}
+      </p>
       <ul class="about-chips" data-enter style="--d:4">
         {
           services.map((service) => (

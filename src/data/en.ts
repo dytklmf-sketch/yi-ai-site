@@ -87,13 +87,13 @@ export const en: SiteCopy = {
       service: 'workbuddy',
       question: 'Is Easy AI an authorized Tencent Cloud WorkBuddy partner?',
       answer:
-        'Yes. Easy AI holds a WorkBuddy / CodeBuddy authorized-partner certificate issued by Tencent Cloud Computing (Beijing) Co., Ltd. It is shown below the editions and prices on the WorkBuddy page, where you can open the full image.',
+        'Easy AI is a subsidiary of DAYUSEA (Zhejiang Dayu Chuhai Technology Co., Ltd.), which holds a WorkBuddy / CodeBuddy authorized-partner certificate issued by Tencent Cloud Computing (Beijing) Co., Ltd. Easy AI focuses on project delivery: WorkBuddy industry solutions, AI scenario deployment and supporting digital delivery. The certificate is shown below the editions and prices on the WorkBuddy page, where you can open the full image.',
     },
     {
       service: 'workbuddy',
       question: 'Where is Easy AI, and can companies elsewhere buy through you?',
       answer:
-        'Easy AI is based in Ningbo, Zhejiang, and serves companies across China. WorkBuddy Enterprise is activated online, so companies in other cities can buy through Easy AI as well.',
+        'Easy AI is at No. 777 Zhongguan West Road, Zhenhai District, Ningbo, Zhejiang, and serves companies across China. WorkBuddy Enterprise is activated online, so companies in other cities can buy through Easy AI as well.',
     },
     {
       service: 'model-services',
@@ -149,11 +149,11 @@ export const en: SiteCopy = {
   services: {
     workbuddy: {
       label: 'Enterprise AI applications',
-      seoTitle: 'WorkBuddy Enterprise Reseller and Tencent Cloud Authorized Partner',
+      seoTitle: 'WorkBuddy Enterprise Procurement and Delivery by a Tencent Cloud Authorized Partner Subsidiary',
       short: 'WorkBuddy reseller · Procurement',
       title: 'WorkBuddy reseller procurement',
       intro:
-        'Easy AI is a WorkBuddy reseller and Tencent Cloud authorized partner based in Ningbo, Zhejiang, serving companies across China. For team purchases, we confirm editions, pricing, authorization periods and start dates.',
+        'Easy AI is a subsidiary of DAYUSEA (a Tencent WorkBuddy authorized partner), based in Ningbo, Zhejiang, serving companies across China. For team purchases, we confirm editions, pricing, authorization periods and start dates, and handle industry solutions and deployment.',
       audience: 'Procurement teams · Team leaders · IT administrators',
       summary: 'Team purchases of WorkBuddy, priced by seats and period.',
       scenarios: [

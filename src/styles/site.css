@@ -3198,6 +3198,14 @@ main > section:first-child + section {
   color: var(--night-ink);
   font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
 }
+.about-note {
+  max-width: 40em;
+  margin-top: 0.75rem;
+  color: var(--night-ink);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  opacity: 0.72;
+}
 .about-chips {
   display: flex;
   flex-wrap: wrap;
